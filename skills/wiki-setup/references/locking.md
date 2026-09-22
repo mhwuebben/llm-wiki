@@ -7,7 +7,7 @@ It is a **lease**: taken for a few minutes, renewed as the work shows progress, 
 ## What needs it
 
 - **Needs the lock:** any change to a file other operations also write — pages in `wiki/`, `index.md`, `overview.md`, `patterns.md`, `_meta/schema.md`, `_meta/templates/`, `_meta/moves/` — and moving a file out of `raw/inbox/`. In practice: the writing part of every ingest, wiki-lint's fixes, wiki-query's filing of a note, wiki-dream-ingest's applying of findings, wiki-setup's upgrade changes and any grouping move — and an unattended wiki-maintain run, for the whole run.
-- **Doesn't:** reading anything; creating a new file under a name no one else uses — a capture into `raw/inbox/`, a report or digest in `outputs/` (create it no-clobber, *New files* below); and appending to the log (*The log*). Captures, reports and the read-only skills never wait.
+- **Doesn't:** reading anything; creating a new file under a name no one else uses — a capture into `raw/inbox/`, a report or digest in `outputs/` (create it no-clobber, *New files* below); and appending to the log (*The log*) or to an import record (`_meta/imports/`). Captures, reports and the read-only skills never wait.
 
 **Never hold it across a question.** A person can take hours to answer, and a lease can't be renewed while waiting. Settle every question first — the check-in, the yes for a batch, the approvals — then take the lock, write, and release it. If a question comes up while you hold it, finish the page you are on, release, ask, and take it again after the answer, re-reading what you will change.
 
@@ -53,7 +53,7 @@ Free, it holds `status: free` and one `Last:` line. The script keeps the last te
 
 ## Holding it
 
-- **Renew before every shared write, and at least every few minutes:** `renew <token> "<what you are about to do>"`. It checks the lease is still yours and moves `expires:` 5 minutes ahead, adding your progress line. Anyone who opens the file sees what is happening; a successor after a crash sees where you stopped.
+- **Renew before every shared write, and at least every few minutes:** `renew <token> "<what you are about to do>"` — with a count when there is one: `"ingest 22/380 — propagating [[transformers]]"`. It checks the lease is still yours and moves `expires:` 5 minutes ahead, adding your progress line. Anyone who opens the file sees what is happening; a successor after a crash sees where you stopped.
 - **Declare a long wait before it starts.** Before a step that may run past 5 minutes without a chance to renew — reading a long source, waiting for sub-agents — renew with the minutes it needs, at most 30: `renew <token> "waiting for 6 readers" 20`. Readers and auditors can't renew for you.
 - **`LOST` means stop.** The lease lapsed and another session has taken it over, or released it — it may already be finishing or redoing your work. Stop writing at once, don't release anything, and tell the person what you had done so far.
 

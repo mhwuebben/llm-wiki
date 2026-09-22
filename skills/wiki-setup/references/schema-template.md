@@ -20,8 +20,8 @@ Operating manual for this wiki. Claude reads this file before any capture, inges
 {{One paragraph: the domain, why it exists, what "good" looks like.}}
 
 It exists to answer questions like:
-- {{question 1 from the setup interview}}
-- {{question 2}}
+- {{the first question they said they will ask it}}
+- {{the second, if they gave one}}
 
 Out of scope: {{what does NOT get filed here}} — and always, whatever else this vault decides: admin rather than knowledge. Tickets, boarding passes, invoices, receipts, statements, calendar entries, task lists, credentials, keys and account details. And another living person's personal data: CVs and applications, ID, medical or financial records, private message threads, contact files, photographs of people other than the vault's owner. These have a better home in the app that issued them; filed here they gain nothing, get propagated across pages, and end up in exports. A session that is handed one says which rule it fails and waits rather than capturing it. If the owner overrides that, the source page says it was ingested against scope and which rule it fails — in a `scope: "override — <rule>"` line in its frontmatter and a note in its body — and it propagates only if the owner asks for that too.
 
@@ -32,7 +32,7 @@ A source that is in scope but states its own expiry — an event page, a time-li
 - `raw/` — immutable sources, as text. Read and cite; never edit, rename or delete. New sources land in `raw/inbox/` until ingested. On ingest, text goes to `raw/` and every binary goes to `raw/assets/`, so `raw/` stays greppable.
 - `raw/assets/` — the binary originals: PDFs, documents, slides, images, audio, video, plus attachments used inside pages. Immutable in exactly the same way — never edited, never renamed, never deleted.
 - `wiki/` — Claude's output. Every page here is regenerable from `raw/` plus this schema.
-- `_meta/` — this schema, the log, the templates, the vault lock (`_meta/wiki-lock.md`: one writer at a time — a skill that changes the wiki takes it first, and anyone can open it to see what is running), and a record of every reorganisation (`_meta/moves/`), if files were ever moved.
+- `_meta/` — this schema, the log, the templates, the import records of folders brought in whole (`_meta/imports/`), the vault lock (`_meta/wiki-lock.md`: one writer at a time — a skill that changes the wiki takes it first, and anyone can open it to see what is running), and a record of every reorganisation (`_meta/moves/`), if files were ever moved.
 - `outputs/` — decks, exports, charts, and the lint and dream reports and the maintain digests. Disposable; the knowledge they present lives in `wiki/`.
 
 ## 3. Page types
@@ -62,9 +62,10 @@ Sources reach `raw/inbox/` by any route: the Obsidian Web Clipper, drag-and-drop
 - **Ingested state is derived**: a source has been processed when a source page — any page with `type: source`, normally under `wiki/sources/` — carries a `raw:` field — or, for an earlier capture of a changed source, a `raw_previous:` entry — pointing at its file. An `ingested:` flag, where present, is a convenience for filtering and is trusted only when it agrees.
 - **On ingest the source splits by kind.** Text — a clip, a pasted article, their own note — moves from `raw/inbox/` to `raw/` as it is. A binary that is itself the source — PDF, doc, slides, image, audio, video, spreadsheet, data file — moves to `raw/assets/`, and a markdown sidecar with the same name stem goes to `raw/` in its place. **Attachments are the third case:** figures pulled from a parent, images inside a clip, files attached to an email. They go to `raw/assets/` named after their parent's raw stem (`2026-09-20-attention.md` → `2026-09-20-attention-fig3.png`), get no sidecar of their own, and are listed on the parent's `asset:`. Either way the item leaves `raw/inbox/`, and `raw/` holds exactly one markdown file per capture.
 - **When the vault can't be reached** — a cloud session with the computer off — a link or pasted note goes on an offline backlog outside the vault (in a Claude project, the doc `wiki-backlog.md`) and is captured the next time a session can reach the vault, before anything else.
+- **Folders are imported whole**, never file by file: each copy gets a unique name built from its path, and an import record in `_meta/imports/` keeps where it came from, a fingerprint and the date git records for it. The source page carries `origin:`; every maintain run brings in what changed in the folder since.
 - **One route skips the inbox.** Obsidian saves pasted and downloaded images straight into its attachment folder, which is `raw/assets/`. Those are attachments of the clip or note that embeds them: at ingest they are listed on that source's `asset:` under the name they arrived with, and never renamed — `raw/` is immutable.
 - **The sidecar is provenance only.** What the thing is, where it came from, when it was captured, how complete the capture is, and what it leaves out. No extracted text, no transcript, no OCR: the compiled content lives on the source page, and the binary in `raw/assets/` is reopened whenever a claim needs checking. A sidecar growing into a transcript is a sign the source page is too thin.
-- **Duplicates get checked at ingest**, by URL — or by title together with author and edition or period — before any page is created. A recurring title (this year's annual report) is a new source, not a re-capture. A re-capture of a changed source is a new raw file: the existing source page's `raw:` moves to it, the earlier file goes on the page's `raw_previous:` list, and the page says what changed — never an overwrite, never a second page.
+- **Duplicates get checked at ingest**, by URL, by `origin:` for a file from an imported folder — or by title together with author and edition or period — before any page is created. A recurring title (this year's annual report) is a new source, not a re-capture. A re-capture of a changed source is a new raw file: the existing source page's `raw:` moves to it, the earlier file goes on the page's `raw_previous:` list, and the page says what changed — never an overwrite, never a second page.
 
 ## 3c. Subjects
 
@@ -79,7 +80,7 @@ Each line names a subject's folder and what belongs in it. A subject may also na
 - Filenames: lowercase-kebab-case, `.md`, **unique across the entire vault**, compared without regard to case and across every folder — `[[wikilinks]]` resolve by name, not path. Grouping subfolders never make a repeated name acceptable.
 - Link to a page as `[[name]]`, never by a path: a name survives any reorganisation, a path does not. Find a page by its name anywhere in the vault outside `raw/`, `outputs/` and `_meta/` — never assume its folder.
 - Sources: the natural title, slugified (`attention-is-all-you-need.md`), not the original filename.
-- Raw files: capture date, then a lowercase-kebab slug of the source's real title — not the CMS filename or a URL hash (`raw/inbox/2026-09-20-attention-is-all-you-need.pdf`). Files that arrived from a clipper or a sync keep the name they came with; `raw/` is immutable. A new wiki page never takes a name a file in `raw/` already has; if a clash arises anyway, the wiki page is the one renamed.
+- Raw files: capture date, then a lowercase-kebab slug of the source's real title — not the CMS filename or a URL hash (`raw/inbox/2026-09-20-attention-is-all-you-need.pdf`). Files from an imported folder are named from their path in it instead (`2026-09-22-backend-readme.md`), so repeated names can't clash. Files that arrived from a clipper or a sync keep the name they came with; `raw/` is immutable. A new wiki page never takes a name a file in `raw/` already has; if a clash arises anyway, the wiki page is the one renamed.
 - People: `firstname-lastname.md`. Disambiguate with a qualifier, never a number (`john-smith-anthropic.md`).
 - A binary and its sidecar share one name stem: `raw/assets/2026-09-20-attention.pdf` next to `raw/2026-09-20-attention.md`. The sidecar names the binary by filename, not by path, so it survives a layout change.
 - No dates in wiki page names except where the thing itself is dated (a meeting, a release).
@@ -104,8 +105,9 @@ asset: [raw/assets/2026-09-20-attention.pdf]  # list: the binary original and an
 # expires: 2026-09-20                       # add only if the source states its own end date
 # scope: "override — admin"                # add only if the owner had it ingested against §1's scope, naming the rule it fails
 # raw_previous: [raw/2025-03-02-attention.md]    # earlier captures of the same source, newest first; omit if none
+# origin: "docs/backend/README.md"           # only for a file from an imported folder: its import record's name and the path inside the folder
 author: Vaswani et al.
-published: 2017-06-12   # as the source states it (YYYY or YYYY-MM when that is all it gives); the owner's own writing: the day it was written; omit if unknown
+published: 2017-06-12   # as the source states it (YYYY or YYYY-MM when that is all it gives); the owner's own writing: the day it was written; a file from an imported folder that states none: its git date from the import record; omit if unknown
 url: https://arxiv.org/abs/1706.03762
 # non-source pages:
 sources: ["[[attention-is-all-you-need]]"]
@@ -189,10 +191,10 @@ Operations logged: `setup`, `capture`, `ingest`, `query`, `lint`, `maintain`, `d
 
 ## 11. Workflow expectations
 
-- **Ingest:** {{"discuss takeaways with me before writing" | "file it and show me the changelog"}}
+- **Ingest:** file it and show me the changelog
 - **Query:** answer from the wiki first; say so explicitly when the wiki doesn't know and you're reaching for `raw/` or the web. {{Log the topic of a question the wiki couldn't answer | Don't log unanswered questions}}.
 - **Lint:** report first, fix on approval. Runs inside every maintain run; can also run on its own.
-- **Maintain:** {{weekly | monthly}} — ingest everything pending, lint, write a digest. May run unattended, with authority for exactly two things beyond capturing what is on the offline backlog: ingesting in-scope pending items — unless the Ingest line above asks to discuss each source first, in which case an unattended run only lists them — and lint's mechanical fixes (the mechanical parts of checks 1, 8 and 9). Everything else it reports — it never moves a wiki page.
+- **Maintain:** {{weekly | monthly}} — ingest everything pending, lint, write a digest. May run unattended, with authority for exactly two things beyond capturing what is on the offline backlog and what changed in imported folders: ingesting in-scope pending items — unless the Ingest line above asks to discuss each source first, in which case an unattended run only lists them — and lint's mechanical fixes (the mechanical parts of checks 1, 8 and 9). Everything else it reports — it never moves a wiki page.
 - **Dream:** {{monthly | every 10 new sources}} — a dream pass (wiki-dream-only, which may be scheduled) writes a report of connections the pages already imply and applies nothing. I decide each finding with wiki-dream-ingest; only what I accept lands in `wiki/`.
 - **Human owns:** sourcing, direction, judgement. **Claude owns:** summarising, linking, filing, bookkeeping.
 
@@ -210,7 +212,7 @@ A claim counts as stale once it is older than **{{freshness window — e.g. 12 m
 ## Notes for whoever fills this in
 
 - Placeholders are not optional. A schema with `{{BRACES}}` left in it is worse than no schema, because the next session will follow it literally.
-- Section 11 is the one people change most after a week of real use. Say so when handing it over.
+- Section 11 is the one people change most after a week of real use. Say so when handing it over. Its Ingest line starts as file-first; the owner who wants to review each source before it is filed changes it to "discuss takeaways with me before writing".
 - Leave every **Grouped by** cell at `—` unless the grouping is known before any page exists — `year of published` for a source type that arrives in volume and is dated, or subjects the purpose itself lists, where each page belongs to one (the books of a series, a course's modules). Otherwise the lint pass proposes one once a folder is big enough to show its shape.
 - In §3c, name a hub only where §3 has a type for that page (a project is an entity; a module or a book needs a type of its own); it may be written later.
 - When you later change conventions mid-flight, append to section 12 and, if the change is retroactive, run a lint pass to bring old pages in line.

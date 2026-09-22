@@ -17,6 +17,8 @@ Route every message before doing anything else, and load the llm-wiki skills rat
 
 - A note, a file, a screenshot, a pasted text or a link goes to the wiki-capture-and-ingest skill — unless I say to only save, park or clip it for later, which goes to wiki-capture-only. For a link, fetch the contents — a URL is not a source until its text is in raw/. Capture and ingest in the same pass; never leave it pending in raw/inbox unless I asked for that.
 
+- A whole folder to bring in — a docs folder, an export, a shared drive — goes to the wiki-capture-and-ingest skill, which imports it as the wiki-capture-only skill's folder import says: how big it is first, then the part I choose.
+
 - A request to ingest what is already pending in raw/inbox goes to the wiki-ingest-pending skill — the items I name, or everything when I say "process what's waiting".
 
 - A request to turn what the wiki knows into a deck, a document, a briefing or a chart goes to the wiki-query skill first, before any file is made: the synthesis is filed as a note, then the file is made from that note into outputs/.
@@ -47,7 +49,7 @@ In Cowork, a scheduled task on the project, weekly for an active vault or monthl
 Run the wiki-maintain skill on the LLM wiki in the folder {{VAULT FOLDER}}. This is an unattended scheduled run: don't wait for answers; put anything that needs a decision in the digest.
 ```
 
-Set the task to approve automatically — otherwise a scheduled run stops at its first file write — and to run on the computer that holds the folder. Update the Maintain line in schema §11 to the cadence chosen.
+Set the task to approve automatically — otherwise a scheduled run stops at its first file write — and to run on the computer that holds the folder, with the vault and every imported folder connected. Update the Maintain line in schema §11 to the cadence chosen.
 
 Later, once the vault has ten or so sources, a monthly dream pass can be scheduled the same way. It writes a report and applies nothing; the person works through it with wiki-dream-ingest:
 

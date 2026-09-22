@@ -30,7 +30,7 @@ Two extras worth knowing:
 | **Obsidian Sync, iCloud, Dropbox** | Fine, but a file can exist as a placeholder before it has downloaded. If a read comes back empty or truncated, that's usually why — wait for the sync rather than filing an empty source page. |
 | **Read-later exports** (Readwise, Instapaper, Kindle highlights) | Usually one file per item or one big export. Big exports are split at ingest, not at capture — one source page per item, not one page for the export. |
 | **Email-to-vault, scanners, voice memo apps** | Anything that writes a file into the folder works. Whatever metadata the tool writes, keep it; the ingest maps it. |
-| **A folder of documents that predates the wiki** | Copy into `raw/inbox/`, then ingest them with wiki-ingest-pending, oldest first. Don't move the originals out of wherever the person keeps them without asking. |
+| **A folder of documents that predates the wiki** | Import it by `folder-import.md`: a size estimate and a first slice, unique names, and an import record that keeps where each file came from. Never move the originals. |
 
 ## Adopting a file the wiki didn't write
 
@@ -64,7 +64,7 @@ After ingesting, the item moves out of the inbox: a text file moves to `raw/`, a
 
 ## Duplicates
 
-External capture produces duplicates far more often than Claude-driven capture: the same article clipped twice, once from the newsletter and once from the site, or a sync that re-copies a file under a new name. Before ingesting anything from the inbox, check the URL and the title against existing source pages — a match on title alone needs the same author and edition or period too, because recurring titles (an annual report, a newsletter issue) are new sources, not re-captures. A genuine re-capture of a *changed* source is a new file that updates the existing source page — `raw:` moves to it, the old file goes on `raw_previous:`, and the page says what changed. Not an overwrite, and not a second page.
+External capture produces duplicates far more often than Claude-driven capture: the same article clipped twice, once from the newsletter and once from the site, or a sync that re-copies a file under a new name. Before ingesting anything from the inbox, check the URL, the `origin:` of a file from an imported folder, and the title against existing source pages — a match on title alone needs the same author and edition or period too, because recurring titles (an annual report, a newsletter issue) are new sources, not re-captures. A genuine re-capture of a *changed* source is a new file that updates the existing source page — `raw:` moves to it, the old file goes on `raw_previous:`, and the page says what changed. Not an overwrite, and not a second page.
 
 ## What to tell someone setting this up
 

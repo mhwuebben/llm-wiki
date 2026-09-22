@@ -34,7 +34,7 @@ Whenever a session can reach the vault and the backlog has lines: before the per
 2. **Capture, oldest first:** each line with wiki-capture-only — the link, or the pasted text as pasted text, with the person's note. A pasted note keeps its line's date: for the person's own writing that is the day it was written (`published:`), and `captured:` is today. Re-read the doc first; a line already gone was drained by another session.
 3. **Take each line off** once its item has landed or been turned away, by writing the doc back without it. Some lines stay, with the reason and the date added: a fetch whose failure may pass (a timeout, a site that was down); a `re-attach` line until its file is handed over; and, unattended, a line that fails the scope test — the person decides, as with any out-of-scope item, and the digest names it.
 4. **Ingest what was meant for it:** the items whose route was `ingest`, named exactly, with wiki-ingest-pending — its check-in and its lock apply as usual, and step 1's yes covers its list. `save` items stay pending. Inside a wiki-maintain run, skip this step: the run ingests everything pending next, and is already authorised to.
-5. **Report** what came in from the backlog, one line each, and what stayed and why.
+5. **Report** what came in from the backlog, one line each, and what stayed and why. A long backlog shows progress as `${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/batch-ingest.md` (*Showing progress*) says.
 
 ## Making it automatic
 

@@ -1,6 +1,6 @@
 ---
 name: wiki-capture-and-ingest
-description: Capture new items and ingest exactly those, in one pass — use when someone hands over one or more links, files, notes, pasted texts or screenshots and wants them in the wiki now. Runs wiki-capture-only for each item, then wiki-ingest-pending with just the new items as its argument; everything else already waiting in raw/inbox stays pending. Use wiki-capture-only instead when they only want it saved, parked or clipped for later, and wiki-ingest-pending for items already waiting in raw/inbox.
+description: Capture new items and ingest exactly those, in one pass — use when someone hands over one or more links, files, notes, pasted texts or screenshots — or a whole folder to import — and wants them in the wiki now. Runs wiki-capture-only for each item, then wiki-ingest-pending with just the new items as its argument; everything else already waiting in raw/inbox stays pending. Use wiki-capture-only instead when they only want it saved, parked or clipped for later, and wiki-ingest-pending for items already waiting in raw/inbox.
 ---
 
 # Wiki Capture and Ingest
@@ -13,6 +13,8 @@ Run both skills, in order, in full. Do not substitute a remembered version of ei
 2. **wiki-ingest-pending** with **exactly the items step 1 just landed** as its argument, plus any item step 1 found already pending — a binary and its sidecar count as one item. It reads each properly, writes its source page, propagates across every page it touches, closes the source's list (every page it names cites it), moves the file out of the inbox, updates `index.md` and appends to `_meta/log.md`. Nothing else in `raw/inbox/` is touched: it stays pending.
 
 **Stop before ingesting an item that capture turned away.** Not wiki material — admin (a ticket, a boarding pass, an invoice, a receipt, a statement, a calendar entry, a task list, a credential, key or account detail), another living person's personal data (a CV or application, an ID, medical or financial record, a private message thread, a contact file, a photo of someone else), or anything else the schema's out-of-scope list covers: name the rule it fails and wait. Partial or refused — a paywall, a JavaScript-rendered page, a truncated PDF, an empty clip, a blocked fetch: say so and offer the alternatives (clip it in the browser, print to PDF, paste the text). A half-captured source is never ingested as if whole: a partial that reads as whole is how a wiki ends up confidently wrong. It lands only if the person says so, marked `partial:` (wiki-capture-only, *Fidelity rules*). The other items go ahead.
+
+**A whole folder?** It is imported, not captured file by file (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/references/folder-import.md`): wiki-capture-only copies it with its import record, the person picks the part to ingest now on that file's card — that answer is the one yes — and wiki-ingest-pending ingests that part. The rest stays pending.
 
 **The vault out of reach?** wiki-capture-only puts each item on the offline backlog (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/references/offline-backlog.md`) and nothing is ingested now. Say so once, for all of them.
 

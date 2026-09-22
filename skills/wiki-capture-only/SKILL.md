@@ -1,6 +1,6 @@
 ---
 name: wiki-capture-only
-description: Capture a source into an LLM wiki's raw/inbox — and stop there. Fetches and converts a URL to markdown, files a PDF, saves a pasted article, transcript, email or meeting note, registers images, records provenance so every later claim can be traced, and checks scope, completeness and duplicates first. Also covers sources that arrive on their own — Obsidian Web Clipper clips, synced files, drag-and-drops — including how to set the clipper up (reading such a file into the wiki is wiki-ingest-pending's job). Use when someone wants to save, park, clip or keep a link, paper, podcast episode, book chapter, thread, screenshot or note for later without processing it now. Also keeps the offline backlog — links and notes handed over while the vault can't be reached — and drains it once the vault can be reached again. Never ingests. Use wiki-capture-and-ingest instead when they want it in the wiki now, and wiki-ingest-pending for what is already waiting in raw/inbox.
+description: Capture a source into an LLM wiki's raw/inbox — and stop there. Fetches and converts a URL, files a PDF, saves a pasted article, transcript, email or note, registers images and records provenance, after checking scope, completeness and duplicates. Also sets up the Obsidian Web Clipper for sources that arrive on their own, imports a whole existing folder (a docs repository, an export) with a record of where each file came from and keeps it in step later, and keeps the offline backlog of links sent while the vault can't be reached. Use when someone wants to save, park, clip or keep something for later without processing it now, or to import or sync a folder. Never ingests. Use wiki-capture-and-ingest when they want it in the wiki now, and wiki-ingest-pending for what is already waiting in raw/inbox.
 ---
 
 # Wiki Capture Only
@@ -13,7 +13,7 @@ Sources are the ground truth of an LLM wiki. Everything in `wiki/` is regenerabl
 
 1. Find the vault and read `_meta/schema.md`. No schema? This folder isn't a wiki yet — offer wiki-setup instead of improvising a structure. **The vault can't be reached at all** — no linked computer, the folder not connected, the device offline? Nothing can be captured now: put the item on the offline backlog (`references/offline-backlog.md`) and stop.
 2. **Check it is wiki material**, against the schema's out-of-scope list. Two families fail the test however they arrive. **Admin:** tickets, boarding passes, invoices, receipts, statements, calendar entries, task lists, credentials, keys and account details. **Another living person's personal data:** a CV or résumé, an application, an ID document, a medical or financial record, a private message thread, a contact file, a photograph of someone who is not the vault's owner. The second family is the one that looks like a legitimate source — a CV is well-written, on-topic and full of facts — which is exactly why it needs a gate rather than judgement. Say which rule it fails, say what you'd do instead, and stop — do not capture it on your own judgement that it is probably fine. If the person tells you to capture it anyway, do: add `scope: "override — <the rule it fails>"` to its provenance block (quoted, because rule names contain colons), and ingest records the same on the source page.
-3. Check for a duplicate before writing anything: search `raw/` filenames and the source pages for the URL, and for the title together with the author and edition or period — a recurring title (this year's annual report) is a new source, not a re-capture. If it's already there, say so and offer to re-capture it if this is a newer version — run by wiki-capture-and-ingest, re-capture a changed version without asking. A copy still in `raw/inbox/` is already pending: don't capture it twice.
+3. Check for a duplicate before writing anything: search `raw/` filenames and the source pages for the URL, and for the title together with the author and edition or period — a recurring title (this year's annual report) is a new source, not a re-capture. If it's already there, say so and offer to re-capture it if this is a newer version — run by wiki-capture-and-ingest, re-capture a changed version without asking. A copy still in `raw/inbox/` is already pending: don't capture it twice. For a file from an imported folder, the same `origin:` means the same source (`references/folder-import.md`).
 
 ## Capture by source type
 
@@ -78,7 +78,7 @@ The sidecar is provenance only — what it is, where it came from, how complete 
 
 ## Batch capture
 
-When several items arrive at once (a folder of PDFs, a reading list of URLs, an export):
+When several items arrive at once (a reading list of URLs, a handful of PDFs). **A whole folder** — anything with subfolders, or more than a few dozen files — is imported instead, by `references/folder-import.md`: it keeps where each file came from, gives repeated names unique copies, and says how big the job is before starting.
 
 1. List what you found and what you'd name each one. Confirm before capturing more than three items — when wiki-capture-and-ingest runs this, that one yes covers its ingest too.
 2. Capture them all into `raw/inbox/`, then — run on its own — report a table: title, type, size/length, duplicate?, in scope?
@@ -93,5 +93,6 @@ When several items arrive at once (a folder of PDFs, a reading list of URLs, an 
 ## Reference files
 
 - `references/external-capture.md` — the Obsidian Web Clipper setup (with the importable template), other routes into the vault, mapping foreign frontmatter, and how ingested state is determined. Read whenever files arrive in `raw/` that Claude didn't put there.
+- `references/folder-import.md` — importing a whole existing folder: the size estimate and first slice, names that can't clash, the import record, subjects from the folder's structure, and keeping in step with it later.
 - `references/offline-backlog.md` — what to do with an item when the vault can't be reached, and how the backlog is drained once it can.
 - `references/source-types.md` — detailed handling for web pages, PDFs, transcripts, images, email threads, data files, books and paywalled content. Read when the source isn't a straightforward article or PDF.

@@ -22,7 +22,8 @@ Two front doors: **[[index]]** (everything, cataloged) and **[[overview]]** (wha
 | "What does the wiki say about X?" | answered from the compiled pages, with citations — and the good answers get filed back |
 | "Make a deck on X" | the answer is filed as a note first, then the deck is made from it into `outputs/` |
 | "Lint the wiki" | contradictions, stale claims, orphans and gaps get found — and fixed once you approve |
-| "Bring the wiki up to date" — or the scheduled run | everything pending gets ingested, the vault gets linted, and you get a digest of what changed since last time |
+| "Bring the wiki up to date" — or the scheduled run | what changed in imported folders is brought in, everything pending gets ingested, the vault gets linted, and you get a digest of what changed since last time |
+| "Import this folder" | Claude says how big it is and what it would leave out, copies it with a record of where each file came from, and ingests the part you choose first |
 | "What does it all add up to?" | connections your pages already imply get proposed, and you decide which ones get written down |
 | "Go through the dream report" — after a scheduled dream pass | the proposals waiting for you, one at a time; only what you accept is filed |
 | A link sent while this folder is out of reach — the computer closed | it goes on the project's backlog and is captured the next time a session can reach the folder |

@@ -16,10 +16,10 @@ Getting sources in:
 
 | Skill | What it does | When, and how |
 |---|---|---|
-| `wiki-capture-only` | Gets a source into `raw/inbox/` cleanly — URLs, PDFs, transcripts, screenshots, pasted notes — with provenance, after checking it is in scope, complete and not already there. Stops there: the item is pending. Also sets up the Obsidian Web Clipper. | When you want to keep something for later without processing it now. Manual. |
+| `wiki-capture-only` | Gets a source into `raw/inbox/` cleanly — URLs, PDFs, transcripts, screenshots, pasted notes — with provenance, after checking it is in scope, complete and not already there. Stops there: the item is pending. Also imports whole existing folders, keeps a backlog while the vault is out of reach, and sets up the Obsidian Web Clipper. | When you want to keep something for later without processing it now. Manual. |
 | `wiki-capture-and-ingest` | Captures one or more new items, then ingests exactly those; anything else in the inbox stays pending. | Whenever you hand over a link or a file you want in the wiki now — the everyday route. Manual; the project instructions route a dropped link here. |
 | `wiki-ingest-pending` | The core loop. Takes pending items — the ones you name, or everything in `raw/inbox/`, including clips and drops that arrived without Claude — and for each one reads it, writes its page, propagates the change across every affected page, checks that every page the source names really cites it, flags contradictions and moves the file out of the inbox. | When items are waiting: clips, drops, things you saved for later. Manual ("process what's waiting"), and inside `wiki-capture-and-ingest` and `wiki-maintain`. |
-| `wiki-maintain` | The routine: ingest everything pending, lint (only the mechanical fixes on its own), and write a digest of what the wiki learned since the last run. Built to run unattended. | Weekly for an active vault, monthly for a quiet one. **Scheduled**, or by hand after a busy stretch. |
+| `wiki-maintain` | The routine: bring in what is on the offline backlog and what changed in imported folders, ingest everything pending, lint (only the mechanical fixes on its own), and write a digest of what the wiki learned since the last run. Built to run unattended. | Weekly for an active vault, monthly for a quiet one. **Scheduled**, or by hand after a busy stretch. |
 
 Using and looking after the wiki:
 
@@ -30,7 +30,7 @@ Using and looking after the wiki:
 | `wiki-dream` | Consolidation, in one sitting: runs `wiki-dream-only`, then `wiki-dream-ingest` on the report it just wrote. | When you want new connections and are there to decide. Manual. |
 | `wiki-dream-only` | Reads across what's already filed for connections no page states yet — bridges between subjects, questions the vault can now answer, sources that agree independently, pages that should link — and writes each as a cited, inference-marked proposal to a report. Applies nothing; adds nothing from outside the vault. | Monthly, or after about ten new sources; the digest says when it's due. **Scheduled**, or manual. |
 | `wiki-dream-ingest` | Works through a dream report with you: re-checks each finding against the wiki as it is now, puts it to you, files what you accept as notes, links and citations, and remembers what you rejected. | After a dream pass — the digest, the task's notification and `wiki-status` say a report is waiting. Manual; it needs you. |
-| `wiki-status` | Where the wiki stands: size, what's pending, what changed, what it still doesn't know. Read-only. | Any time. Manual. |
+| `wiki-status` | Where the wiki stands: size, what's pending, what's running, imported folders, what changed, what it still doesn't know. Read-only. | Any time. Manual. |
 | `wiki-gaps` | What's missing and what to go and read. Read-only. | When deciding what to read next. Manual. |
 | `wiki-setup` | Builds the vault: `raw/`, `wiki/`, `_meta/schema.md`, index, overview, log, templates. Interviews you first so the schema fits your domain, and hands you the project instructions to paste into your project, together with the scheduled-task prompt. Later, upgrades an existing vault after a plugin update. | Once per vault; again after an update. Manual. |
 
@@ -41,9 +41,10 @@ Using and looking after the wiki:
 
 No hooks and no MCP servers: everything here is instructions and markdown, so there's nothing to trust beyond the files you can read.
 
-### Two things that keep it safe to leave running
+### What makes it safe to leave running
 
 - **One writer at a time.** Every skill that changes the wiki first takes the vault lock, `_meta/wiki-lock.md`: a lease with a holder, an expiry and a line per step, so you can open it and see what is running. A second session waits; a session that died is taken over a minute after its lease runs out — normally within six minutes — and the next ingest finishes whatever it left half done. Reading, capturing and writing reports never wait.
+- **You can see what it is doing.** A long run — an import, a batch, the routine — starts with a plan (how many items, how many passes, how long), says what it is about to do before each long step, and reports a tally after each pass. The lock file shows the same count at any moment.
 - **Nothing gets lost while the folder is out of reach.** If Claude can't reach the vault — a cloud session with your laptop closed, a chat from your phone — a link or note you send goes on a backlog in the Claude project (`wiki-backlog.md`). The next session that can reach the folder captures it before anything else, and so does the scheduled `wiki-maintain` run.
 
 ## Install
@@ -86,7 +87,7 @@ A sync updates the skills. It does not touch anything in your vault:
 1. Make a folder for the vault (or pick one that already has documents in it).
 2. In Cowork, click **Work in a project or folder** and choose it.
 3. Say: *"Set up an LLM wiki here — it's for [your topic]."*
-4. Answer the four setup questions.
+4. Answer setup's questions — two short cards, and one about the schedule near the end.
 5. Open the folder in Obsidian (**Open folder as vault**) and look at the graph. Optional — any editor works.
 6. Set up the Web Clipper when setup offers it — setup shows you the template to import — clip one article, then run `wiki-ingest-pending`. Watch the pages appear.
 
@@ -115,6 +116,8 @@ Drag-and-drop, phone sync, and read-later exports work the same way. The wiki do
 
 Clip freely; ingest the same day with `wiki-ingest-pending`, and let the scheduled `wiki-maintain` run sweep up whatever is left.
 
+**Bringing in a folder you already have** — a docs repository, a Notion or Evernote export, course materials, a shared drive — is an import, not a copy. Claude first says how many files there are, what it would leave out (build output, generated reference material) and roughly how many passes the ingest will take, and suggests starting with one part. It copies each file under a unique name built from its path, so the `README.md` in every subfolder doesn't clash. An import record in `_meta/imports/` keeps where each copy came from, a fingerprint of its content and, in a git repository, the date of its last change. That lets source pages carry their `origin:` and date, lets the folder's own structure become subjects, and lets every scheduled `wiki-maintain` run bring in what changed in the folder since.
+
 ## What lands in the folder
 
 ```
@@ -126,6 +129,7 @@ vault/
 ├── _meta/
 │   ├── schema.md        the conventions Claude follows — yours to edit
 │   ├── log.md           one entry per operation, append-only
+│   ├── imports/         a record of every folder imported whole: where each copy came from
 │   ├── wiki-lock.md     the vault lock: free, or what is writing right now
 │   ├── wiki-lock.sh     the script that takes and releases it
 │   ├── moves/           a record of every reorganisation, if pages were ever moved
@@ -157,6 +161,7 @@ vault/
 | `wiki/notes/` | Answers worth keeping, the argument behind a deck or briefing, and connections across pages you approved. | `wiki-query` files a good answer — and, when an answer becomes a deck or document, files the synthesis here *before* making it; `wiki-dream-ingest` adds a dream finding you accepted, marked as inference. |
 | `index.md`, `overview.md` | The catalog, and the current best picture — including open questions, contradictions in play and what to read next. | The index gains a row for every new page, at ingest or when a note is filed; lint rebuilds it from the pages whenever it has drifted. The overview is revised whenever an ingest, a filed answer or an approved finding moves the picture. |
 | `patterns.md` | Recurring loops in how you work, decide or get stuck — each with the sources that show it. Claude's reading of them is kept apart, marked as inference. | Personal vaults only. A loop earns a line at the third source that shows it — added at ingest or proposed by a dream pass. |
+| `_meta/imports/` | One record per imported folder: each file's path in that folder, a fingerprint, its git date, and the name of its copy. | Written when a folder is imported; extended by every sync, when `wiki-maintain` brings in what changed. |
 | `_meta/wiki-lock.md`, `_meta/wiki-lock.sh` | The vault lock: free, or which operation is writing right now, with a line per step — and the small script every writing skill takes and releases it with. | Created at setup. Taken and released by every skill that changes the wiki; open the `.md` any time to see what is running. |
 | `_meta/log.md` | One entry per operation: setup, capture, ingest, query, lint, maintain, dream, schema — including, by topic, questions the wiki couldn't answer. | Appended by every skill that changes something. It's how `wiki-maintain` knows what's new since last time, how a dream pass knows what you've already rejected, and how `wiki-gaps` knows what you keep asking about. |
 | `outputs/` | Decks, exports and charts, plus the routine reports: `lint-YYYY-MM-DD.md`, `digest-YYYY-MM-DD.md`, `dream-YYYY-MM-DD.md`. | `wiki-query` when an answer becomes a deck, document or chart; `wiki-lint`, `wiki-maintain` and `wiki-dream-only`, each time they run. |

@@ -11,8 +11,9 @@ raw: raw/{{YYYY-MM-DD}}-{{slug}}.md                  # always the markdown in ra
 asset: [raw/assets/{{YYYY-MM-DD}}-{{slug}}.{{ext}}]  # list: the original plus any attachments, under this stem (images Obsidian saved keep their own names); omit if none
 # expires: {{YYYY-MM-DD}}                            # add only if the source states its own end date
 # scope: "override — {{rule it fails}}"             # only if ingested against schema §1's scope on the owner's say-so
+# origin: "{{record name}}/{{path inside it}}"      # only for a file from an imported folder (its import record in _meta/imports/)
 author: {{Author}}
-published: {{YYYY-MM-DD}}   # the date the source states (YYYY or YYYY-MM if that is all); omit if unknown — never the capture date
+published: {{YYYY-MM-DD}}   # the date the source states (YYYY or YYYY-MM if that is all); from an imported folder with none stated, its git date; omit if unknown — never the capture date
 url: {{url or omit}}
 ---
 

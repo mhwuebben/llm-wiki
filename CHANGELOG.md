@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.0.1 — 2026-09-22
+
+- **Setup no longer asks how involved you want to be.** Nobody can judge that before seeing an ingest, and one answer quietly stopped the scheduled routine from ingesting. A new vault starts with file first, report after; at the end, setup says in one line how to switch to reviewing each source first (the Ingest line in schema §11).
+- **Every setup question is on a card**, never as plain text beside a card, where it was easy to miss. The interview is two cards — what the wiki is about and what goes in; then whose it is and what you'll ask it, with example questions fitted to your topic and room for your own words. A question your opening message already answered is skipped, and a session without cards asks the same questions in one plain message.
+- **Setup names what it asks about.** The schedule question says what the scheduled run does — files what is waiting, tidies the wiki, writes a summary — instead of asking about "the routine". It comes before the task prompt, so the schema and what setup tells you about the task match your answer.
+- **The first source is explained**: it is saved and filed right away — its own page, the pages it touches, the overview and index — and something already in the inbox is offered first.
+
+- **Importing a folder you already have.** A docs repository, an export or a shared drive is imported, not copied file by file. The import first reports how many files there are, what it would leave out and roughly how many passes the ingest takes, then starts with the part you choose. Each copy gets a unique name built from its path, so repeated names like `README.md` no longer clash. An import record in `_meta/imports/` keeps each file's original path, a content fingerprint and, in a git repository, the date of its last committed change. The same tested command imports, resumes after the shell's time limit, and syncs; it never imports the vault into itself, and setup builds the wiki in a new folder beside an existing docs folder rather than on top of it. Source pages carry `origin:`, and that git date serves as `published:` when a document states none, so docs are dated by their last change rather than the import day, and the stale-claim check can see which is newer. The folder's own subfolders can become subjects, read from `origin:` rather than guessed.
+- **Imported folders stay in step.** Every wiki-maintain run syncs each imported folder it can reach: changed files are copied again and update their source page, new files become pending, and removed ones are reported once.
+- **The reader and auditor agents work when the vault is on your computer.** Their file tools can't reach a vault behind Cowork's computer link, so the main session copies what they need into its workspace, gives them the copies, and writes each reader's draft into the vault itself.
+- **wiki-status names the plugin's author**, with an email for questions, in its last line.
+- **wiki-status says what is waiting for you** — the decisions scheduled runs couldn't make, and dream reports to review — in one line, only when there is something, and "go through them" hands each to the skill that decides it, on cards.
+- **You can see what a long run is doing.** Imports, batches, backlog drains, maintain runs and large lint passes give a plan at the start, a line before each long step and a tally after each pass. Readers work in waves of five, so news comes every few minutes, and the lock file's progress lines carry the same counts.
+
+**Upgrading an existing vault.** Your settings stay: upgrade mode keeps your filing mode and cadences in §11 and proposes only the wording the template added around them — the Maintain line now also authorises bringing in what changed in imported folders. New lines are offered as usual: the `origin:` field, and the import records in §2 and §3b. Re-paste the project instructions: they gained a line for importing a folder.
+
 ## 3.0.0 — 2026-09-22
 
 LLM Wiki as it stands: twelve skills and two sub-agents that build and keep an AI-maintained second brain in a folder of markdown, after Andrej Karpathy's LLM Wiki idea.
