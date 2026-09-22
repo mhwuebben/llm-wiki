@@ -21,3 +21,7 @@ A new dream pass and its review, back to back. Run both skills, in order, in ful
 **Log:** wiki-dream-only's pass entry, then wiki-dream-ingest's review entry.
 
 **Report once, at the end:** what the pass found, what the person accepted, and what the wiki now says that it didn't — with anything handed to lint or to wiki-gaps.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs.

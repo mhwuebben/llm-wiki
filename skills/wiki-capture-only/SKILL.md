@@ -98,3 +98,7 @@ When several items arrive at once (a reading list of URLs, a handful of PDFs). *
 - `references/folder-import.md` — importing a whole existing folder: the size estimate and first slice, names that can't clash, the import record, subjects from the folder's structure, and keeping in step with it later.
 - `references/offline-backlog.md` — what to do with an item when the vault can't be reached, and how the backlog is drained once it can.
 - `references/source-types.md` — detailed handling for web pages, PDFs, transcripts, images, email threads, data files, books and paywalled content. Read when the source isn't a straightforward article or PDF.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs.

@@ -135,3 +135,7 @@ Read `references/batch-ingest.md` first. One threshold governs them all — alwa
 - `references/page-anatomy.md` — what good source, entity and concept pages look like, with a worked example and the common failure modes.
 - `references/propagation.md` — the decision rules for update/create/mention, promotion, contradictions, splitting and merging. Read this during Step 4.
 - `references/batch-ingest.md` — parallelism, ordering, and how to ingest several items without producing slop. Read before ingesting more than one.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs.

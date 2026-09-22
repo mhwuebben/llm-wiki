@@ -1,6 +1,6 @@
 ---
 name: wiki-gaps
-description: Find what the wiki does not know yet — the questions it is close to answering and the sources worth going and finding. Read-only; writes nothing. Use when someone asks what is missing from their wiki, what to read next, or where their knowledge is thin. Use wiki-lint instead when they want the vault cleaned up rather than extended, and wiki-dream for connections between what is already there.
+description: Find what the wiki does not know yet — the questions it is close to answering and the sources worth going and finding. Read-only; writes nothing but a debug file when debug mode is on. Use when someone asks what is missing from their wiki, what to read next, or where their knowledge is thin. Use wiki-lint instead when they want the vault cleaned up rather than extended, and wiki-dream for connections between what is already there.
 ---
 
 Work out where this wiki is thin and what would fix it. Focus on the topic named in the request if there is one, otherwise the whole vault.
@@ -18,3 +18,7 @@ Work out where this wiki is thin and what would fix it. Focus on the topic named
 4. Offer to do the top one now: fetch and ingest the source, or answer the question and file it.
 
 Don't pad the list. Three real gaps beat seven plausible ones.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs. That file is the one thing this skill writes; everything else about it stays read-only.

@@ -122,7 +122,7 @@ This step is not optional. Everything in this plugin depends on future sessions 
 **First, ask how often the scheduled run should go**, on a card, naming what it is: *"How often should the wiki maintain itself? A scheduled task files everything waiting in the inbox, fixes the small problems a clean-up finds, and writes you a summary of what changed."* Choices: **Weekly** *(Recommended)* — for a vault that gets new sources most weeks; **Monthly** — for a quiet one. Put the answer in the Maintain line of schema §11 and in what you tell them about the task.
 
 1. Read `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/assets/project-instructions.md`.
-2. **Show the person both blocks, in the same reply**, with `{{VAULT FOLDER}}` already replaced by their actual folder name: the project instructions, then the wiki-maintain task prompt from *The scheduled task*. Do not summarise either and do not just point at the file — they need text they can copy in one go.
+2. **Show the person both blocks, in the same reply**, with `{{VAULT ID}}` and `{{VAULT FOLDER}}` already replaced — the id from schema §1, the folder as it is named now: the project instructions, then the wiki-maintain task prompt from *The scheduled task*. Do not summarise either and do not just point at the file — they need text they can copy in one go.
 3. Tell them exactly where each goes. The instructions: the project instructions field of the Claude project that owns this vault (Claude desktop or claude.ai → the project → Settings), or a `CLAUDE.md` at the vault root in Claude Code. The prompt: a new scheduled task on that project, **with the vault folder attached to the task** — a scheduled session with no folder attached can do nothing and cannot ask for access, since granting it needs someone at the computer — set to approve automatically — otherwise a scheduled run stops at its first file write — and to run on the computer that holds the folder, with the vault and every imported folder connected.
 4. Say what they buy in one sentence each: questions get answered from the wiki instead of from general knowledge and dropped links get ingested instead of parked; and whatever arrives on its own — clips, drops, the offline backlog — gets ingested, linted and summed up in a digest without anyone asking.
 5. If this session is already running inside a project, say plainly that you cannot set the field or create the task yourself — they have to paste them.
@@ -171,3 +171,7 @@ Write these into the schema, and follow them yourself:
 - `assets/project-instructions.md` — the project instructions and the scheduled-task prompts to hand the person. Read and show in Step 8.
 - `assets/about.md` — who wrote the plugin and where to reach them. Show its Opening in Step 0 and its Closing at the end.
 - `references/locking.md` — the vault lock every writing skill takes. Setup creates its file in Step 3.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs.

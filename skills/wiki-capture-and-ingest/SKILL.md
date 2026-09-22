@@ -29,3 +29,7 @@ Run both skills, in order, in full. Do not substitute a remembered version of ei
 **Log:** a `capture` entry per item and an `ingest` entry, per `_meta/schema.md` §9.
 
 **Report once, at the end**, in the shape wiki-ingest-pending asks for: what landed, what's new, what changed, what it contradicts, what it still doesn't answer — and any item that didn't land, with the reason. Don't narrate the capture as a separate result.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs.

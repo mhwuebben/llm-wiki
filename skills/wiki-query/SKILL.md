@@ -107,3 +107,7 @@ Early on, most questions will hit gaps. That's the normal state of a young vault
 - `references/retrieval.md` — the exact search commands (first-step search, backlinks, note freshness, source dates), what to do when the wiki seems to have nothing, and strategies for large vaults, vague and multi-hop questions.
 - `references/links.md` — how to follow a link: every form a link can take, resolved by name to exactly one file. Every skill that resolves a link uses it.
 - `references/answer-formats.md` — comparison tables, timelines, briefings, quizzes, charts and decks, and which questions deserve them.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs.

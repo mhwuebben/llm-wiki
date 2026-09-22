@@ -74,3 +74,7 @@ Then tell the person what changed in the wiki — the notes filed, the links and
 - Apply only what the person accepted, exactly as proposed or as they reworded it. Nothing from outside the vault, and nothing a finding didn't propose.
 - Never edit a source-backed claim beyond adding a citation. Never delete. Never touch `raw/`.
 - Anything the report hands to lint or to wiki-gaps is not applied here, except a gap the person accepts, which goes under `## What to read next` in `overview.md` as above.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs.

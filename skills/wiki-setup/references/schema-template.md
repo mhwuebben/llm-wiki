@@ -200,6 +200,7 @@ Operations logged: `setup`, `capture`, `ingest`, `query`, `lint`, `maintain`, `d
 - **Lint:** the mechanical fixes applied and reported, everything else proposed with a recommendation. Runs inside every maintain run; can also run on its own.
 - **Maintain:** {{weekly | monthly}} — ingest everything pending, lint, write a digest. May run unattended, with authority for exactly two things beyond capturing what is on the offline backlog and what changed in imported folders: ingesting in-scope pending items — unless the Ingest line above asks to discuss each source first, in which case an unattended run only lists them — and lint's mechanical fixes (the mechanical parts of checks 1, 8 and 9). Everything else it reports — it never moves a wiki page.
 - **Dream:** {{monthly | every 10 new sources}} — a dream pass (wiki-dream-only, which may be scheduled) writes a report of connections the pages already imply and applies nothing. I decide each finding with wiki-dream-ingest; only what I accept lands in `wiki/`.
+- **Debug:** off. Turn it to `on` while testing the plugin or a new routine: runs then also record where these instructions made them guess, into `outputs/debug-YYYY-MM-DD.md`, and behave exactly as they otherwise would — including an unattended run, whose authority below covers that one extra file. Off is the normal state.
 - **Human owns:** sourcing, direction, judgement. **Claude owns:** summarising, linking, filing, bookkeeping.
 
 ## 11b. Freshness

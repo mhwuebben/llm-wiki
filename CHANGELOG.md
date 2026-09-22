@@ -1,11 +1,19 @@
 # Changelog
 
+## 3.4.0 — 2026-09-22
+
+- **Debug mode.** Turn schema §11's `Debug:` line to `on`, or say it for one run, and every skill also records where these instructions made it guess — into `outputs/debug-YYYY-MM-DD.md`, one block per finding, versioned, quoted and reproducible without your vault. It changes nothing about how a run behaves: the value is a note from the only witness to an ambiguous instruction, which is the session that hit it. Three rules keep it honest — it reports what actually tripped the run rather than what it would redesign, it validates each finding against the plugin's own text before writing it (including "is the rule already there and I missed it", which is a different bug with a different fix), and most runs have nothing to report. The file is meant to be handed to whoever maintains the plugin; wiki-doctor gained a group that lists every debug file in `outputs/` with its finding count, so none of them rots unread.
+
+**Upgrading an existing vault.** Upgrade mode offers §11's `Debug:` line, which starts `off` — nothing changes until you turn it on.
+
 ## 3.3.0 — 2026-09-22
 
-- **A new skill: wiki-doctor.** Everything a wiki needs in order to run sits outside the wiki — a schema the installed plugin understands, two small scripts, project instructions that route, scheduled tasks whose prompts still point somewhere real and have the folder attached — and all of it fails quietly. wiki-doctor checks exactly that, in seven groups, and reports each problem with the text to paste or the skill to run, saying plainly which fixes only you can do (attaching a folder to a task, creating one). It writes nothing, and it says what it could not check rather than calling it sound — a scheduled session usually cannot read project instructions or list tasks.
+- **A new skill: wiki-doctor.** Everything a wiki needs in order to run sits outside the wiki — a schema the installed plugin understands, two small scripts, project instructions that route, scheduled tasks whose prompts still point somewhere real and have the folder attached — and all of it fails quietly. wiki-doctor checks exactly that, group by group, and reports each problem with the text to paste or the skill to run, saying plainly which fixes only you can do (attaching a folder to a task, creating one). It writes nothing, and it says what it could not check rather than calling it sound — a scheduled session usually cannot read project instructions or list tasks.
 - **The vault has an id.** Setup mints `wiki-` plus six characters into schema §1, and the project instructions and the task prompts point at that instead of a folder name. Rename the folder, move it, connect several wikis to one project: the id still finds it, and a stale name is a line to tidy rather than a run that fails. Two folders carrying the same id are two copies of one vault — the one thing the vault lock cannot protect you from — and wiki-doctor reports it.
 - **The schema records the plugin version that built it** (§12), so a vault can say it is two releases behind instead of behaving oddly. Upgrade mode updates it.
 - **wiki-status went back to being about the wiki.** The project-instruction and scheduled-run checks moved to wiki-doctor; status keeps one line saying something about the setup looked wrong and pointing there. It was drifting into a diagnostic suite inside a report specified to fit in fifteen lines.
+
+**Upgrading an existing vault.** Upgrade mode mints the vault id into §1 and sets §12's `Built with:` line; both are new, and neither changes anything you have. Re-paste the project instructions and update each scheduled task's prompt from the text wiki-setup hands over: they now identify the vault by that id, so this is the last time a rename can make them stale. Until a vault has an id, everything keeps working on the folder name as before.
 
 ## 3.2.0 — 2026-09-22
 

@@ -1,17 +1,17 @@
 ---
 name: wiki-doctor
-description: Check that the machinery around an LLM wiki is sound — the vault's own structure and scripts, the schema against the plugin version that built it, the project instructions, the scheduled tasks and their prompts, whether the vault folder is actually attached to them, and whether the routines have really been running. Reports problems with the exact text to paste for each fix. Read-only; writes nothing. Use when something about the wiki is not working, after installing or updating the plugin, when a scheduled run failed or stopped happening, or when someone asks whether their wiki is set up correctly. Use wiki-status for how the wiki itself is doing (pages, pending, what is waiting), wiki-lint for problems inside the wiki's pages, and wiki-setup to apply a schema upgrade this skill recommends.
+description: Check that the machinery around an LLM wiki is sound — the vault's own structure and scripts, the schema against the plugin version that built it, the project instructions, the scheduled tasks and their prompts, whether the vault folder is actually attached to them, and whether the routines have really been running. Reports problems with the exact text to paste for each fix. Read-only; writes nothing but a debug file when debug mode is on. Use when something about the wiki is not working, after installing or updating the plugin, when a scheduled run failed or stopped happening, or when someone asks whether their wiki is set up correctly. Use wiki-status for how the wiki itself is doing (pages, pending, what is waiting), wiki-lint for problems inside the wiki's pages, and wiki-setup to apply a schema upgrade this skill recommends.
 ---
 
 # Wiki Doctor
 
 Everything the wiki needs in order to run is outside the wiki: a schema the current plugin understands, two small scripts, project instructions that route, scheduled tasks whose prompts still point at the right place and have the folder attached. None of it is visible from the pages, and all of it fails quietly. This skill looks at exactly that, and at nothing inside `wiki/` — the pages are wiki-lint's job and the vault's contents are wiki-status's.
 
-**Read-only. It writes nothing** — not a page, not the schema, not a log entry. Each finding carries the text to paste or the skill to run: schema and script repairs go to wiki-setup's upgrade mode, page problems to wiki-lint. The two things nobody but the owner can do — attaching a folder to a task, creating a task — are named as theirs.
+**Read-only. It writes nothing** — not a page, not the schema, not a log entry; the one exception is a debug file when debug mode is on (*Debug mode*, below). Each finding carries the text to paste or the skill to run: schema and script repairs go to wiki-setup's upgrade mode, page problems to wiki-lint. The two things nobody but the owner can do — attaching a folder to a task, creating a task — are named as theirs.
 
 ## What it checks
 
-Work through the seven groups. Skip a check whose input this session cannot read, and **say it was skipped rather than passed**: a scheduled session usually cannot list tasks or read project instructions, and "no problems found" from a run that could not look is the one output worse than none.
+Work through the eight groups. Skip a check whose input this session cannot read, and **say it was skipped rather than passed**: a scheduled session usually cannot list tasks or read project instructions, and "no problems found" from a run that could not look is the one output worse than none.
 
 **1. The vault is a vault.** `_meta/schema.md` exists and is readable. `raw/`, `raw/inbox/`, `wiki/`, `_meta/` and `outputs/` exist. `index.md` and `overview.md` exist. `_meta/templates/` holds the templates the schema's §3 page types need. Nothing here → this is not a set-up vault: offer wiki-setup and stop.
 
@@ -38,21 +38,23 @@ Work through the seven groups. Skip a check whose input this session cannot read
 
 Then, from the log, **whether the runs actually happen**: the last `maintain | digest` entry against §11's Maintain cadence, the last `dream` entry with a `scope:` line against its Dream line. A task kept only on the person's own computer is in no list a session can read, so a missing task is never proof that nothing is scheduled — an overdue cadence in the log is.
 
-**7. The connections.** Which folders this session can reach: the vault itself, and each folder an import record in `_meta/imports/` names. A record whose folder is unreachable means its syncs have silently stopped — say since when, from its last `synced:` line. In a Claude project, whether `wiki-backlog.md` exists and how many lines it holds: a backlog with old lines means sessions have been unable to reach the vault for a while.
+**7. Debug findings**, where `outputs/` holds any `debug-YYYY-MM-DD.md`: how many files, how many findings, their dates and the plugin versions they name — this skill keeps no state, so it reports all of them and the person decides which they have already dealt with — they are notes for whoever maintains the plugin (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`), and they rot unread otherwise. Say if schema §11's `Debug:` line is still `on` after a test run: it is meant to be turned off again.
+
+**8. The connections.** Which folders this session can reach: the vault itself, and each folder an import record in `_meta/imports/` names. A record whose folder is unreachable means its syncs have silently stopped — say since when, from its last `synced:` line. In a Claude project, whether `wiki-backlog.md` exists and how many lines it holds: a backlog with old lines means sessions have been unable to reach the vault for a while.
 
 ## The report
 
 Under twenty lines. Problems first, each with its fix; then one line saying what was checked and found sound; then what was skipped and why.
 
 ```
-**Vault:** credblaiBrain · id wiki-7f3a2c · schema built with 3.1.0 · plugin 3.3.0
+**Vault:** credblaiBrain · id wiki-7f3a2c · schema built with 3.1.0 · plugin 3.4.0
 
 **Problems**
 1. The weekly maintain task has no folder attached — every run since 2026-08-30 did nothing. Attach credblaiBrain to the task in the Claude desktop app; nobody else can do this.
 2. Its prompt still names "EOBrain". Replace it with: <the corrected prompt, in a block>
 3. The schema is two versions behind. 3.2.0 added the version-history section and the log's checked: line. Run wiki-setup in upgrade mode; it proposes each line and changes nothing you don't approve.
 
-**Sound:** vault structure · both scripts run · lock free · project instructions current · 2 imported folders reachable
+**Sound:** vault structure · both scripts run · lock free · project instructions current · 2 imported folders reachable · 1 debug file, 3 findings, unread
 **Not checked:** nothing
 ```
 
@@ -62,6 +64,10 @@ Rank by what is broken now over what will break later: a task that cannot run be
 
 ## Unattended
 
-A scheduled run of this skill can check groups 1–4 and 7 and usually not 5 and 6 — it cannot read project instructions or list tasks. Run it anyway, report what it could see, and say clearly what was skipped. It never writes, so it is safe on any schedule; once a month alongside the routine is plenty.
+A scheduled run of this skill can check groups 1–4, 7 and 8, and usually not 5 and 6 — it cannot read project instructions or list tasks. Run it anyway, report what it could see, and say clearly what was skipped. It writes nothing but a debug file, so it is safe on any schedule; once a month alongside the routine is plenty.
 
 End with this line — *LLM Wiki, a plugin by Dr. Markus Wuebben · questions: markus.wuebben@gmail.com* — the author and email that `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/assets/about.md` names.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs. That file is the one thing this skill writes; everything else about it stays read-only.

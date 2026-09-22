@@ -12,6 +12,8 @@ By **Dr. Markus Wuebben** ([github.com/mhwuebben](https://github.com/mhwuebben) 
 
 An item you add is **pending** while it sits in `raw/inbox/`, and **ingested** once it has moved out of the inbox and a source page points at it.
 
+Every skill also has a **debug mode**, off unless the schema's §11 `Debug:` line says otherwise or you ask for it: a run then records, alongside its normal work, wherever the plugin's own instructions made it guess — versioned, quoted, and reproducible without your vault, in `outputs/debug-YYYY-MM-DD.md`. It is the fastest way to send back a bug in a plugin written in prose.
+
 Getting sources in:
 
 | Skill | What it does | When, and how |
@@ -98,7 +100,7 @@ Then make it a Cowork **project** — create one and add this folder to it. At t
 - **The scheduled task prompt**, for a recurring task on the project that runs `wiki-maintain` — weekly suits an active vault. Set the task to approve automatically, or it stops at its first file write; attach the vault folder to the task itself, and run it on the computer that holds the folder:
 
   ```
-  Run the wiki-maintain skill on the LLM wiki in the folder connected to this task — the one holding _meta/schema.md. It was called "<FOLDER>" when this task was set up, but the folder, not that name, is what identifies it. This is an unattended scheduled run: don't wait for answers; put anything that needs a decision in the digest.
+  Run the wiki-maintain skill on the LLM wiki in the folder connected to this task: the one whose _meta/schema.md carries the vault id <ID> (the folder was called "<FOLDER>" when this task was set up; the id, not the name, identifies it). If no connected folder carries that id but exactly one holds a _meta/schema.md, use it and say so in the digest. This is an unattended scheduled run: don't wait for answers; put anything that needs a decision in the digest.
   ```
 
   Naming the folder is a hint, not the locator, so renaming the vault costs a line in the prompt rather than a failed run — but a task with no folder attached can do nothing at all.
@@ -147,7 +149,7 @@ vault/
 │   ├── entities/        people, organisations, products, places, datasets
 │   ├── concepts/        ideas, methods, mechanisms, themes
 │   └── notes/           filed answers, the thinking behind decks and documents, approved dream findings
-└── outputs/             decks, exports, charts, lint reports, digests, dream reports
+└── outputs/             decks, exports, charts, lint reports, digests, dream and debug reports
 ```
 
 `_meta/schema.md` is the file worth reading and editing. It's what makes Claude a disciplined wiki maintainer rather than a chatbot with file access, and it's meant to evolve as you learn what your domain needs.
@@ -169,7 +171,7 @@ vault/
 | `_meta/wiki-lock.md`, `_meta/wiki-lock.sh` | The vault lock: free, or which operation is writing right now, with a line per step — and the small script every writing skill takes and releases it with. | Created at setup. Taken and released by every skill that changes the wiki; open the `.md` any time to see what is running. |
 | `_meta/wiki-search.sh` | The searches the skills run — where a name resolves to, what links a page, whether a page's body cites a source, what is waiting in the inbox. One command each, so ingest, query and lint always get the same answer. | Created at setup. Run by the skills; run it yourself any time — `sh _meta/wiki-search.sh backlinks <page>`. |
 | `_meta/log.md` | One entry per operation: setup, capture, ingest, query, lint, maintain, dream, schema — including, by topic, questions the wiki couldn't answer. | Appended by every skill that changes something. It's how `wiki-maintain` knows what's new since last time, how a dream pass knows what you've already rejected, and how `wiki-gaps` knows what you keep asking about. |
-| `outputs/` | Decks, exports and charts, plus the routine reports: `lint-YYYY-MM-DD.md`, `digest-YYYY-MM-DD.md`, `dream-YYYY-MM-DD.md`. | `wiki-query` when an answer becomes a deck, document or chart; `wiki-lint`, `wiki-maintain` and `wiki-dream-only`, each time they run. |
+| `outputs/` | Decks, exports and charts, plus the routine reports: `lint-YYYY-MM-DD.md`, `digest-YYYY-MM-DD.md`, `dream-YYYY-MM-DD.md`, and `debug-YYYY-MM-DD.md` where debug mode is on. | `wiki-query` when an answer becomes a deck, document or chart; `wiki-lint`, `wiki-maintain` and `wiki-dream-only`, each time they run. |
 
 ### Why it's split this way
 
@@ -177,7 +179,7 @@ vault/
 - **Text in `raw/`, binaries in `raw/assets/`.** `raw/` stays one greppable markdown file per capture, while the originals sit beside it and get reopened whenever a claim needs checking.
 - **One queue.** Every source enters through `raw/inbox/` (only images Obsidian downloads into `raw/assets/` skip it), so `wiki-ingest-pending`, `wiki-maintain` and lint all look in one place — nothing gets filed twice, nothing silently skipped.
 - **"Ingested" is derived, not flagged.** A source counts as ingested when a source page points at its file. Files from other tools often carry no flag, and a flag can be wrong; the pointer can be checked.
-- **`outputs/` is disposable.** A deck or report is a view of the wiki, never the only copy of a thought, so lint never reads it and clearing it loses nothing but renders. Two catches: a dream report still awaiting review is the only copy of its findings, and a chart embedded in a note shows as a broken embed until it is made again from the note.
+- **`outputs/` is disposable.** A deck or report is a view of the wiki, never the only copy of a thought, so lint never reads it and clearing it loses nothing but renders. Three catches: a dream report still awaiting review is the only copy of its findings, a debug file nobody has read yet is the only copy of what a run found confusing in the plugin, and a chart embedded in a note shows as a broken embed until it is made again from the note.
 - **Names for links, folders for you.** Every page name is unique across the vault and links use names, not paths. So Claude finds any page wherever it sits, you can reorganise inside `wiki/` in any editor, and nothing depends on Obsidian: outside it, a `[[link]]` isn't clickable, but searching for the file by name finds exactly one.
 - **The schema is yours.** Plugin updates never change `_meta/schema.md`; the skills follow it over their own defaults.
 

@@ -88,3 +88,7 @@ Scheduled runs apply the mechanical fixes — the mechanical parts of checks 1, 
 
 - `references/checks.md` — the fourteen checks with detection recipes, severity and fix patterns. Read this before running the pass.
 - `assets/report-template.md` — the report structure. Copy and fill.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs.

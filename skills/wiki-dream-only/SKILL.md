@@ -106,3 +106,7 @@ The proposed count counts findings as the report does — the batch of missing l
 - `references/connection-types.md` — the six kinds, with detection recipes, required evidence, and the proposal for each. Read before the pass.
 - `assets/report-template.md` — the report structure. Copy and fill.
 - `${CLAUDE_PLUGIN_ROOT}/skills/wiki-dream-ingest/SKILL.md` — how the report is worked through and applied; the proposed actions must be ones it can apply.
+
+## Debug mode
+
+When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs.
