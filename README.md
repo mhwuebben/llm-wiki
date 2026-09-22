@@ -12,6 +12,8 @@ By **Dr. Markus Wuebben** ([github.com/mhwuebben](https://github.com/mhwuebben) 
 
 An item you add is **pending** while it sits in `raw/inbox/`, and **ingested** once it has moved out of the inbox and a source page points at it.
 
+**Several vaults?** Each is a *part* of one brain. Questions read across all the parts a session can reach, routed by what each vault's schema says it is for, and scoped exactly when you name one ("ask the credbl brain"). Everything that writes — capture, ingest, lint, maintain, a dream pass — works on one part and asks which when it isn't obvious, because a `[[link]]` only resolves inside one folder: a claim borrowed from another part is quoted with that part's name and id instead of linked. With one vault connected, none of this is visible.
+
 Every skill also has a **debug mode**, off unless the schema's §11 `Debug:` line says otherwise or you ask for it: a run then records, alongside its normal work, wherever the plugin's own instructions made it guess — versioned, quoted, and reproducible without your vault, in `outputs/debug-YYYY-MM-DD.md`. It is the fastest way to send back a bug in a plugin written in prose.
 
 Getting sources in:

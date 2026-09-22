@@ -9,6 +9,15 @@ Sources are the ground truth of an LLM wiki. Everything in `wiki/` is regenerabl
 
 **This skill is one door of several.** Most sources arrive without Claude: the Obsidian Web Clipper, a drag-and-drop into `raw/inbox/`, a sync from a phone, an export from a read-later app. That's the intended workflow, not a workaround — clipping is faster than asking, and a logged-in browser reaches pages a server-side fetch can't. Read `references/external-capture.md` for the Web Clipper setup, the other routes in, and how ingest reads a file the wiki didn't write. Use this skill when Claude is the one doing the fetching, converting or filing.
 
+## Which part
+
+This skill works on **one vault**. With several connected — each a part of one brain (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`) — settle which one takes the item before anything is written:
+
+- **A part the person named** wins, always.
+- **A file from an imported folder** goes to the part that holds its import record, permanently: an imported folder belongs to one part, and a copy landing anywhere else would be a second, unconnected source.
+- **Otherwise ask, once, with a recommendation** — the parts' §1 lines are the choices, and the recommendation says why ("this looks like credbl material: it's a spec from the docs folder you imported there"). Unattended, don't guess: leave the item where it came from and say which parts it could belong to.
+- **The same document in two parts** is allowed when the person asks for it, and only then. Both copies record the same content fingerprint and a provenance line naming the other part's vault id, so that nothing downstream mistakes one document for two independent sources — which would turn a single claim into false corroboration (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-dream-only/references/connection-types.md`, *Convergence*). Say plainly that it will be maintained twice.
+
 ## First, always
 
 1. Find the vault and read `_meta/schema.md`. No schema? This folder isn't a wiki yet — offer wiki-setup instead of improvising a structure. **The vault can't be reached at all** — no linked computer, the folder not connected, the device offline? Nothing can be captured now: put the item on the offline backlog (`references/offline-backlog.md`) and stop.

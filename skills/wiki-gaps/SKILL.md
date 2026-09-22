@@ -19,6 +19,8 @@ Work out where this wiki is thin and what would fix it. Focus on the topic named
 
 Don't pad the list. Three real gaps beat seven plausible ones.
 
+**Several vaults connected?** Each is a part of one brain (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`). This skill writes nothing, so it may read across them — but a gap is only a gap if no part holds it: check the others by name before naming one, route by what each part's §1 is for, honour a named scope exactly, and say which parts you looked in. A gap another part already answers is not a gap; it is something to quote across, with its part and vault id.
+
 ## Debug mode
 
 When schema §11's `Debug:` line says `on`, or the person asks for this run to be in debug mode, also record what these instructions made you guess — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/debug-mode.md`. It changes nothing about how this skill runs. That file is the one thing this skill writes; everything else about it stays read-only.

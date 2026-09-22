@@ -11,7 +11,7 @@ The output of this skill is a folder the person can open in Obsidian plus a `_me
 
 ## Working in Cowork
 
-- The vault is the connected folder. If no folder is connected, ask the person to click **Work in a project or folder** and pick (or create) one — everything below happens inside it.
+- The vault is the connected folder. If no folder is connected, ask the person to click **Work in a project or folder** and pick (or create) one — everything below happens inside it. Several connected folders already holding a `_meta/schema.md` are existing parts of one brain (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`): ask which folder this new vault goes in, say what the existing parts are for, and make §1 say plainly what belongs in *this* one — that sentence is what later routes questions between them.
 - Read and write vault files with the file tools. Code you run may execute in an isolated environment that does not see the connected folder, so don't script bulk edits against the vault; if you want a script, test it on one file first. Moving files (a grouping adopted, a subject changed) needs a shell that does run where the vault's files are — `references/grouping.md` says how, and what to do without one.
 - Importing an existing folder of documents needs the shell that runs on the person's computer, where both folders are — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/references/folder-import.md` has the command.
 - A Cowork **project** around this folder is what gives the vault persistent instructions (Step 8). If the folder isn't in one yet, the person creates a project in Cowork and adds this folder to it.

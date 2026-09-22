@@ -1,6 +1,6 @@
 ---
 name: wiki-query
-description: Answer a question from an LLM wiki — read the index and the relevant pages, synthesize, cite every claim to wiki pages and sources, say plainly what the wiki doesn't know, and file good answers back as notes. Use whenever someone asks about their own knowledge base, vault, second brain, notes or research — "what does my wiki say about X", "compare A and B from my sources", "who said what about Y" — or a question could be answered from a vault with a _meta/schema.md; prefer it over general knowledge there. Also use it when they want what the wiki knows as a deck, document, briefing or chart: the note is filed first, then the file is made from it into outputs/. Use wiki-dream for new connections or what their notes add up to, and wiki-status, wiki-gaps or wiki-lint for questions about the wiki itself.
+description: Answer a question from an LLM wiki — read the index and the relevant pages, synthesize, cite every claim to wiki pages and sources, say plainly what the wiki doesn't know, and file good answers back as notes. Use whenever someone asks about their own knowledge base, vault, second brain, notes or research — "what does my wiki say about X", "compare A and B from my sources", "who said what about Y" — or a question could be answered from a vault with a _meta/schema.md; prefer it over general knowledge there. Also use it when they want what the wiki knows as a deck, document, briefing or chart: the note is filed first, then the file is made from it into outputs/. Answers across several connected vaults when there is more than one, routing by what each is for, and honours a named scope ("ask the credbl brain") exactly. Use wiki-dream for new connections or what their notes add up to, and wiki-status, wiki-gaps or wiki-lint for questions about the wiki itself.
 ---
 
 # Wiki Query
@@ -35,6 +35,10 @@ The point of having compiled the knowledge is that answers now come from the com
 
 A step you cannot show a number for is a step you did not run. Reporting it as done anyway is worse than skipping it, because the person then trusts an answer built on less than it claims.
 
+## Several brains connected
+
+With exactly one vault connected, skip this: nothing changes. With two or more — each a **part** of one brain — read `references/parts.md` before retrieving. In short: the parts are the connected folders holding a `_meta/schema.md`; a scope the person named ("ask the credbl brain", "just my personal notes") is honoured exactly, and what was skipped is named at page-name level without being read; otherwise route by what each part's §1 says it is for. Read across parts freely, **write into one** — the part that owns the question — and quote a foreign claim with its part and vault id instead of linking it, because `[[links]]` don't resolve across folders. Which part a claim came from never decides who wins a disagreement; the evidence rules do, with a part's declared domain as the only legitimate tie-break. Say in one clause which parts you consulted and which you left out.
+
 ## Answering
 
 - **Lead with the answer.** One or two sentences, then the support.
@@ -55,6 +59,7 @@ File when the answer involved real synthesis (three-plus pages combined, a compa
 
 Filing writes shared pages, so it takes the vault lock (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/locking.md`); answering never does. Ask anything first — whether to file, a yes to raise a note to `solid` — then take the lock, make the writes in steps 1–5, and release it. Log afterwards (step 6), once any deck or document is made; appending to the log needs no lock.
 
+0. **One part.** A note goes into the part that owns the question — the one the person named, or the one whose domain covers it — and only that one, whatever parts the answer read. Its local claims are `[[links]]`; a claim from another part is quoted with that part's name and vault id, and the note says in a line that it draws on another part, so a reader who opens this vault alone knows why. It passes **this** part's scope test, whatever part the material came from.
 1. **One note per question.** If a note already answers this question, update it instead of filing a second: the earlier conclusion moves to its `## History` with the date, each contradiction callout the new answer settles moves there with its resolution, and `answered:` becomes today. A note that a later question re-confirms may be raised to `status: solid`, with the person's yes.
 2. Otherwise write a new note from `_meta/templates/note.md` — saying the file as it lands, `+ wiki/notes/<slug>.md` (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/batch-ingest.md`, *Showing progress*) — question as title, answer up front, reasoning, what the wiki couldn't cover, related pages — with `status: developing` and `answered:` today. Place it by schema §3 (notes are flat unless the vault groups them — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/grouping.md`). Cite as in *Answering*, and list the source pages behind the claims in `sources:`.
 3. Link it from the pages it draws on, so it's discoverable from the topic and not just from the index.

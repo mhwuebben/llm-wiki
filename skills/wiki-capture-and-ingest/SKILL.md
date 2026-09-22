@@ -7,6 +7,8 @@ description: Capture new items and ingest exactly those, in one pass — use whe
 
 New items, all the way in — and only those. What to capture is whatever the request hands over: one or more URLs, file paths, pasted texts or screenshots.
 
+**Several vaults connected?** Both steps happen in one part: wiki-capture-only settles which (*Which part*, there) and wiki-ingest-pending ingests into that one. Say which part the items landed in.
+
 Run both skills, in order, in full. Do not substitute a remembered version of either — load them:
 
 1. **wiki-capture-only** for each item — land it in `raw/inbox/` with its provenance block, under the naming the schema sets, after its checks: in scope, complete, not already in the vault. For a URL, fetch the contents; a link is not a source until its text is in `raw/`.

@@ -9,6 +9,8 @@ description: Ingest what is pending — the items waiting in an LLM wiki's raw/i
 
 An ingest that produces one summary page has failed. The value of this pattern is the propagation: the new source changes what a dozen existing pages should say, and the agent makes those edits now so nobody has to re-derive them later.
 
+**One vault at a time.** With several connected (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`), this skill ingests into exactly one part: the one the person named, or the one whose `raw/inbox/` holds the items. Items pending in two parts are two runs, reported separately — never one pass writing into both.
+
 ## Before you start
 
 1. Read `_meta/schema.md`. It defines page types, naming, frontmatter, citation style and how involved this person wants to be. Follow it over anything in this skill.

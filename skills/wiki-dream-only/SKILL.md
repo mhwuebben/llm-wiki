@@ -21,6 +21,8 @@ Lint removes problems. Ingest adds sources. This adds *understanding* — and be
 
 If a connection can only be justified with knowledge from outside the vault, it is not a dream finding. It is a gap — hand it to wiki-gaps.
 
+**One part only.** A dream pass never reads across vaults, however many are connected: every finding it proposes has to be filable, with both halves linked in the same folder, and a connection whose halves sit in two parts cannot be (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`). Cross-part connections belong in an answer, which is wiki-query's job.
+
 ## Before you start
 
 1. **Read `_meta/schema.md`, `index.md`, `overview.md`**, and `patterns.md` if the vault has one. If the schema's §9 does not list `dream`, or §11 has no Dream line, say so in the report — adding them is a schema change for the person, not for this pass.
