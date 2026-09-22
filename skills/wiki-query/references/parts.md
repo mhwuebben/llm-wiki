@@ -1,4 +1,4 @@
-# Several brains
+# Several parts
 
 A vault is a **part** of a brain, not the whole of it: a work wiki, a personal one, a project's. People keep them separate on purpose — different scope rules, different owners, different things that may leave the folder — and the separation is worth preserving. What crosses between them is **reading**, and nothing else.
 
@@ -21,16 +21,37 @@ Past about four parts, say which you consulted and stop there rather than readin
 - An answer may draw on every part it consulted.
 - A **note, a line, a callout or any other write goes into exactly one part** — the one that owns the question.
 - A claim taken from another part is quoted with its provenance, never linked: `— credbl brain (wiki-7f3a2c), kpi-driver-tree-v4`. That format is what a later reader follows by hand, and it is what tells lint the citation is deliberately foreign rather than broken.
-- A contradiction between two parts is **reported**, never filed as a callout on both: neither part owns it, and writing it into both would mean each holds a claim it cannot check. Say it in the answer, and offer to file the resolution as a note in the part that asked.
+- A contradiction between two parts is **reported**, never filed as a callout on both: neither part owns it, and writing it into both would mean each holds a claim it cannot check. Say it in the answer, and offer to file the resolution as a note in one part — *Where a cross-part answer is filed*, below.
 - **One log entry, in the part that was written to** — or, where nothing was filed, in the part that owns the question. A cross-part answer never leaves an entry in every part it read, and a `- checked:` line for a gap says which parts' inboxes were searched, since `sh _meta/wiki-search.sh pending` runs inside one vault at a time.
 - Anything filed into part A must pass **A's** scope test (§1), whatever part it came from. Parts are often separated precisely because their scope rules differ; that is the boundary this protects.
 
 ## Routing a question
 
-1. **A named scope wins, exactly.** "Ask the credbl brain", "just my personal notes", "both work brains" — use those parts and no others. Then say what was left out at name level — a search of page *names* in the excluded parts is allowed and is all that is allowed, since it reads no content: *"asked the credbl brain only; the personal brain has three pages whose names match — say the word and I'll ask it too."* A scope is honoured completely, including when the answer is thin.
+1. **A named scope wins, exactly.** One part, several named parts, or all of them. Use what was named and nothing else. Then say what was left out at name level — a search of page *names* in the excluded parts is allowed and is all that is allowed, since it reads no content: *"asked the credbl brain only; the personal brain has three pages whose names match — say the word and I'll ask it too."* A scope is honoured completely, including when the answer is thin.
 2. **No scope: route by declared domain.** Each §1 says what its vault is for. A part whose domain covers the question is consulted; one that merely mentions the topic is not. Cheap tie-breakers in order: the index one-liners, then a name search.
 3. **Ask only when it changes the answer** — two parts both plausibly own the question and would answer differently. Otherwise consult the ones that fit and say which.
 4. **Always say which parts you consulted and which you skipped**, in one clause. An answer that quietly used one of three brains is the failure this rule exists to stop.
+
+## Three shapes of question
+
+Everything else in this file serves these. They are the same whatever the parts hold.
+
+**1. One subject, several parts.** What does the brain collectively hold about it? Read each part that owns any of it, assemble one answer, attribute every claim to its part. The ordinary cross-part question.
+
+**2. One question, several parts compared.** Ask each named part the same thing and set the answers side by side — what each holds, where they differ, what only one has. **Do not blend them into an average.** Two rules keep this honest:
+
+- **Check they are comparable before comparing.** Nothing guarantees two parts are alike. Where they use different page types, different vocabulary or different periods, say so and compare only what lines up.
+- **Small numbers are anecdotes.** Report per part first; mark any generalisation as inference and say how many parts it rests on. Calling something a pattern takes three instances in three **independent sources** — not three parts, which may be holding the same document: different author, different publisher or url, and neither source citing or summarising the other (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-dream-only/references/connection-types.md`, *Pattern* and *Convergence*). Three parts that agree because one memo reached all three are one instance.
+
+**3. Divergence over time.** The same subject in two parts, holding claims that disagree — sort them by the `published:` dates of the sources behind them. A source with no date is not guessed at and not sorted in: list those apart, as claims of unknown age, and say so. Where the claims stop agreeing is a date, and usually a document that one part holds and the other doesn't. That is the useful form of "what went wrong and where": not a verdict, but the point of divergence and the source that would have prevented it.
+
+For shape 2, `delphi.md` is the deeper version — each part answers alone, then sees the others' quoted claims — and it is opt-in on its own terms: run it when the person asks, or offer it when an answer visibly turned on which part was read first. Never start one because the question looks important.
+
+## The same subject under different names
+
+A subject is rarely named identically in two parts. Resolve it per part by name and aliases (`references/links.md`), and **say which name each part used** — that is itself information, and a wrong match silently invents agreement.
+
+Where the owner confirms two names are the same subject, the alias can be added to each part that lacks it — **one write per part, each approved on its own**, each taking that part's own lock (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/locking.md`). That is not a cross-part write: nothing in one vault comes to depend on another resolving. Say on the page why the alias is there — it is a name another part uses, not a sign that two pages here are the same thing, which is what lint check 3 looks for.
 
 ## Precedence, when parts disagree
 
@@ -53,6 +74,16 @@ In the answer, each claim carries the part it came from once — not on every li
 
 A note filed afterwards keeps the same shape: local claims as `[[links]]`, foreign claims as quoted text with the part's name and vault id. Say in the note's body that it draws on another part, so a reader who opens the vault alone knows why a citation doesn't resolve.
 
+## Where a cross-part answer is filed
+
+A note comparing several parts has no natural owner among them, and the rule that a note lives in one part still holds. Three ways out, in order of preference:
+
+1. **A part that exists for synthesis**, where the owner keeps one — a vault whose §1 says so. Cross-part notes live there, quoting the parts they draw on. It is an ordinary part, so every rule here applies to it unchanged.
+2. **The part that asked**, when the question came from one of them.
+3. **Nowhere** — the answer stands in the conversation. Filing is always an offer, never automatic, and a comparison that nobody will reread is better left unfiled. Nothing filed means nothing logged either: a cross-part answer that writes no note leaves no entry, and a gap worth recording is logged in the part its question was routed to, naming the parts whose inboxes were checked.
+
+A part kept for synthesis has no domain of its own, so routing never reaches it: it is read when it is named, or when its §1 says plainly what subjects it synthesises. Worth saying to the owner once, when one is first used.
+
 ## What stays single-part
 
-Only reading crosses. **Capture, ingest, lint, maintain and status each work on one vault** — capture asks which and recommends one (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/SKILL.md`, *Which part*), ingest takes the part it was given or the one whose inbox holds the items, and lint, maintain and status report on the one they were pointed at. Two of them are different by nature: wiki-setup asks where a *new* vault goes and what belongs in it, and wiki-doctor enumerates every part on purpose, since checking them is its job. **A dream pass stays inside one part too**: every finding it proposes must be filable, with both halves linked, and a connection whose halves live in two vaults cannot be. What a cross-part question turns up belongs in an answer, and in a note in the part that asked.
+Only reading crosses. **Capture, ingest, lint, maintain and status each work on one vault** — capture asks which and recommends one (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/SKILL.md`, *Which part*), ingest takes the part it was given or the one whose inbox holds the items, and lint, maintain and status report on the one they were pointed at. Two of them are different by nature: wiki-setup asks where a *new* vault goes and what belongs in it, and wiki-doctor enumerates every part on purpose, since checking them is its job. **A dream pass stays inside one part too**: every finding it proposes must be filable, with both halves linked, and a connection whose halves live in two vaults cannot be. What a cross-part question turns up belongs in an answer, and in at most one note (*Where a cross-part answer is filed*).

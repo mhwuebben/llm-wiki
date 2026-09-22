@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.7.0 — 2026-09-22
+
+- **Comparing parts, rather than blending them.** Three shapes of cross-part question are now spelled out: one subject across several parts; the same question asked of several and set side by side; and two parts whose claims about one subject diverge, sorted by the dates of the sources behind them — which turns "where did this go wrong" into a date and usually a document one part held and the other didn't. A comparison checks first that the parts are actually comparable, reports each part before any generalisation, and treats three cases as three cases: the bar for calling something a pattern is still a third independent instance.
+- **The same subject under different names.** A subject is rarely spelled the same way in two vaults. Resolution is per part, by name and alias, and the answer says which name each part used — a silent wrong match invents agreement. Where the owner confirms two names are the same subject, each part's alias line can be updated as its own approved edit: several single-part writes, never one write across parts.
+- **Where a cross-part answer is filed** is now stated: a part kept for synthesis if there is one, otherwise the part that asked, otherwise nowhere — filing is an offer, and a comparison nobody will reread is better left unfiled.
+
 ## 3.6.0 — 2026-09-22
 
 - **Delphi mode for questions that sit across brains.** Ask for it — "ask both brains properly", "have them check each other" — and each part answers the question alone first, from its own pages only. Then each sees the *claims* the others returned, quoted and attributed, never their conclusions, because showing conclusions is how a cross-examination turns into agreement by rhetoric. Each says what that contradicts, what it confirms independently — same document in two parts is one source, not two — and what it can now add on top. The answer is then assembled in four groups: agreed with the independent sources named, in conflict with both claims quoted and the rule that settled it (or that none did, which is itself the finding), what only one part knows, and what none of them does. Opt-in, since it costs a pass per part; query offers it in one line when a routine answer visibly depended on which part it read first. Filing stays what it was: one note, in one part, foreign claims quoted rather than linked.

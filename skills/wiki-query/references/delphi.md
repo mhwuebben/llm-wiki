@@ -49,7 +49,7 @@ Different definitions are the most common false conflict. Two parts measuring di
 
 Lead with the answer, then the four groups above, in that order. Every claim carries the part it came from. Then, in one or two lines: which parts were asked, which were not and why, and how many rounds actually ran — a part that returned nothing in round 1 drops out, and saying so is honest, not a failure.
 
-**Filing stays single-part** (`parts.md`): if this is worth keeping, it becomes one note in the part that owns the question, with foreign claims quoted and attributed rather than linked, and it passes that part's scope test. A cross-part contradiction is recorded in that note as a contradiction *between parts*, named as such — never as a callout written into both vaults.
+**Filing stays single-part** (`parts.md`): if this is worth keeping, it becomes one note in a single part — the one that owns the question, or a part kept for synthesis (`parts.md`, *Where a cross-part answer is filed*) — with foreign claims quoted and attributed rather than linked, and it passes that part's scope test. A cross-part contradiction is recorded in that note as a contradiction *between parts*, named as such — never as a callout written into both vaults.
 
 ## When not to use it
 
