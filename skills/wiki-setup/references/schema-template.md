@@ -127,6 +127,7 @@ sources: ["[[attention-is-all-you-need]]"]
 ## 6. Linking and citation
 
 - Link the first mention of any entity or concept that has a page: `[[transformers]]`, or `[[transformers|the architecture]]` when the sentence needs different wording. Inside a table, escape the pipe — `[[transformers\|the architecture]]` — or the table breaks.
+- **A claim taken from another part of the brain** — another connected vault — is quoted with that part's name and vault id instead of a link, because links resolve only inside one folder: `— credbl brain (wiki-7f3a2c), kpi-driver-tree-v4`. That is a complete citation here, not a missing one, and lint leaves it alone.
 - **Every factual claim carries a source link**, usually at the end of the sentence or bullet: `Training used 8 P100 GPUs — [[attention-is-all-you-need]]`. On a source page the page itself is the source, so its own claims carry no link to it; a link there points at a *different* source it confirms or contradicts.
 - **In answers and notes**, a claim read on a page that cites a source may carry that citation: `— [[page]], citing [[source]]`. It reports what the opened page cites; the source page itself is opened when the exact figure or wording matters.
 - Claude's own synthesis across sources is allowed and valuable, but marked: `*(inference)*` or under an `## Interpretation` heading.
@@ -134,6 +135,8 @@ sources: ["[[attention-is-all-you-need]]"]
 - A wikilink to a page that doesn't exist yet is fine and useful: it marks something worth writing. The lint pass lists them.
 
 ## 7. Contradictions
+
+A contradiction between **two parts of the brain** — two connected vaults — is reported in the answer and, if it is worth keeping, recorded in one note in the part that asked, naming the other part: neither vault owns it, and writing a callout into both would leave each holding a claim it cannot check.
 
 Never silently overwrite what an earlier source said. Record the disagreement on both pages involved — the two pages that carry the conflicting claims — and on both source pages as well when it is material:
 

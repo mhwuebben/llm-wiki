@@ -3,7 +3,7 @@ name: wiki-status
 description: Show the state of the LLM wiki in this folder — size, what is pending in raw/inbox, what is waiting for the owner's decision, what changed recently, its open questions and when the routines last ran. Read-only; writes nothing but a debug file when debug mode is on. Use when someone asks how their wiki or vault is doing, what is in it, or what to do next with it. Use wiki-doctor when something is not working or the setup itself may be wrong — instructions, scheduled tasks, folders, plugin version — wiki-gaps for what is missing or what to read next, wiki-lint to check the pages for problems or repair them, and wiki-maintain to bring it up to date.
 ---
 
-Report the current state of the wiki in the connected folder. Read, don't write.
+Report the current state of one wiki — the connected folder, or the part named where several are connected. Read, don't write.
 
 0. **One vault.** With several connected — each a part of one brain (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`) — report on the one the person named, or ask which; name the others in one clause so they know what wasn't counted. Never add their numbers together: two parts are two wikis with two schemas.
 1. Confirm this is a wiki: `_meta/schema.md` exists. If not, say so and offer wiki-setup.
@@ -24,7 +24,7 @@ Report the current state of the wiki in the connected folder. Read, don't write.
    - whether a dream pass is due, by the Dream cadence in §11 of the schema — or, where it sets none, once ten or more sources have been ingested since the last dream pass (since setup, if none has run)
 3. Report it in under fifteen lines, in this shape:
 
-**Wiki:** {{purpose in a few words}} · {{n}} pages{{ — per group, for a grouped type}} · last activity {{date}}
+**Wiki:** {{purpose in a few words}} · {{n}} pages{{ — per group, for a grouped type}} · last activity {{date}}{{ · other parts connected: {{names}}, not counted here}}
 **Pending:** {{n}} items in raw/inbox {{names}}{{ · interrupted ingest: names}}{{ · n files in raw/ that no source page covers}}{{ · n on the offline backlog}}{{ · imported: folder — n of m still pending, synced date}}
 **Recently:** {{two or three lines from the log, in plain language}}{{ · running now: operation, last progress time — or stale since expires}}
 **Open questions:** {{the two or three live ones}}

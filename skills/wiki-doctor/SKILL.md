@@ -47,7 +47,8 @@ Then, from the log, **whether the runs actually happen**: the last `maintain | d
 Under twenty lines. Problems first, each with its fix; then one line saying what was checked and found sound; then what was skipped and why.
 
 ```
-**Vault:** credblaiBrain · id wiki-7f3a2c · schema built with 3.1.0 · plugin 3.4.0
+**Vault:** credblaiBrain · id wiki-7f3a2c · schema built with 3.1.0 · plugin 3.6.0
+**Parts also connected:** personalBrain (wiki-91be04) — "my own notes and reading"; checked for id collisions only
 
 **Problems**
 1. The weekly maintain task has no folder attached — every run since 2026-08-30 did nothing. Attach credblaiBrain to the task in the Claude desktop app; nobody else can do this.

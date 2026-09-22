@@ -21,7 +21,7 @@ One command, from any directory, with the page set and the link forms already ri
 
 ## The commands
 
-Run from the vault's root. Written for a POSIX shell (macOS, Linux, Git Bash on Windows); the Grep and Glob tools are fine equivalents where they can match without regard to case. `-F` makes every pattern literal, so names with dots, brackets or parentheses need no escaping.
+Run from the vault's root, **one vault at a time**: where several parts are connected (`parts.md`), every command here runs once per part, from that part's root, results carrying that part's name, and `_meta/wiki-search.sh` is each vault's own copy, searching only that vault. Written for a POSIX shell (macOS, Linux, Git Bash on Windows); the Grep and Glob tools are fine equivalents where they can match without regard to case. `-F` makes every pattern literal, so names with dots, brackets or parentheses need no escaping.
 
 Every search runs over the **page set** — the same files `references/links.md` resolves against: every `.md` in the vault except `raw/`, `outputs/`, `_meta/` and dotfolders, so pages in subfolders and pages the owner moved out of `wiki/` are included. That is what the options `--include='*.md' --exclude-dir=raw --exclude-dir=outputs --exclude-dir=_meta --exclude-dir='.?*'` with `.` at the end do. (Write `'.?*'`, not `'.*'`: the latter also excludes `.` itself, and the search finds nothing.)
 
