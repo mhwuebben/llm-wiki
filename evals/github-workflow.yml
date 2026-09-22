@@ -1,0 +1,49 @@
+name: evals
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'skills/**'
+      - 'agents/**'
+      - 'evals/**'
+      - '.claude-plugin/**'
+
+jobs:
+  routing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install -g @anthropic-ai/claude-code
+      - name: Routing cases
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude plugin eval . --tag routing --runs 2 --ablation none \
+            --trust-plugin --no-publish --threshold 1.0 \
+            --json evals-routing.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evals-routing
+          path: evals-routing.json
+
+  behaviour:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y bubblewrap socat
+      - run: npm install -g @anthropic-ai/claude-code
+      - name: Behaviour cases
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude plugin eval . --tag behaviour --runs 1 --ablation none \
+            --trust-plugin --no-publish --scaffold \
+            --allow-tools Write Edit Bash --threshold 1.0 \
+            --json evals-behaviour.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evals-behaviour
+          path: evals-behaviour.json

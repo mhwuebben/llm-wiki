@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.8.0 — 2026-09-22
+
+- **The plugin has tests.** Thirteen cases for `claude plugin eval` under `evals/`: ten check that a message reaches the right skill and not the one it is usually confused with, and three run a skill against a fixture vault and check what it did — that an invoice is refused with the scope rule named and no page written for it, that a question the vault cannot answer is answered with "the wiki doesn't cover this" rather than from general knowledge, and that ingesting one pending item writes its source page, propagates the claim onto an existing page, moves the file out of the inbox, updates the index and the log, and leaves the other pending item alone. Until now every release was checked by reading the instructions; this checks what a run actually does.
+- **A fixture vault to test against** (`evals/fixtures/vault`): a small but real wiki — schema with a vault id and an out-of-scope list, an index, an overview, a concept page citing a source page, that source's raw file, both `_meta` scripts, and two items waiting in `raw/inbox/`, one in scope and one not.
+- **A GitHub Actions workflow** runs the routing cases on every pull request that touches a skill, and the behaviour cases in a job that installs the sandbox the shell-granting case requires.
+
 ## 3.7.1 — 2026-09-22
 
 - **The project instructions say up front that there may be several parts.** The paragraph about reading across vaults sat at the very end, after every routing rule had already been read as if one wiki existed; it now follows the opening line, and says which part owns writes, that a cross-part contradiction is reported rather than written, and that everything below is about one part at a time. The offline backlog records which part a line is for.
