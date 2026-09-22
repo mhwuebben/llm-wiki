@@ -17,8 +17,14 @@ Everything in `wiki/sources/` is independent — one file per source, no shared 
 
    **Make sure the readers can reach what they read.** They work with plain file tools. Where those see the vault — Claude Code, or a Cowork session working in the folder itself — give them vault paths and let each write under the sources folder. Where they don't — Cowork with the vault on the person's computer, where the session's own file tools work in its workspace and the vault is reached only through the computer link — copy (stage) into the workspace, for each wave: its sources and the images they embed, `_meta/schema.md`, `_meta/templates/source.md`, `index.md` and a list of every `.md` file name in the vault, `raw/` included (one `find` on the computer). Give each reader those copies, the vault path each copy stands for, any `origin:` and git date from an import record, and a draft folder in the session's own outputs folder — not the vault's `outputs/`. At each source's propagation turn, re-run the subject vote if the reader left the subject to you, set its `subject:` line, and write the draft into the vault at its placement. Never hand a reader a vault path it can't open: it fails quietly, or a general-purpose agent without the reader's write limits gets used instead.
 3. **Merge the touch lists yourself.** Deduplicate across sources — the same concept will arrive under three names. Decide the canonical name once, here, before any page gets created, and rewrite each drafted source page's `## Entities and concepts` to the canonical names — otherwise the closing step later skips a synonym as a forward link.
-4. **Propagate serially**, source by source, oldest first, following `propagation.md` — and close each source's list (*Close the list*) before starting the next. Later sources then correctly show up as updating or contradicting earlier ones, which is the behaviour you want. In a vault with subjects, re-run *Assigning a subject* (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/grouping.md`) at each source's turn: the reader decided before the earlier sources' pages existed. Report a different answer; don't move the file — lint proposes it (check 9).
-5. **One index rebuild and one log entry per batch**, not per source — but the log entry names every source and the page counts:
+4. **Propagate serially**, source by source, oldest first, following `propagation.md`. Later sources then correctly show up as updating or contradicting earlier ones, which is the behaviour you want. In a vault with subjects, re-run *Assigning a subject* (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/grouping.md`) at each source's turn: the reader decided before the earlier sources' pages existed. Report a different answer; don't move the file — lint proposes it (check 9).
+
+   Serial means the edits happen in order, not that every page costs its own round trip: read the pass's pages in one command and write them back in one (`propagation.md`, *Working sensibly*).
+
+   **One closing search for the pass, not one per source.** Once the pass's last source is propagated, close all of their lists in one go (`propagation.md`, *Close the list*): the lists themselves and the gaps stay per source, but the backlink search over the vault runs once for every slug in the pass. **No item leaves the inbox until that check has passed** — the moves in wiki-ingest-pending's Step 5 come after it, so a pass interrupted before it still looks interrupted, and the next run finishes it.
+
+   **Read `index.md` once per pass as well.** Whether a page already exists is answered by the name search plus the running list of pages this run has created (`propagation.md`, *Build the touch list first*); the index itself is rebuilt once, in step 5. `_meta/schema.md` is different — re-read it at the start of each pass: it is one file, and it is what the pass is judged against.
+5. **One index rebuild per pass, one log entry per batch** — neither per source. The rebuild belongs with the pass's closing check and its inbox moves, so the index and the vault match again at the end of every pass. The log entry names every source and the page counts:
 
 ```markdown
 ## [2026-09-20] ingest | batch of 7 (Q3 competitor filings)
@@ -40,7 +46,17 @@ A long run is silent while readers work, and the person can't tell a slow run fr
 - **A task list, where the session offers one:** one task per pass, ticked off as each finishes, so progress shows without scrolling back.
 - **The same counts in the lock's progress lines** (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/locking.md`): `renew <token> "ingest 22/380 — propagating [[transformers]]"`. Anyone can open `_meta/wiki-lock.md` to see where the run is, and wiki-status shows the same line.
 
-Unattended, the plan and the tallies go into the run's report or digest instead.
+- **A line for every file that appears or moves**, as it happens, whatever the skill:
+
+  ```
+  + wiki/sources/attention-is-all-you-need.md
+  + wiki/concepts/self-attention.md
+  → raw/inbox/2026-09-20-attention.pdf → raw/assets/2026-09-20-attention.pdf
+  ```
+
+  `+` for a file created — a captured file, a source page, a new entity, concept or note page, a report, a digest — and `→` for a file moved, from and to. **Only files in the vault:** a staged copy or a draft in the session's own workspace gets no line; its vault copy gets one when it is written at its placement. Where a command prints its own line per file — the folder import — that output is the list and isn't repeated. `_meta/wiki-lock.md` and an import record get none. Pages that were only *updated* don't get a line: the report and the log entry name them. Past about twenty lines in one step — a folder import, a grouping move — print the first few and then the count, and leave the full list where it already lives: the import record, `_meta/moves/`, the log entry.
+
+Unattended, the plan, the tallies and the file lines go into the run's report or digest instead — grouped, with counts.
 
 ## Without sub-agents
 

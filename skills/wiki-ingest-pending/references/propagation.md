@@ -4,7 +4,7 @@ This is the step that makes a wiki a wiki. Work through it systematically — th
 
 ## Build the touch list first
 
-From your reading notes, list every entity, concept, claim and question the source touched. For each, check `index.md` and search the vault for existing pages (including aliases and plural/singular variants) — by name, in any folder (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md`). You now have three buckets:
+From your reading notes, list every entity, concept, claim and question the source touched. For each, search the vault for existing pages (including aliases and plural/singular variants) — by name, in any folder (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md`). The name search is what answers *does this page exist?*; `index.md` is the orientation, not the register. It is read at the start of the run and once more when the lock is taken (wiki-ingest-pending, *Before you start*, step 6) — **and not again per source**: in a batch it is rebuilt once per pass (`references/batch-ingest.md`, step 5), so between rebuilds it doesn't know about the pages this run has created. Keep a running list of those instead, and check it alongside the search. You now have three buckets:
 
 - **exists** → update
 - **doesn't exist, clears the bar** → create
@@ -38,7 +38,7 @@ Otherwise, a line on the nearest page, with a source link. Premature pages produ
 1. Add new claims in the section where they belong, each with its source link.
 2. Revise, don't append blindly. If the new source sharpens an existing claim, rewrite the claim and cite both sources. Appending a near-duplicate bullet is how pages become unreadable.
 3. Add the source to `sources:` in frontmatter and bump `updated:`.
-4. Re-read the one-line summary at the top. If it's now wrong or thin, rewrite it — and if you rewrite it, update the matching row in `index.md`.
+4. Re-read the one-line summary at the top. If it's now wrong or thin, rewrite it — and if you rewrite it, update the matching row in `index.md` — in a batch, note it and let the one rebuild at the end carry it (`references/batch-ingest.md`, step 5).
 5. Never delete substantive content. Superseded material moves to a `## History` section with the date and the reason.
 
 ## Contradictions
@@ -85,6 +85,10 @@ The last step of propagation, before any file moves or the log is written. It tu
 2. **Every page on the list cites the source in its body.** Run the backlink search in `${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/retrieval.md` for the source page — its name and aliases as `SLUG` — then its *Does this page cite that source?* test on each listed page the search returned. A listed page missing from the result, or reported `NOT CITED`, has a gap. It is the test lint check 6 runs, so what passes here passes there. Leave out what check 6 leaves out: other source pages, notes, names that still don't resolve after `${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md`'s fallbacks (forward links), and names two files share (report those; write to neither). For a page outside `wiki/`, which you don't edit, confirm instead that the nearest wiki page carries the line.
 3. **Close every gap now:** add the claim with its source link (*Updating an existing page*, above) — or, if the source turns out to say nothing substantive about that page, take the page off the list.
 
+**In a batch, close the whole pass in one check.** Steps 1 and 3 stay per source: each source has its own list, and each gap is that source's to close. Step 2 is what runs once — **one backlink search for the whole pass**, its `SLUG` patterns covering every source slug in it, instead of one search of the vault per source. That union search is a filter, not the verdict: the filenames it returns don't say which slug matched, so what it proves is absence. A page on any source's list that the search didn't return has a gap. For the pages it did return, the *Does this page cite that source?* test still decides per source — one run per source over just the files that source listed, which greps those files and not the vault. So this still matches what lint check 6 runs per source.
+
+**Nothing leaves the inbox until the pass's check has passed**: a source with an open gap keeps its item in `raw/inbox/` until the gap is closed, so a pass interrupted before the check still looks interrupted (wiki-ingest-pending, Step 5; `references/batch-ingest.md`, step 4).
+
 Only then go on to bookkeeping. Say it in the report: how many named pages the list holds, and that each cites the source. Lint check 6 remains the safety net for interrupted ingests and for edits made since.
 
 ## Splitting and merging
@@ -95,6 +99,9 @@ Only then go on to bookkeeping. Say it in the report: how many named pages the l
 
 ## Working sensibly
 
-- Batch your edits per page: read, decide everything that changes, write once.
+- **One read and one write per page** — decide everything that changes for a page before you touch it — and, in a batch, **one command per pass** rather than one call per page. The round trips are what make a long ingest slow; the reading isn't.
+- **Read the pass's pages in a single command**: `for f in …; do printf '=== %s\n' "$f"; cat "$f"; done`, about ten pages or 50 KB at a time, splitting into a second command past that. Without a shell, read them one at a time.
+- **Write them back in one command too**, whose script re-reads each page from disk and edits it in place — never writing back a copy read earlier, which is the lock's rule as well (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/locking.md`, *Taking it*). That re-read is what the file tools' *changed since you read it* guard does for you, so make each edit fail loudly instead of quietly: anchor it on text that must be there, verify the page actually changed, print `ok <path>` per page, and stop at the first failure instead of running on through the rest. Those `ok` lines are your own proof the edits landed; the person's list is unchanged and stays yours to write (`references/batch-ingest.md`, *Showing progress*) — a `+` line for a page created, none for a page merely updated. Use the file tools for a single page, for a delicate rewrite, and wherever there is no shell.
+- **A command that stopped halfway has written some pages and not others.** The `ok` lines say which. Say so, finish the rest — with the file tools if the script is what failed — and don't move anything out of `raw/inbox/` until the pass's list is closed, which is what keeps the state readable from outside.
 - Check what you wrote after a run of edits — a missing frontmatter field or a broken link is cheap to fix now and annoying later.
 - If the touch list runs past ~15 pages, say so at the check-in (Step 2), before the lock is taken and any page changes — that's a big change to their vault and they may want to watch it happen. With the check-in skipped, say it in the report.

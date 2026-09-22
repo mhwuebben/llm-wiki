@@ -45,7 +45,7 @@ Free, it holds `status: free` and one `Last:` line. The script keeps the last te
 ## Taking it
 
 1. **`take "<operation>"`**, with a short description: `"ingest — 7 items"`, `"lint — apply 12 fixes"`. The script reads the file, takes the lease only if it is free or stale, waits five seconds and checks that its token is still there — so two sessions arriving together end up with exactly one winner.
-2. **`WON <token>`:** it is yours. Keep the token for every later call. Then **re-read each shared file right before you change it**, and change it in place — with the Edit tool, or one read-modify-write command — never by writing back a copy read before you took the lock. What you read before may have changed while you waited or talked.
+2. **`WON <token>`:** it is yours. Keep the token for every later call. Then **re-read each shared file right before you change it**, and change it in place — with the Edit tool, or a read-modify-write command, which may cover several files in one call as long as it re-reads each one inside itself — never by writing back a copy read before you took the lock. What you read before may have changed while you waited or talked.
 3. **`HELD …`:** another session is writing. Don't write. Tell the person what holds it — the operation, the last progress line and until when — and offer to wait, running `take` again about once a minute, or to do the read-only part in the meantime. **Unattended**, retry the same way for up to ~10 minutes; then stop, write nothing, and say in the run's report that the vault was busy, and with what.
 4. **`LOST …`:** another session took it at the same moment. Treat it as held.
 5. **`UNREADABLE`** (from any command): the file is empty or half-written — often a sync still arriving. Wait a few seconds and run the same command again; never create the file over it.
@@ -63,7 +63,7 @@ A lease more than 60 seconds past its `expires:` is stale: its holder stopped sh
 
 Then deal with what the old holder left:
 
-- **An ingest of everything pending, or a maintain run,** finishes an interrupted ingest before its own work: an item still in `raw/inbox/` that a source page already points at (wiki-ingest-pending, *Before you start*, step 4). The old progress lines say where it stopped.
+- **An ingest of everything pending, or a maintain run,** finishes an interrupted ingest before its own work: any item still in `raw/inbox/` that a source page already points at — a whole pass's worth, where one was interrupted (wiki-ingest-pending, *Before you start*, step 4). The old progress lines say where it stopped.
 - **Any other operation** — an ingest of named items included — names the interrupted work in its report and leaves it: the next ingest finds it the same way, and a half-edited page is for the next lint.
 - **An interrupted grouping move** — a `_meta/moves/` record newer than the last `schema` log entry — resumes only with the person present (`grouping.md`, *Moving files*).
 

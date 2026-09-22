@@ -17,6 +17,8 @@ Sources are the ground truth of an LLM wiki. Everything in `wiki/` is regenerabl
 
 ## Capture by source type
 
+Say each file as it lands, `+ raw/inbox/<name>` (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/batch-ingest.md`, *Showing progress*), whether one item or a batch.
+
 Full handling notes per type are in `references/source-types.md` — read it when the source isn't a plain web page or PDF. The short version:
 
 | Source | What to do |
@@ -81,7 +83,7 @@ The sidecar is provenance only — what it is, where it came from, how complete 
 When several items arrive at once (a reading list of URLs, a handful of PDFs). **A whole folder** — anything with subfolders, or more than a few dozen files — is imported instead, by `references/folder-import.md`: it keeps where each file came from, gives repeated names unique copies, and says how big the job is before starting.
 
 1. List what you found and what you'd name each one. Confirm before capturing more than three items — when wiki-capture-and-ingest runs this, that one yes covers its ingest too.
-2. Capture them all into `raw/inbox/`, then — run on its own — report a table: title, type, size/length, duplicate?, in scope?
+2. Capture them all into `raw/inbox/`, each said as it lands — `+ raw/inbox/2026-09-20-attention.pdf` (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/batch-ingest.md`, *Showing progress*) — then, run on its own, report a table: title, type, size/length, duplicate?, in scope?
 3. Stop there: everything captured is now pending. (Run by wiki-capture-and-ingest, hand it the items that landed.)
 
 ## Finish

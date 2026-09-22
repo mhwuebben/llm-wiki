@@ -28,7 +28,7 @@ A report can be days old. First skip what is already settled: a finding an earli
 
 ## Step 3 — Apply what was accepted
 
-Take the vault lock, re-read each page right before changing it, apply every accepted finding, then release it and log (Step 4). If the lock is held, say by what and until when, and apply once it frees — the decisions are already made.
+Take the vault lock, re-read each page right before changing it, apply every accepted finding, then release it and log (Step 4). Say each new note as it lands: `+ wiki/notes/<slug>.md` (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/batch-ingest.md`, *Showing progress*). If the lock is held, say by what and until when, and apply once it frees — the decisions are already made.
 
 - **A note** for a bridge, an answered question or a tension: from `_meta/templates/note.md`, in `wiki/notes/` (or wherever schema §3 places notes), tagged `synthesis`. Replace the template's "Asked" line with "Surfaced by a dream pass" and the date of its report; set `created:`, `updated:` and `answered:` to today, the day the note is written. Set `status: developing` — a synthesis is never `solid` on its first day. Every claim carries a link to the page it came from and to the source page that page cites for it; the connecting step itself is marked *(inference)*. Link the note from every page it bridges, so it is found from the topic and not only from the index.
 - **A missing link:** add the wikilink where the first page discusses the second's subject. That is the whole edit to the text; do not rewrite the surrounding sentence.

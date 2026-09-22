@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0 — 2026-09-22
+
+- **Every file that appears or moves is said, as it happens.** `+ wiki/concepts/self-attention.md` when a page, a capture, a note or a report is created, `→ old → new` when a file moves. Past about twenty in one step — an import, a grouping move — the first few and then a count; unattended, they go into the digest or report. Every skill that writes does it — capture, ingest, query, dream, lint, maintain, setup and the grouping moves — for files in the vault only; a staged copy in the session's own workspace gets no line, and a command that already prints its own list, like the folder import, isn't repeated.
+- **Ingesting several sources takes far fewer steps.** The pages a pass touches are read in one command and written back in one, whose script re-reads each page and edits it in place — the same guarantee as before, a fraction of the round trips. The closing check that every named page cites its source runs once per pass instead of once per source, with each gap still named by its source and page, and still before anything leaves `raw/inbox/`. And `index.md` is read once per pass rather than once per source: whether a page exists is answered by the name search plus the pages the run has created, and the index is rebuilt once at the end, as it already was. The schema is still re-read every pass.
+- **wiki-status checks that the setup is still sound.** It compares the project instructions with the plugin's current text and warns if they are out of date — naming what is missing, or a skill they route to that no longer exists — while leaving anything you added alone, unless it plainly countermands a plugin rule. It reports a missing scheduled run as a note, since a task kept on your own computer is invisible to a session, and warns when the log shows the routine hasn't actually run within the cadence your schema sets.
+
 ## 3.0.1 — 2026-09-22
 
 - **Setup no longer asks how involved you want to be.** Nobody can judge that before seeing an ingest, and one answer quietly stopped the scheduled routine from ingesting. A new vault starts with file first, report after; at the end, setup says in one line how to switch to reviewing each source first (the Ingest line in schema §11).
