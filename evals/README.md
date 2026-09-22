@@ -22,9 +22,11 @@ claude plugin eval . --case 'scope-refusal' --scaffold --allow-tools Write Edit
 
 `ingest-propagates` grants a shell, so it only runs where the sandbox backend exists (`bubblewrap` and `socat` on Linux) — without it the harness refuses the run rather than running unconfined.
 
-## Continuous integration
+## When to run them
 
-`github-workflow.yml` here is the GitHub Actions workflow, kept outside `.github/` so that pushing it needs no `workflow` token scope. Copy it to `.github/workflows/evals.yml` in a checkout whose credentials have that scope, and set `ANTHROPIC_API_KEY` as a repository secret. It runs the routing cases on every pull request that touches a skill, and the behaviour cases in a job that installs the sandbox the shell-granting case needs.
+Before a release that touched a skill, and after any change to routing wording — a skill's `description` is what decides whether it fires at all, so the routing cases are the ones that catch a bad edit. The whole routing pass at one run each is about a dollar and a couple of minutes; the behaviour cases cost a few cents each but need `--scaffold`, and the ingest case needs a sandbox backend (`bubblewrap` and `socat` on Linux).
+
+There is no CI workflow here on purpose: this plugin is released by hand, each eval run spends model credits, and a suite that runs on every push would cost more than it catches. Run it when the thing it tests changed.
 
 ## The fixture vault
 
