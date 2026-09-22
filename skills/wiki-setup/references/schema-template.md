@@ -13,6 +13,8 @@ Operating manual for this wiki. Claude reads this file before any capture, inges
 
 ## 1. What this wiki is for
 
+**Vault id:** {{wiki-xxxxxx}} — this vault's name that never changes. The project instructions and every scheduled task point at this, not at the folder's name, so renaming or moving the folder breaks nothing. Never edit it; two vaults carrying the same id are two copies of one vault, which wiki-doctor reports.
+
 **Whose vault this is:** {{name}}. Lint check 13 uses this to tell the owner's own contact details from a third party's; without it that check cannot judge what it finds.
 
 **Languages:** {{the languages the sources are in, e.g. English, German}}. Query searches for a question's terms in each of them.
@@ -205,6 +207,8 @@ Operations logged: `setup`, `capture`, `ingest`, `query`, `lint`, `maintain`, `d
 A claim counts as stale once it is older than **{{freshness window — e.g. 12 months; a quarter for a fast-moving domain, several years for a stable one}}** and a newer source touches the same subject. A claim is as old as the source behind it (its `published:` date), not as old as the page's `updated:`; a source with no date is of unknown age — say so rather than treating it as fresh. Lint check 6 reads this line; without it that check cannot run.
 
 ## 12. Schema history
+
+**Built with:** llm-wiki {{version}}, on {{YYYY-MM-DD}}. Setup writes this and upgrade mode updates it; wiki-doctor compares it with the installed plugin and says what an upgrade would change.
 
 - {{YYYY-MM-DD}} — created at setup.
 ````

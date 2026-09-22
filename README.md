@@ -8,7 +8,7 @@ By **Dr. Markus Wuebben** ([github.com/mhwuebben](https://github.com/mhwuebben) 
 
 ## What's in the plugin
 
-**Twelve skills.** Claude picks them up automatically when the task fits; you can also invoke one by name, or with `/` in Cowork and Claude Code.
+**Thirteen skills.** Claude picks them up automatically when the task fits; you can also invoke one by name, or with `/` in Cowork and Claude Code.
 
 An item you add is **pending** while it sits in `raw/inbox/`, and **ingested** once it has moved out of the inbox and a source page points at it.
 
@@ -30,7 +30,8 @@ Using and looking after the wiki:
 | `wiki-dream` | Consolidation, in one sitting: runs `wiki-dream-only`, then `wiki-dream-ingest` on the report it just wrote. | When you want new connections and are there to decide. Manual. |
 | `wiki-dream-only` | Reads across what's already filed for connections no page states yet — bridges between subjects, questions the vault can now answer, sources that agree independently, pages that should link — and writes each as a cited, inference-marked proposal to a report. Applies nothing; adds nothing from outside the vault. Each pass leaves a short register of open hypotheses in the log — a loop seen twice, a connection one line short — which the next pass tests first. | After about ten new sources, which is what makes a pass worth running; the digest says when it's due. **Scheduled**, or manual. |
 | `wiki-dream-ingest` | Works through a dream report with you: re-checks each finding against the wiki as it is now, puts it to you, files what you accept as notes, links and citations, and remembers what you rejected. | After a dream pass — the digest, the task's notification and `wiki-status` say a report is waiting. Manual; it needs you. |
-| `wiki-status` | Where the wiki stands: size, what's pending, what's running, imported folders, what changed, what it still doesn't know — plus what is waiting for your decision, and a warning if the project instructions are out of date or the scheduled run isn't running. Read-only. | Any time. Manual. |
+| `wiki-status` | Where the wiki stands: size, what's pending, what's running, imported folders, what changed, what it still doesn't know — plus what is waiting for your decision. Read-only. | Any time. Manual. |
+| `wiki-doctor` | Whether the machinery is sound: the vault's structure and scripts, the schema against the plugin version that built it, the project instructions, the scheduled tasks and their prompts, whether the folder is attached to them, and whether the routines have actually run. Reports problems with the text to paste for each fix. Read-only. | After a plugin update, when a scheduled run stops happening, when something is off. Manual. |
 | `wiki-gaps` | What's missing and what to go and read. Read-only. | When deciding what to read next. Manual. |
 | `wiki-setup` | Builds the vault: `raw/`, `wiki/`, `_meta/schema.md`, index, overview, log, templates. Interviews you first so the schema fits your domain, and hands you the project instructions to paste into your project, together with the scheduled-task prompt. Later, upgrades an existing vault after a plugin update. | Once per vault; again after an update. Manual. |
 

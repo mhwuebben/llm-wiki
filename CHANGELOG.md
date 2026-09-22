@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.3.0 — 2026-09-22
+
+- **A new skill: wiki-doctor.** Everything a wiki needs in order to run sits outside the wiki — a schema the installed plugin understands, two small scripts, project instructions that route, scheduled tasks whose prompts still point somewhere real and have the folder attached — and all of it fails quietly. wiki-doctor checks exactly that, in seven groups, and reports each problem with the text to paste or the skill to run, saying plainly which fixes only you can do (attaching a folder to a task, creating one). It writes nothing, and it says what it could not check rather than calling it sound — a scheduled session usually cannot read project instructions or list tasks.
+- **The vault has an id.** Setup mints `wiki-` plus six characters into schema §1, and the project instructions and the task prompts point at that instead of a folder name. Rename the folder, move it, connect several wikis to one project: the id still finds it, and a stale name is a line to tidy rather than a run that fails. Two folders carrying the same id are two copies of one vault — the one thing the vault lock cannot protect you from — and wiki-doctor reports it.
+- **The schema records the plugin version that built it** (§12), so a vault can say it is two releases behind instead of behaving oddly. Upgrade mode updates it.
+- **wiki-status went back to being about the wiki.** The project-instruction and scheduled-run checks moved to wiki-doctor; status keeps one line saying something about the setup looked wrong and pointing there. It was drifting into a diagnostic suite inside a report specified to fit in fifteen lines.
+
 ## 3.2.0 — 2026-09-22
 
 - **Dreaming now remembers what it noticed.** A pass that sees a loop for the second time, or a connection one quotable line short, leaves a `watch:` or `near:` line in the log saying what would settle it — a small register of open hypotheses the next pass checks first, before anything else. It is why a page is never "done": it comes back when a hypothesis or new material calls for it, not on a rota, and the pass no longer pays to rediscover what the last one already worked out. wiki-dream-ingest closes an entry once a decision settles it.

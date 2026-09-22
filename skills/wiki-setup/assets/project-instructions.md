@@ -2,18 +2,18 @@
 
 Two blocks to hand over, together. The first goes in the **project instructions** field of the Claude project that owns this vault: it is what makes every future session route correctly without being told — the difference between a wiki that compounds and a folder Claude occasionally writes to. The second is the prompt of the scheduled task that keeps the wiki up to date (*The scheduled task*, below).
 
-Replace `{{VAULT FOLDER}}` with the folder's actual name — the folder as it is named on disk, since a session resolves it literally. **Renaming or moving the vault later costs three things, and nothing inside the vault:** this line in the project instructions, the name in each scheduled task's prompt, and the folder attachment in the desktop app. Every path inside the vault is relative, so the wiki itself survives a rename untouched; wiki-status reports the mismatch when it can read the instructions or the tasks. Change nothing else: the routing rules are load-bearing, the first paragraph is what stops a session editing `raw/` or writing an uncited claim, and the scope rule is what stops it filing things that were never wiki material.
+Replace `{{VAULT ID}}` with the id in the vault's schema §1, and `{{VAULT FOLDER}}` with the folder's current name. **Renaming or moving the vault costs nothing that matters:** the id keeps pointing at it, every path inside the vault is relative, and a session finds it by the schema file. Only the folder name in this text and in the task prompts goes stale — wiki-doctor reports it and hands over the corrected lines. What does need doing after a move is re-attaching the folder in the desktop app, and to any scheduled task. Change nothing else: the routing rules are load-bearing, the first paragraph is what stops a session editing `raw/` or writing an uncited claim, and the scope rule is what stops it filing things that were never wiki material.
 
 ---
 
 ```
-This project maintains an LLM wiki at local folder "{{VAULT FOLDER}}". Read _meta/schema.md before any wiki work. raw/ is immutable — read and cite it, never edit, rename or delete it. Every factual claim on a wiki page carries a link to the source page it came from; synthesis that isn't in any source is marked as inference. Never silently overwrite what an earlier source said — record the contradiction on both pages.
+This project maintains an LLM wiki: the connected folder whose _meta/schema.md carries the vault id {{VAULT ID}} (it was the folder "{{VAULT FOLDER}}" when this was written — the id, not that name, is what identifies it, so renaming or moving the folder changes nothing here). Read _meta/schema.md before any wiki work. raw/ is immutable — read and cite it, never edit, rename or delete it. Every factual claim on a wiki page carries a link to the source page it came from; synthesis that isn't in any source is marked as inference. Never silently overwrite what an earlier source said — record the contradiction on both pages.
 
 Route every message before doing anything else, and load the llm-wiki skills rather than working from a remembered version of them:
 
 - A question — about a topic, about what my notes say, about anything I might already know — goes to the wiki-query skill first. Answer from the wiki, cite the pages, and say plainly what the wiki doesn't cover before reaching for the web or general knowledge.
 
-- A question or request about the wiki itself goes to its own skill: how it is doing → wiki-status; what it is missing or what to read next → wiki-gaps; duplicates, contradictions or broken links → wiki-lint; bringing it up to date or running the routine → wiki-maintain; upgrading it after a plugin update → wiki-setup.
+- A question or request about the wiki itself goes to its own skill: how it is doing → wiki-status; whether it is set up properly, or something isn't working — a scheduled run that didn't happen, after a plugin update → wiki-doctor; what it is missing or what to read next → wiki-gaps; duplicates, contradictions or broken links → wiki-lint; bringing it up to date or running the routine → wiki-maintain; upgrading its schema after a plugin update → wiki-setup.
 
 - A note, a file, a screenshot, a pasted text or a link goes to the wiki-capture-and-ingest skill — unless I say to only save, park or clip it for later, which goes to wiki-capture-only. For a link, fetch the contents — a URL is not a source until its text is in raw/. Capture and ingest in the same pass; never leave it pending in raw/inbox unless I asked for that.
 
@@ -45,10 +45,10 @@ Setting it on the *project* rather than in a single chat is the point: a session
 
 ## The scheduled task
 
-In Cowork, a scheduled task on the project, weekly for an active vault or monthly for a quiet one, with this prompt — `{{VAULT FOLDER}}` replaced as above:
+In Cowork, a scheduled task on the project, weekly for an active vault or monthly for a quiet one, with this prompt — `{{VAULT ID}}` and `{{VAULT FOLDER}}` replaced as above:
 
 ```
-Run the wiki-maintain skill on the LLM wiki in the folder connected to this task — the one holding _meta/schema.md. It was called "{{VAULT FOLDER}}" when this task was set up, but the folder, not that name, is what identifies it: if the name has changed and exactly one connected folder holds a _meta/schema.md, that is the vault — use it and say so in the digest. This is an unattended scheduled run: don't wait for answers; put anything that needs a decision in the digest.
+Run the wiki-maintain skill on the LLM wiki in the folder connected to this task: the one whose _meta/schema.md carries the vault id {{VAULT ID}} (the folder was called "{{VAULT FOLDER}}" when this task was set up; the id, not the name, identifies it). If no connected folder carries that id but exactly one holds a _meta/schema.md, use it and say so in the digest. This is an unattended scheduled run: don't wait for answers; put anything that needs a decision in the digest.
 ```
 
 Set the task to approve automatically — otherwise a scheduled run stops at its first file write — and to run on the computer that holds the folder, **with the vault folder attached to the task itself** and every imported folder connected. The attachment is what makes the run work; the name in the prompt is only a hint, so that renaming the vault costs a line in the prompt rather than a failed run. A scheduled session with no folder attached can do nothing at all: it cannot even ask, since granting access needs someone at the computer. Update the Maintain line in schema §11 to the cadence chosen.
@@ -56,7 +56,7 @@ Set the task to approve automatically — otherwise a scheduled run stops at its
 Later, once the vault has ten or so sources, a monthly dream pass can be scheduled the same way. It writes a report and applies nothing; the person works through it with wiki-dream-ingest:
 
 ```
-Run the wiki-dream-only skill on the LLM wiki in the folder connected to this task — the one holding _meta/schema.md; it was called "{{VAULT FOLDER}}" when this task was set up. This is an unattended scheduled run: write the report and apply nothing.
+Run the wiki-dream-only skill on the LLM wiki in the folder connected to this task: the one whose _meta/schema.md carries the vault id {{VAULT ID}} (the folder was called "{{VAULT FOLDER}}" when this task was set up). This is an unattended scheduled run: write the report and apply nothing.
 ```
 
 ## Why each rule is there
