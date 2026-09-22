@@ -20,14 +20,14 @@ Past about four parts, say which you consulted and stop there rather than readin
 
 - An answer may draw on every part it consulted.
 - A **note, a line, a callout or any other write goes into exactly one part** — the one that owns the question.
-- A claim taken from another part is quoted with its provenance, never linked: `— credbl brain (wiki-7f3a2c), kpi-driver-tree-v4`. That format is what a later reader follows by hand, and it is what tells lint the citation is deliberately foreign rather than broken.
+- A claim taken from another part is quoted with its provenance, never linked: `— research brain (wiki-7f3a2c), transformer-scaling`. That format is what a later reader follows by hand, and it is what tells lint the citation is deliberately foreign rather than broken.
 - A contradiction between two parts is **reported**, never filed as a callout on both: neither part owns it, and writing it into both would mean each holds a claim it cannot check. Say it in the answer, and offer to file the resolution as a note in one part — *Where a cross-part answer is filed*, below.
 - **One log entry, in the part that was written to** — or, where nothing was filed, in the part that owns the question. A cross-part answer never leaves an entry in every part it read, and a `- checked:` line for a gap says which parts' inboxes were searched, since `sh _meta/wiki-search.sh pending` runs inside one vault at a time.
 - Anything filed into part A must pass **A's** scope test (§1), whatever part it came from. Parts are often separated precisely because their scope rules differ; that is the boundary this protects.
 
 ## Routing a question
 
-1. **A named scope wins, exactly.** One part, several named parts, or all of them. Use what was named and nothing else. Then say what was left out at name level — a search of page *names* in the excluded parts is allowed and is all that is allowed, since it reads no content: *"asked the credbl brain only; the personal brain has three pages whose names match — say the word and I'll ask it too."* A scope is honoured completely, including when the answer is thin.
+1. **A named scope wins, exactly.** One part, several named parts, or all of them. Use what was named and nothing else. Then say what was left out at name level — a search of page *names* in the excluded parts is allowed and is all that is allowed, since it reads no content: *"asked the research brain only; the personal brain has three pages whose names match — say the word and I'll ask it too."* A scope is honoured completely, including when the answer is thin.
 2. **No scope: route by declared domain.** Each §1 says what its vault is for. A part whose domain covers the question is consulted; one that merely mentions the topic is not. Cheap tie-breakers in order: the index one-liners, then a name search.
 3. **Ask only when it changes the answer** — two parts both plausibly own the question and would answer differently. Otherwise consult the ones that fit and say which.
 4. **Always say which parts you consulted and which you skipped**, in one clause. An answer that quietly used one of three brains is the failure this rule exists to stop.
@@ -70,7 +70,7 @@ When it stays a real disagreement, say so, say what would settle it, and leave b
 
 In the answer, each claim carries the part it came from once — not on every line, but wherever the reader would otherwise assume one brain:
 
-> Adoption stalled at 12% in 2026 — credbl brain (wiki-7f3a2c), globex-q3. Your personal notes put the same number at 18% for enterprises only — personal brain (wiki-91be04), market-sizing — which is a different population, not a conflict.
+> Adoption stalled at 12% in 2026 — market brain (wiki-7f3a2c), globex-q3. Your personal notes put the same number at 18% for enterprises only — personal brain (wiki-91be04), market-sizing — which is a different population, not a conflict.
 
 A note filed afterwards keeps the same shape: local claims as `[[links]]`, foreign claims as quoted text with the part's name and vault id. Say in the note's body that it draws on another part, so a reader who opens the vault alone knows why a citation doesn't resolve.
 

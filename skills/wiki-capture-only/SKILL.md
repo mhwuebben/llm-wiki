@@ -15,7 +15,7 @@ This skill works on **one vault**. With several connected — each a part of one
 
 - **A part the person named** wins, always.
 - **A file from an imported folder** goes to the part that holds its import record, permanently: an imported folder belongs to one part, and a copy landing anywhere else would be a second, unconnected source.
-- **Otherwise ask, once, with a recommendation** — the parts' §1 lines are the choices, and the recommendation says why ("this looks like credbl material: it's a spec from the docs folder you imported there"). Unattended, don't guess: leave the item where it came from and say which parts it could belong to.
+- **Otherwise ask, once, with a recommendation** — the parts' §1 lines are the choices, and the recommendation says why ("this looks like material for the one you imported that docs folder into"). Unattended, don't guess: leave the item where it came from and say which parts it could belong to.
 - **The same document in two parts** is allowed when the person asks for it, and only then. Both copies carry a provenance line `same-as: <the other part's vault id> · <the file's name there> · <fingerprint>` — the fingerprint being the first 16 characters of the file's SHA-256, the same one an import record uses (`references/folder-import.md`), computed with `shasum -a 256 <file> | cut -c1-16` or its equivalent, and omitted where no shell can compute it, so that nothing downstream mistakes one document for two independent sources — which would turn a single claim into false corroboration (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-dream-only/references/connection-types.md`, *Convergence*). Say plainly that it will be maintained twice.
 
 ## First, always

@@ -47,13 +47,13 @@ Then, from the log, **whether the runs actually happen**: the last `maintain | d
 Under twenty lines. Problems first, each with its fix; then one line saying what was checked and found sound; then what was skipped and why.
 
 ```
-**Vault:** credblaiBrain · id wiki-7f3a2c · schema built with 3.1.0 · plugin 3.6.0
+**Vault:** researchBrain · id wiki-7f3a2c · schema built with an older version · plugin as installed
 **Parts also connected:** personalBrain (wiki-91be04) — "my own notes and reading"; checked for id collisions only
 
 **Problems**
-1. The weekly maintain task has no folder attached — every run since 2026-08-30 did nothing. Attach credblaiBrain to the task in the Claude desktop app; nobody else can do this.
-2. Its prompt still names "EOBrain". Replace it with: <the corrected prompt, in a block>
-3. The schema is two versions behind. 3.2.0 added the version-history section and the log's checked: line. Run wiki-setup in upgrade mode; it proposes each line and changes nothing you don't approve.
+1. The weekly maintain task has no folder attached — every run since 2026-08-30 did nothing. Attach that folder to the task in the Claude desktop app; nobody else can do this.
+2. Its prompt still names the folder as it was called before it was renamed. Replace it with: <the corrected prompt, in a block>
+3. The schema is two versions behind: name what those releases changed for an existing vault. Run wiki-setup in upgrade mode; it proposes each line and changes nothing you don't approve.
 
 **Sound:** vault structure · both scripts run · lock free · project instructions current · 2 imported folders reachable · 1 debug file, 3 findings, unread
 **Not checked:** nothing
