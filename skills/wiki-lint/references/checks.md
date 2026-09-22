@@ -1,0 +1,198 @@
+# The checks
+
+Run in this order — later checks depend on the results of earlier ones. For each finding record: what, where, severity (high / medium / low), and the proposed fix.
+
+**Scope:** checks 1–10 run over `wiki/` plus `index.md`, `overview.md` and — where the vault has one — `patterns.md`. Pages may sit in subfolders of their type folder (schema §3, **Grouped by**) or wherever the owner moved them: every check lists pages at any depth and looks a page up by its name, as `${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md` resolves it — never by assuming a folder. Check 1 also tests that embedded files exist in `raw/assets/` or `outputs/`. Check 7's support sample reads the markdown in `raw/` — and, capped, a binary in `raw/assets/` — read-only, to test whether a cited source says what the page claims; its fixes act on wiki pages only. Check 11 reads `raw/`, `raw/inbox/` and `raw/assets/`, which is its whole point; check 12 also reads the markdown in `raw/`, for what the sources say that no page has picked up, and the `- gap:` lines of `query` entries in `_meta/log.md`. Check 13 reads the source pages against the schema's scope list and greps `wiki/`, `index.md`, `overview.md` and `patterns.md`; it never reads `raw/`, because a finding there would have no legal fix.
+
+**The vault's schema wins.** Where this file and the vault's `_meta/schema.md` disagree about a convention — a contradiction rule, a page-length limit, a field the owner renamed — lint against the schema, and report the difference once, as a suggested schema update, not as a finding on every page. Three things apply whatever the schema says: check 13's built-in scope list; the reserved `synthesis` tag in check 9; and the split of checks 1, 8 and 9 into mechanical fixes and proposals — an unattended run applies only the mechanical parts, and no check ever moves a file unattended.
+
+**Never linted, anywhere:**
+
+- `outputs/` — disposable by design; scanning it turns every report and digest into a false orphan. (One check looks at *names* vault-wide, outputs included, without linting the files: check 1's duplicate-name search. Check 3 also reads `_meta/` for sync conflict copies.)
+- `_meta/templates/` — the page templates contain `[[{{placeholder}}]]` links on purpose, to show the syntax. Collecting them reports the vault's own scaffolding as broken on every pass, and it is the largest finding in a new vault's first lint if you let it.
+- Dotfiles anywhere — `.gitkeep`, `.DS_Store`, `.obsidian/`. Setup creates `.gitkeep` files deliberately so empty folders survive a sync; counting them makes every new vault start with permanent orphan and stray-asset findings.
+- A folder's own `README.md` inside `raw/`, `raw/inbox/`, `raw/assets/` or `outputs/` — a note explaining the folder, not a source. The same reasoning as `.gitkeep`: counted, `raw/inbox/README.md` is a permanent *pending* finding.
+
+---
+
+## 1. Broken links and duplicate names
+
+**Find:** collect every link in the linted scope above — `wiki/`, `index.md`, `overview.md`, `patterns.md`, and nothing else: every `[[target]]`, and every relative markdown link to a `.md` file (`[text](../concepts/target.md)`), which people write in editors other than Obsidian. Resolve each by name against the page set, exactly as `${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md` does — at any depth, without regard to case. Unresolved targets are broken. A target that resolves to a page outside `wiki/` is not broken — the owner moved it there. Report it once and log it on the lint entry as `- outside: <path>`, so later passes don't report it again while it stays there; never repoint it. A target that resolves only through its file-name form (`[[Acme Corp]]` → `acme-corp`) or through another page's `aliases:` is not broken for Claude, but is for Obsidian: repoint it to the page's name, keeping the wording as a label — `[[acme-corp|Acme Corp]]`. Read `[[target\|text]]` — the escaped form a table needs — as a link to `target`. Skip anything inside inline code or a fenced code block: a `[[name]]` written as an example is not a link, in Obsidian or here.
+
+**Exclude embeds.** `![[file.png]]`, `![[file.pdf]]` and any `![[...]]` with a file extension is an attachment embed, not a page link — it resolves against `raw/assets/`, or against `outputs/` for a chart made from the wiki, not against `wiki/`. Check them by testing that the file exists in one of those two folders; a missing one is a broken embed (report under check 11 as a *broken embed*), and a present one is not a finding at all. Collecting embeds into the page-link set reports every illustrated page as broken.
+
+**But distinguish two kinds:**
+
+- *Typos and renames* — a target that nearly matches an existing page. Fix the link — and, if it's a rename, also add the old name to the survivor's `aliases:` so future ingests find it, and if the renamed page is a hub schema §3c names, propose repointing that link too (`_meta/` is outside this check's scope, so look on purpose). An alias does not make a bare `[[old-name]]` resolve in Obsidian; every inbound link still needs fixing. **High severity.**
+- *Deliberate forward links* — a target nobody has written yet, placed to mark something worth creating. Not a bug, and **not check 1's to fix**: count the inbound links, hand the target to check 4, and move on. Promotion is a page-creation decision, and page creation is never a mechanical fix.
+
+Also flag, at low severity: links to a page from itself — a source page is its own citation and needs no link to itself — and duplicate links to the same page within one paragraph.
+
+The fixes above — a typo or rename corrected, a link repointed from an alias or a file-name form to the page's own name — are **check 1's mechanical part**, the part wiki-maintain may apply unattended. Everything below is **propose, never apply unattended**:
+
+- **Duplicate name** — high severity. A page (anything in `wiki/`, or a frame page at the root) shares its name, compared without regard to case, with another `.md` file anywhere in the vault, dotfolders, folder `README.md` files and `_meta/templates/` excepted. Links to that name are ambiguous: Obsidian may pick either file, and when both are in Claude's page set Claude follows neither. Find candidates with `find . -name '*.md' -not -path '*/.*' -not -path './_meta/templates/*' -not -name README.md | sed 's#.*/##' | tr A-Z a-z | sort | uniq -d`, then keep the names a page carries. Fix: rename the wiki page — a qualifier per schema §4, the old name added to its `aliases:`, every link repointed — never a file in `raw/`; if the other file is in `outputs/`, rename that one instead. An empty `raw/inbox/<name>.md`, left by someone clicking a link to a page that didn't exist yet, is listed for the person to delete. A non-empty file waiting in the inbox keeps its name when it is ingested, so the choice is the same — rename the wiki page, or the owner renames their own note before ingest.
+- **Non-standard link forms** — low severity: `[[ name ]]`, `[[folder/name]]`, `[[name.md]]`. Propose the plain `[[name]]` when the name is unique; when it isn't, the path may be what tells two files apart — report it as a duplicate name instead. Where most links in a vault carry paths (Obsidian's *New link format* set to a path), make one suggestion about the setting rather than one finding per link.
+- **Broken relative markdown links** — a `[text](path.md)` whose path no longer leads to a file, usually because the page moved. Propose repointing it, or replacing it with `[[name]]`, which survives moves.
+
+## 2. Orphan pages
+
+**Find:** pages with no inbound `[[links]]` from any other page. Ignore `index.md`, `overview.md`, `patterns.md` and `README.md` as candidates — the vault's own frame. Relative markdown links count like wikilinks. When counting inbound links, links from `index.md` don't count — every page has one, which is what makes an orphan invisible — and links in frontmatter don't either; links in the body of any other page, `overview.md` and `patterns.md` included, do.
+
+**Why it matters:** an orphan is only reachable through the index. In a graph view it floats alone, and in practice it never gets read again.
+
+**Fix:** find where it belongs and link it from there — usually a concept page, its source page, or `overview.md`. If nothing plausibly links to it, ask why the page exists; it may be a candidate for merging into something bigger.
+
+## 3. Duplicate pages
+
+**Find:** compare titles and aliases for near-matches (singular/plural, hyphenation, acronym vs expansion, synonym). Then compare one-line summaries across the index for pages that say nearly the same thing. Then look for pairs of pages citing the same sources with the same claims.
+
+**Severity: high.** Duplicates split the knowledge in two and neither half ever becomes good.
+
+**Fix:** merge into the better name — usually the one with more inbound links and better content. Fold in the content with its citations, point the inbound links at the survivor, add the retired name to `aliases:`, and log the merge. The survivor stays where it is; if the merge changes its `subject:`, placement follows as check 9 proposes. When both are source pages, the survivor also takes over the other's files: the newest capture of all becomes the survivor's `raw:`, every other capture goes on its `raw_previous:` (newest first), and the other page's `asset:` entries join the survivor's `asset:` — otherwise check 11 reports them as orphaned on every pass. Don't leave an empty redirect stub.
+
+**Sync conflict copies** are duplicates too, and a sync service makes them whenever two devices touch one file: `name 2.md`, `name (conflicted copy …).md`, `name.sync-conflict-….md`. High severity. In the page set and `_meta/`, compare the copy with the original and propose merging any differences onto the original's name, then deleting the copy — for `_meta/log.md` interleave the dated entries, for `index.md` rebuild it. A conflict copy is never counted as a page. In `raw/` it is only reported (check 11 lists it): `raw/` is immutable, and a name like `Meeting 2.md` may be real.
+
+## 4. Missing pages
+
+**Find:** terms that appear across three or more pages, or are linked from two or more pages (not counting `index.md`), but have no page of their own. When run as a slice without check 1's results, collect the forward links yourself. Also every entity type the schema says should always have a page (competitors, characters, decisions) that doesn't, and a hub schema §3c names that no page answers to — allowed, since a hub may not be written yet, so it is a missing page like any other; if it was renamed, propose repointing the §3c link instead.
+
+**Fix:** create the page from the material already scattered across the wiki — the sentences that mention it, with their existing citations — mark it `status: stub`, and place it by schema §3 (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/grouping.md`, *Placement*). Then link it from where those mentions live. Don't invent content to fill it out; a short honest page plus a note in the gaps section is correct.
+
+**Unless no source defines it.** A term can clear the bar and still be unwritable: named on five pages, explained on none. Creating that page means inventing the definition, which is the one thing this pattern exists to prevent. Record it once as a **source gap** — name the source that would unblock it, keep it under `## What to read next` in `overview.md` — and **stop proposing it as a fix on every subsequent pass**. Check 12 picks it up from there.
+
+Page creation always needs approval. It is never in the mechanical set.
+
+## 5. Contradictions
+
+**Find:** two passes.
+
+- *Flagged*: search for existing contradiction callouts — `[!warning] Contradiction` by default, or whatever callout the schema uses for a disagreement. Are they still unresolved? Has a newer source settled them?
+- *Unflagged*: compare claims about the same fact across pages — numbers that differ, dates that don't line up, a mechanism described two ways, an entity characterised differently on two pages.
+
+**Fix:** flag properly with the schema's callout on both pages involved, as schema §7 says (one page, when the disagreement is inside a single source), attempt a resolution (different definitions? populations? dates? or a real disagreement?), and add each to `## Contradictions in play` in `overview.md`, as schema §7 asks. A resolved one: the callout moves to `## History` with the resolution and a source link — never deleted, per schema §10 — and its overview line goes.
+
+## 6. Stale claims
+
+**Find:**
+
+- **Stale:** a claim older than the freshness window in schema §11b that a newer source touches. This is the only finding this check calls stale.
+- **Propagation gaps:** pages whose `updated:` predates a newer source (by ingest date) that covers the same topic — the newer ingest probably didn't propagate fully. Report these under their own name, whatever their age. For a note — a dated answer that ingest deliberately doesn't rewrite — the test is exact. Take its `answered:` date: the note carries a contradiction callout citing a source page created after that day, or such a newer source page links to pages the note links to (frame pages aside) and the note doesn't cite it yet — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/retrieval.md` ranks them. Report the note with its strongest few, not every source that shares one hub page with it. Never use the note's `updated:`, which other edits bump. The fix for a note is to offer to refresh it (wiki-query, *File the answer back*), not to edit it here. For the pages a source names under `## Entities and concepts` — its list of what it adds to each page, or whichever section the vault's source template uses for that — the test is exact and needs no dates. It applies to entity and concept pages and to pages of any other type schema §3 adds beyond source, note and the frame pages (people, competitors, decisions…); call these the *named pages*. Run the backlink search in `${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/retrieval.md` for the source page, with its name and aliases as `SLUG`. A named page missing from the result has a gap, and so does one that appears only through a link in its frontmatter or in code: neither carries a claim. The *Does this page cite that source?* test in the same file settles it for each page the search returned. Leave out other source pages (they belong under the source's `## How it sits with the rest of the wiki`, not this list), notes (ingest doesn't rewrite them), pages outside `wiki/` (they are the owner's) and names that don't resolve (check 4's). The fix is ingest's Step 4 for that page — the claim, with its source link; the source's own line under `## Entities and concepts` already says what it adds, so start from it — or, if the source says nothing substantive about it, taking the page off the source page's list. Both are proposals. **Report these by page, not by pair:** one finding per page that lacks the citations, naming the sources that name it without being cited, the page with the most first. A page with many — usually a hub, or the pages a large batch touched — is fixed in one pass over that page, not one proposal per source. A source page without the section can't be tested this way; check 10 lists it. Ingest runs this same test before it writes its log entry (*Close the list* in `${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/propagation.md`), so a new finding usually points at an edit made since, or at an ingest that was interrupted. **The reverse direction too:** a named page whose body cites a source page that doesn't name it under `## Entities and concepts` — propose adding a line to that source's list, saying what the source adds there (the citing line on the page is the starting point), with the same exclusions. Report these by source, one finding each, naming the pages to add; both directions are proposals, never mechanical. A declined addition is logged `- kept: <source path> (list: [[page]])` and not raised again while both pages are unchanged.
+- **Time-sensitive wording:** "currently", "as of", "the latest", "recently", "the newest source", "upcoming", plus any claim about prices, headcounts, versions, leadership or roadmaps. Propose a date in place of the relative word.
+
+**Fix:** re-check against the newest source that covers it. If the wiki can settle it, rewrite and move the old claim to `## History`. If not, mark it and add "verify X" to the gaps section — don't guess.
+
+## 7. Uncited and unsupported claims
+
+**Find — uncited:** factual sentences and bullets on non-source pages with no source link and no inference marker. A source link is a link to a source page (`type: source`), inline or in a block-level attribution that plainly covers the line ("All rows — [[source]]"). A link to a concept or entity page is not a citation, and frontmatter `sources:` alone does not cite a line. The carried form answers and notes use — `— [[page]], citing [[source]]` — does cite: it carries the source link. Also flag a line whose cited source does not say it, when you notice one; the support sample below looks for these on purpose.
+
+**Find — the support sample.** A citation says where a claim came from, not that the source says it. Source pages are summaries, and a claim can outlive the line that backed it. So each pass tests a small sample:
+
+- **Which pages.** Five named pages per pass — up to ten when the person asks for a deeper pass. Never-sampled pages first, and among those the ones with the most source pages in `sources:`; then the pages sampled longest ago. The lint log entry records each sample as `- support-checked: [[page]] (3), …`, the number being how many claims were tested. To list earlier samples with their dates:
+  ```bash
+  awk '/^## \[/ { d = substr($0, 5, 10) } /^- support-checked:/ { print d ": " $0 }' _meta/log.md
+  ```
+  A page sampled before gets only claims citing sources created after the day of its last sample — dates are days, so compare strictly; if there are none, it waits.
+- **Which claims.** Three per page, the checkable ones: a figure, a date, a quotation, a named decision, an absolute ("never", "only", "all"). A claim that cites a concept or entity page instead of a source is an uncited claim, above — not a sample.
+- **The test.** Open the cited source page and find the claim's substance there. For an exact figure or quotation, also search the source's `raw:` markdown — tolerantly: the digits with `[.,]` between them, the spacing and units varied, or a distinctive two- or three-word phrase — and read the passage before calling anything missing, since formatting and line wraps defeat an exact search. For a source in another language, compare meaning, not wording. A binary's sidecar holds no text: open the binary itself only for an exact figure or quotation, at most about three per pass; otherwise record "raw not checked (binary)".
+- **Outcomes, per claim:**
+  - *supported* — the source page carries it. The exact figure may be only in `raw/`; say so, it is still supported.
+  - *only in raw* — the source page dropped it: propose adding the line to the source page, from the raw file. Never carry over what capture or check 13 keeps out of `wiki/` — credentials, a third party's contact details, anything a redaction line says was removed, a retired source's content; report those under check 13 instead.
+  - *not in the source* — propose re-citing the claim to the source that does say it (search for one), marking it as inference, or moving it to `## History` with a note in the gaps section.
+  - *contradicted by its own source* — a correction to the claim, with the old wording moved to `## History`; not a check 5 pair.
+  - *source page not backed by raw* — the source page states it, but the raw passage, once read, doesn't: propose correcting the source page.
+
+**Fix:** uncited → trace it. If you find the source, cite it. If it came from an earlier session's general knowledge, either mark it as inference or remove it and note the gap. This check is worth running hard: the wiki's whole claim to trustworthiness is that everything traces back to `raw/`. Support sample → the proposal each outcome names, every one on approval; none of it is mechanical, and an unattended run only reports it. Report the sample as one grouped block: per page, the claims tested and the count per outcome, then each claim that wasn't supported, with the evidence.
+
+## 8. Index drift
+
+**Find:** every page missing a row (`index.md`, `overview.md` and `patterns.md` are the frame, and need none); every row pointing at a page that no longer exists — but before dropping a row, look the name up in the page set (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md`): a page found outside `wiki/` (the owner moved it) keeps its row and is reported, as check 1 does; summaries that no longer match the page's opening line; stale `updated:` and source counts — a row's count is the number of source pages in that page's `sources:`; categories that have drifted from the schema's page types; and, for a type schema §3 groups, rows not under the subheading of the folder the file is in now — each subheading names its folder (`### 2017 — wiki/sources/2017/`), ungrouped rows first. Group by where the file actually is, never by what its frontmatter says: the index tells a reader without Obsidian where to look, and a mismatch between the two is check 9's to propose. A `## Wanted pages` section listing forward links is allowed: schema §6 welcomes forward links, and such a section lists them.
+
+**Fix:** rebuild the affected sections from the pages themselves. The pages are the truth; the index is a derived artifact. This is check 8's mechanical part, all of it — check 8 edits `index.md` and nothing else.
+
+## 9. Frontmatter hygiene and placement
+
+**Find — mechanical** (apply in bulk on one approval; the only part of this check wiki-maintain applies unattended):
+
+- `answered:` missing on a note — set it to the note's `created:` date
+- missing or malformed `type`, `title`, `created`, `updated`, `status` on any page — the frame pages (`index.md`, `overview.md`, `patterns.md`) need only `type`, `title` and `updated`
+- `sources:` missing on an entity, concept or note page. Source pages carry `raw:` instead, plus `asset:` — a list — whenever the source owns anything in `raw/assets/`; `index.md` and `overview.md` carry neither
+- unquoted wikilinks in YAML — they break Dataview and can break parsers
+- `updated:` older than the page's actual last edit — the evidence is a dated `## History` entry, a log entry naming the page, or a link to a page created later. Never bump `answered:` on a note for this: only refreshing the answer changes it
+- `expires:` present but not a date
+- `published:` present but not a date (`unknown`, empty) — remove it: a source with no known date carries no `published:`, and a placeholder only looks like data
+
+**Find — propose, never apply unattended:**
+
+- `raw:`, `raw_previous:` or `asset:` pointing into `raw/inbox/` — an interrupted ingest. Don't just edit the pointer: finish the ingest (see check 11's *ghost*)
+- near-duplicate tags (singular and plural, hyphenation, a compound and its parts) and, where the schema defines a tag vocabulary, tags outside it. Merging tags picks a winner, which is a judgement. `synthesis`, the tag wiki-dream-ingest puts on the dream findings it files, is always legitimate
+- `status: stub` on a page that's clearly grown up, by the definitions in `${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/page-anatomy.md` (stub: a name and a line; developing: real content, gaps known; solid: would defend it)
+- `subject:` naming a value schema §3c doesn't list, carried in a vault whose §3c lists no subjects, or carried by a page that is neither a source nor of a type §3 groups by subject — report those as one finding, removed on a single yes or left alone. It places nothing until settled
+- **subject by the vote**, in a vault with subjects, only for a source §3c's line doesn't settle — a chapter the line puts in its book, or a lecture in its module, is never proposed elsewhere: a source page whose neighbourhood vote (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/grouping.md`, *Assigning a subject*) clearly names another subject than its `subject:`, or clearly places a source that has none — clearly meaning the winner has at least two thirds of the named pages linked, and at least three of them. For a page of another type grouped by subject, the test is its leaning, once two or more sources link it. Never raise it for a page whose folder the owner chose — one with a `kept: … (placement)` or `kept: … (subject)` line — and report these as one finding per subject, not one per page. A declined proposal is logged `- kept: <path> (subject)`
+- **placement**, only in a type schema §3 groups — a page whose folder doesn't match its frontmatter. Resolve it in the owner's favour, by the table in `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/grouping.md` (*When the owner reorganises*): moved into another subject's folder → set `subject:` to match; moved to the top → remove `subject:`; any folder that isn't one of the type's group values → not a finding; another year's folder → propose moving it back, never edit the date; another type's folder → propose retyping it, or leaving it. In a flat type any folder is fine and never a finding. A declined proposal is logged `- kept: <path> (placement)` and not raised again while that page's path and frontmatter stay the same; an applied one that changed `subject:` is logged `- kept: <path> (subject)` as well, so the vote never argues with the owner's folder. Nothing here moves a file without the person present
+
+**Fix:** as above. If the same violation appears on most pages, the schema is probably wrong; propose changing the schema instead.
+
+## 10. Thin and bloated pages and folders
+
+**Find:** pages under ~80 words that have existed for more than a couple of weeks; pages over ~1,200 words (or the schema's own limit) with more than three `##` sections; source pages with no key claims — a page carrying them under another heading needs only the heading renamed; source pages in `wiki/` with no `## Entities and concepts` section (or the vault's equivalent), which check 6 can't test — except a source filed against scope, which propagates only where the owner decided: one with a `scope: "override — …"` line; concept pages with no cited support for their claims. `index.md` grows by design and is never bloated.
+
+**Folders too.** A flat type folder past the threshold in schema §10 (100 pages if it sets none) gets a grouping proposal — years from `published:`, or subjects — with the preview `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/grouping.md` describes. Don't propose one that would leave more than about a third of the folder at the top; a subject needs about ten pages. On every pass, whatever its size, a grouped type whose top has grown past a third of its pages gets a proposal to fill in the missing values or go back to flat. A subject-grouped folder past the threshold also gets, one at a time:
+
+- **A new subject**, around a candidate hub: a named page — not the owner's page — that about ten or more source pages at the top of the folder link in their body. Preview it by *Proposing a subject* in grouping.md, which iterates the vote until it settles and flags the uncertain pages.
+- **A split** of a subject whose own folder has passed the threshold: two or three sibling subjects, each around one of its most-linked member pages, with the same preview. Never nested.
+
+A declined grouping is logged `- declined: grouping of <folder>`, a declined subject `- declined: subject <value>`, a declined split `- declined: split of <value>`; none is proposed again until that folder has doubled. Adopting any of them is never a lint fix: it follows grouping.md, with the person present.
+
+**Fix:** thin → either grow it from sources that already mention it, merge it into a parent, or leave it and note it as a gap (a stub for something genuinely not yet researched is fine, and should say so). Bloated → split along the natural seam, leave a summary and link behind, fix inbound links. No `## Entities and concepts` → propose adding the section, with the pages of the types check 6 tests that the page's body already links as candidates, one line each on what the source adds, or `none`. Approved per page and never applied unattended — choosing what a source adds is judgement. A declined one is logged `- kept: <path> (no Entities and concepts)` and not raised again while the page is unchanged. A `kept:` line silences only the finding its note names. Report them as one grouped finding, not a block each.
+
+## 11. Unprocessed and orphaned sources
+
+**Find:** every file in `raw/`, `raw/inbox/` and `raw/assets/`, compared against the `raw:`, `raw_previous:` and `asset:` fields of every source page — every page with `type: source` in the page set, wherever it sits. Five findings fall out, and a sixth list: files named like sync conflict copies (check 3), reported as such and never merged:
+
+- *Pending*: still in `raw/inbox/`, no source page. Normal if recent; worth flagging once it's been sitting a while. Clipping is easy, so inboxes grow.
+- *Orphaned*: a markdown file in `raw/` — a text source or a sidecar — that no source page's `raw:` or `raw_previous:` points at, and that no `retired:` line in a `lint` log entry names. Usually something filed by hand. A binary in `raw/assets/` with no page behind it is a *stray asset* instead, below, where the attachment exemption applies.
+- *Ghost*: a source page whose `raw:`, `raw_previous:` or `asset:` points at a file that no longer exists — renamed, deleted or never synced. If a file of the same name sits in `raw/inbox/`, it is an **interrupted ingest**, not a ghost: finish it (wiki-ingest-pending's Step 4 for anything unpropagated, then Step 5's move). Never repoint a field into `raw/inbox/`.
+- *Stray asset*: a binary in `raw/assets/` that no source page's `asset:` lists, no `retired:` line in a `lint` log entry names, no page in the linted scope and no file in `raw/` or `raw/inbox/` embeds, and whose filename stem does not begin with the name stem of an existing source page's `raw:` or `raw_previous:` file. That last clause is the **attachment exemption** and it matters: a figure belonging to a parent is named after that parent's raw file (`2026-09-20-attention.md` → `2026-09-20-attention-fig3.png`) and has no sidecar by design. Match on the raw stem, not on the page slug — page slugs carry no date prefix and would never match. What is left is a binary filed by hand or a figure whose parent was never ingested. An exempt file whose parent already has a source page that does not list it in `asset:` is still reported here, at low severity, so the fix below can list it.
+- *Broken embed*: a page embeds `![[file.ext]]` and no such file exists in `raw/assets/` or `outputs/`. Found by check 1, which tests the embed and reports a missing file here.
+
+**Why it matters:** in a vault fed by the Web Clipper and by syncs, this is the check that catches the material the wiki silently never learned.
+
+**Fix:** ingest the pending files with wiki-ingest-pending, oldest first, and the orphaned ones by naming them to it — it ingests them where they lie; for ghosts, find the renamed file and correct the `raw:`, `raw_previous:` or `asset:` field, or mark the source page as having lost its original and say so; for strays, ingest the binary the same way — unless it is an attachment (named after a source's raw stem, or embedded by any page or by a file in `raw/` or `raw/inbox/`): add it to its parent's `asset:` list, or leave it for the parent's ingest if the parent is still in `raw/inbox/`; for broken embeds, find the file or remove the embed. Also flag near-duplicate raw files — the same article clipped twice from different URLs — but not captures one page already lists under `raw:` and `raw_previous:`.
+
+## 12. Gaps and next questions
+
+Not an error check — the payoff. Look for:
+
+- Open questions in `overview.md` and on pages that have sat unanswered — and ones a page already answers, which should be marked "— answered: [[page]]".
+- Topics where every page cites the same single source — one-source knowledge is fragile.
+- Named things the sources keep referencing that the vault doesn't hold (a paper, a report, a competitor, a chapter).
+- Asymmetries: a strongly argued position with no counter-argument anywhere in `raw/`.
+- Pages that nearly connect — two clusters in the graph with one thin link between them, where the connecting analysis hasn't been written. Name them here; writing the analysis is a dream pass's job (wiki-dream), not lint's.
+- Gaps that questions ran into: the `- gap:` lines of `query` entries in `_meta/log.md`. Re-test each against the wiki as it is now — a later ingest may have filled it — and rank first the gaps asked about on several different dates.
+- Whether the density of the wiki matches the purpose stated in the schema. If the wiki is "for deciding X" and everything is background, say so.
+
+Turn each into something actionable: a source to capture, a question to ask the wiki, a page to write. Offer to do one now.
+
+---
+
+## 13. Out-of-scope and expired sources
+
+The capture gate stops the wrong material at the front door. Nothing audits what is already inside — a source filed on an override, or one the gate let through by mistake, stays forever and no check ever looks at it again.
+
+**Find:**
+
+- **Out of scope.** Read the schema's §1 out-of-scope list, then read each source page against it. Flag admin (tickets, boarding passes, invoices, receipts, statements, calendar entries, task lists, credentials, keys and account details) and another living person's personal data (CVs and applications, ID documents, medical or financial records, private message threads, contact files, photographs of people other than the owner). A source page with a `scope: "override — …"` line — the owner decided to file it — is confirmed, not exempt: report the confirmed pages together, as a count with their names, so the decision stays visible without being re-argued page by page. The built-in categories apply even where §1 doesn't list them; if it doesn't, suggest adding them to §1, once.
+- **Expired.** Sources whose usefulness ends on a date the source itself states: an event page after the event, a quote or offer past its validity, a job posting after the role closes. The date is usually on the source page already.
+- **Personal data in the greppable layer.** Grep **`wiki/`, `index.md`, `overview.md` and `patterns.md` only** for phone numbers, email addresses, postal addresses and government or account identifiers belonging to another living person — not an organisation's registered details — and for embeds of a photograph of someone other than the vault's owner — the person the schema's §1 names as whose vault this is. `wiki/` is the layer that propagates and the layer decks and documents are made from; `raw/` is immutable and is where this material is allowed to live. Do not grep `raw/`: a finding there has no legal fix.
+
+**Why it matters:** the front-door gate is one decision at one moment, usually under time pressure and often overridden. This check is the only thing that revisits it. It is also what stops a vault quietly becoming a place personal data accumulates.
+
+**Severity:** medium for out-of-scope and expired; **high** for third-party personal data in `wiki/`, `index.md`, `overview.md` or `patterns.md`, because that is what leaves the vault in an export.
+
+**Fix:** everything here is a proposal, and **every fix acts on `wiki/`, `index.md`, `overview.md` and `patterns.md` only**. `raw/` and `raw/assets/` are immutable: a binary is never deleted, renamed or edited by this check, whatever is in it. Propose, per finding:
+
+- **Retire the page** — expired, and nothing links to it except `index.md` and `overview.md`; retiring removes those lines too. Log it on the lint entry as `- retired: [[slug]] ← <raw: path>, <raw_previous: paths>, <asset: paths>`; that line is what tells check 11 the files left behind are retired, not orphaned. The source page goes; its raw files stay in `raw/` and `raw/assets/`, the record that it was ever here. Needs approval on that specific page, like every other removal.
+- **Redact the page** — delete the contact details and identifiers from every page that carries them and leave a line saying what was removed and that it is still readable in the binary. This is the **one exception to "never delete substantive content"** in §10 of the schema: redaction removes, it does not move the text to `## History`, because a `## History` section is in `wiki/` and exports exactly like the rest of the page.
+- **Keep as-is** — the owner decides to keep it: record that on the page, as a note in the body and `scope: "override — <the rule it fails>"` in its frontmatter — the line check 10 and later passes read — so the next pass does not re-litigate it.
+
+For anything expired, say what the expiry date was and how long it has been past.

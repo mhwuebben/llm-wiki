@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "llm-wiki",
+  "displayName": "LLM Wiki",
+  "version": "3.0.0",
+  "description": "Your notes and memory, kept by Claude: an AI-maintained second brain in a folder of markdown. You add sources and ask questions; Claude keeps the notes interlinked, cited and current — capture, ingest, query, lint and consolidate. Any editor works; Obsidian-friendly.",
+  "author": {
+    "name": "Dr. Markus Wuebben",
+    "email": "markus.wuebben@gmail.com"
+  },
+  "keywords": [
+    "notes",
+    "memory",
+    "second-brain",
+    "note-taking"
+  ],
+  "repository": "https://github.com/mhwuebben/llm-wiki",
+  "license": "MIT"
+}

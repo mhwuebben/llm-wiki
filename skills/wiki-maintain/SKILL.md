@@ -1,0 +1,42 @@
+---
+name: wiki-maintain
+description: Keep the wiki up to date in one pass — ingest everything pending in raw/inbox, run a lint pass that applies only the mechanical fixes, and write a dated digest of what the wiki learned since the last run. Built to run unattended as a scheduled task at whatever cadence suits the vault. Use when someone asks to maintain the wiki, bring it up to date, run the routine or the scheduled pass, or wants a written digest of what changed. Use wiki-status when they only want to be told where things stand, wiki-ingest-pending when they only want pending items ingested, wiki-lint when they only want a clean-up, and wiki-dream to look for new connections. To schedule it, create a task whose prompt names this skill — setting up the schedule is not a run.
+---
+
+# Wiki Maintain
+
+Run the whole routine in one pass: process what has arrived, repair what is broken, and say what changed. It does not care when it runs — daily, weekly, after every ten sources, or whenever someone asks. What it measures against is the last run, not the calendar.
+
+**Invoking this is the explicit authorisation** that wiki-ingest-pending and wiki-lint ask for: ingest everything pending without the list's yes or a per-source check-in, and apply lint's mechanical fixes — the parts of checks 1, 8 and 9 that `${CLAUDE_PLUGIN_ROOT}/skills/wiki-lint/references/checks.md` marks mechanical — without waiting. The ingest in step 1 runs in full — source pages, the new pages that clear the promotion bar, propagation, bookkeeping. Everything else lint would change — deletions, merges, contradiction resolutions, check-4 page creation, duplicate names, placement, subject and grouping proposals, the support sample's findings, schema changes — is reported and left for the person. **A maintain run never moves a wiki page.** New pages land in their folder when ingest creates them; anything out of place is a proposal in the digest. Moving each ingested item out of `raw/inbox/` is part of the ingest (wiki-ingest-pending, Step 5) and happens as usual.
+
+**What it does not authorise:**
+
+- **Filing out-of-scope material.** Every pending item still passes the schema's out-of-scope test (wiki-capture-only, step 2) before it is ingested. An item whose provenance carries a `scope: "override — …"` line was already decided by the person at capture, and goes ahead. Any other item that fails stays pending, untouched, and goes in the digest under what needs a human decision, with the rule it fails. Only the person can override scope.
+- **Overriding the owner's review preference.** If §11 of the schema asks to review each source before it is filed, that wins: an unattended run skips step 1 and lists what is pending in the digest; a run with the person present checks in per source, as wiki-ingest-pending does.
+
+**A run is unattended** when a scheduled task started it or its prompt says so. Being asked to set up a schedule for this skill is not a run.
+
+**The size caps still apply.** They are quality limits, not approval gates, so invoking this does not waive them: if the pending items would take the run past ~20 new pages (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/batch-ingest.md`, *Cap it*), ingest the items that fit, oldest first, leave the rest pending, and say so in the digest. A scheduled run never stops to ask — it stops and reports. The same goes for ingest's other checkpoints: a touch list past ~15 pages (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/propagation.md`) becomes a line in the digest rather than a question, and a run without sub-agents stays within batch-ingest's limit for that case.
+
+## Steps
+
+0. **Orient and take the lock.** Unattended, take the vault lock (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/locking.md`) and hold it for the whole run: the ingest and the lint run under its token, renew it at each step, and it is released after the log entry in step 4. If another session holds it, wait as that file says; still held after ~10 minutes, stop and report that the vault was busy, and with what. With the person present, don't hold it yourself: wiki-ingest-pending and wiki-lint take it for their own writes, so every question is asked with the lock free. Then read `_meta/schema.md`, `index.md`, and `_meta/log.md`. Find the baseline everything below is measured from — the first of these that exists:
+   1. the most recent log entry that names a digest file (`outputs/digest-YYYY-MM-DD.md`) — normally a `maintain | digest` entry
+   2. the `setup` entry
+   3. the first entry in the log
+
+   Measured from 2 or 3, this is the first run. If that span covers more than about ten sources — an adopted vault, a long gap — summarise it by count and name only the handful that matter most.
+
+   **Drain the offline backlog** if this session can read it (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/references/offline-backlog.md`, *Draining it*): capture each line with wiki-capture-only, whatever its route — step 1 ingests everything pending anyway — and take it off once it has landed or been turned away. The lines that stay — a `re-attach`, a fetch that may succeed later, one that fails the scope test — go in the digest under what needs a human decision; name what came in that way too.
+1. **Ingest** everything pending — every item in `raw/inbox/`; dotfiles and the folder's own `README.md` are not items — with wiki-ingest-pending, propagating one item at a time as it requires. Hold back three kinds of item and list each in the digest: anything that fails the scope test, anything already ingested and unchanged (a re-capture of a changed source is ingested as an update), and anything past the size cap. List any empty page-named note for the person to delete. If nothing is pending, go to step 2.
+2. **Lint** (wiki-lint): run the checks, apply the mechanical fixes (the parts of checks 1, 8 and 9 that lint's `checks.md` marks mechanical), and hold the judgement calls for the person. A mechanical fix that would rewrite the text of many pages — stripping a citation from every line, retargeting a renamed link on thirty pages — is held for one yes too: lint's own rule is that "an unattended lint that rewrites thirty pages is how people lose trust in the vault."
+3. **Digest** — write `outputs/digest-YYYY-MM-DD.md`, created no-clobber (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/locking.md`, *New files*), and put the same content in the reply:
+   - what came in since the baseline — the sources named in `ingest` entries below it, one line each; past about ten, a count and the handful that matter most
+   - what the wiki now knows that it didn't at the baseline — the two or three real changes, not a page count
+   - contradictions opened or resolved
+   - what needs a human decision: the lint judgement calls, grouped as the lint report groups them (propagation gaps as a count of pages, naming the few with the most missing citations, not one line per source–page pair; the support sample as counts per outcome), plus every item held back in step 1 and why
+   - what to read next, named specifically — including any gap that questions ran into since the baseline (`- gap:` lines of `query` entries) and that the wiki still can't answer
+   - **whether a dream pass is due** (wiki-dream, or a scheduled wiki-dream-only), by the Dream cadence in §11 of the schema. If the schema sets none, it is due once ten or more sources have been ingested since the last dream pass (the last `dream` entry with a `scope:` line) — or since setup, if none has run. Also say if an earlier dream report is still awaiting review (the latest `dream` entry that names the report carries an `unreviewed:` line) — wiki-dream-ingest works through it with the person. Do not run it: it proposes new claims, and those need a person to approve them.
+4. **Log.** The skills this one calls write their own entries — wiki-ingest-pending's `ingest` entry if anything was ingested, and wiki-lint's `lint` entry. Add one of your own: `## [YYYY-MM-DD] maintain | digest`, naming the digest file. Like lint and dream reports, the digest has no wiki page behind it; say so in the entry. That entry is what the next run measures from.
+
+Keep the digest under a page. If nothing was ingested since the baseline, say that plainly — and, if items are pending, how many and why they were held — run the lint anyway, and use the digest to name the three gaps most worth filling.
