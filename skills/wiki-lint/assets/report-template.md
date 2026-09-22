@@ -24,12 +24,13 @@
 | Thin / bloated pages; sources without Entities and concepts; grouping, subject and split proposals | {{n}} / {{n}}; {{n}}; {{n}} | |
 | Unprocessed / orphaned sources | {{n}} pending / {{n}} orphaned / {{n}} ghost / {{n}} stray / {{n}} broken embed / {{n}} conflict copies in `raw/` | |
 | Out-of-scope / expired sources | {{n}} / {{n}} | |
+| Work that left no trace | {{n}} unlogged page changes / {{n}} gaps or notes with material pending / {{n}} sources that propagated nothing | |
 
 ## Findings
 
 ### Fix on approval — mechanical
 
-{{Broken links, index rows, check 9's mechanical fields. One line each: page, problem, fix. These are safe to apply in bulk.}}
+{{Broken links, index rows, check 9's mechanical fields — applied as soon as this report was written, before anything was put to you. One line each: page, what was wrong, what it now says. A fix that would have rewritten the text of many pages is listed under judgement instead, waiting for a yes.}}
 
 ### Needs your judgement
 
@@ -82,4 +83,4 @@
 
 ## Applied this pass
 
-{{Filled in after fixes are approved and applied. Also goes in _meta/log.md.}}
+{{The mechanical fixes applied before this report, plus whatever the person then approved. Also goes in _meta/log.md.}}

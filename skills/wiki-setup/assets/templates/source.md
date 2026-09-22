@@ -7,7 +7,7 @@ created: {{YYYY-MM-DD}}
 updated: {{YYYY-MM-DD}}
 status: solid
 raw: raw/{{YYYY-MM-DD}}-{{slug}}.md                  # always the markdown in raw/, never raw/inbox/
-# raw_previous: []                                  # earlier captures of this source, newest first; omit if none
+# raw_previous: []                                  # the last ten earlier captures, newest first; older ones live in ## Version history; omit if none
 asset: [raw/assets/{{YYYY-MM-DD}}-{{slug}}.{{ext}}]  # list: the original plus any attachments, under this stem (images Obsidian saved keep their own names); omit if none
 # expires: {{YYYY-MM-DD}}                            # add only if the source states its own end date
 # scope: "override — {{rule it fails}}"             # only if ingested against schema §1's scope on the owner's say-so
@@ -49,3 +49,10 @@ url: {{url or omit}}
 ## Open questions
 
 - {{what this source raises but doesn't answer}}
+
+## Version history
+
+{{One line per capture of this source, newest first — omit the section entirely for a source captured once. Every capture gets its line, including the first, so no file in raw/ is unaccounted for.}}
+
+- {{YYYY-MM-DD}} · raw/{{YYYY-MM-DD}}-{{slug}}.md — {{what changed in the claims, in one sentence — or "no claim changed" for formatting and typo churn}} · {{the reason the source itself gives, or "reason not stated"}}
+- {{YYYY-MM-DD}} · raw/{{YYYY-MM-DD}}-{{slug}}.md — first capture

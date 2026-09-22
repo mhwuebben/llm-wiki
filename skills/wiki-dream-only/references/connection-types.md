@@ -2,6 +2,23 @@
 
 Six kinds of finding. For each: how to find it, what evidence it needs before it can be proposed, what to propose, and what it is not. Every finding must also pass the gate in `SKILL.md` (a missing link has its own shorter one) — above all, both halves are source-backed lines you can quote, and the step from them to the connection needs no fact the vault does not hold.
 
+## Which kinds carry their own proof
+
+Five of the six can be tested against something outside your judgement, and that is what makes them safe to propose:
+
+| Kind | What settles it |
+|---|---|
+| Answerable question (2) | the question is written down in `overview.md` or on a page |
+| Convergence (3) | a second source states the same claim; the page cites one |
+| Missing link (4) | the passage names the other page's subject |
+| Pattern (5) | a third instance exists, and you can quote all three |
+| Productive tension (6) | both positions are quoted, and following both is impossible |
+| **Bridge (1)** | **nothing but your sense that it is interesting** |
+
+So the bridge is where a report goes soft: it is the one kind whose bar is taste, and the one that fills a report when a pass is short of real findings. **At most two bridges per report**, and each has to land somewhere the vault already cares about — an open question, a contradiction in play, a `- gap:` line from a query, a claim on a page it would change. A bridge that changes nothing but reads well is the thing this cap exists to stop. When a third bridge is genuinely good, it costs nothing to leave it as a `near:` line in the log and propose it next pass, when the two ahead of it have been decided.
+
+A report of two findings with external criteria is worth more of the owner's attention than seven of mixed quality, and the report is ranked accordingly: what would change a claim first, what would add a link last.
+
 ---
 
 ## 1. Bridge
@@ -56,6 +73,18 @@ Six kinds of finding. For each: how to find it, what evidence it needs before it
 **Propose:** a line under `## Observed` in `patterns.md`, with all three sources linked. Keep the wording at the level the sources state it. A pattern about a person's habits is recorded as written, never interpreted.
 
 **Not this:** your own reading of someone's behaviour. `patterns.md` records what sources show; interpretation goes under its `## Interpretation` heading, marked as inference — and interpretation is never a half of a later finding.
+
+### Drift — the same claim moving
+
+A pattern in time, and the one kind of pattern a vault of documents produces on its own. It follows the rules above — third sighting, `patterns.md`, no interpretation — with these specifics.
+
+**Find:** a claim that has moved more than once. The `## Version history` lines of a source page say what that source changed and when; the `## History` sections of the pages carrying its claims say what the wiki concluded before. Two moves in the same direction — a scope narrowed twice, a date pushed back twice, a position reversed and half-reversed — is the shape worth looking at.
+
+**Evidence required:** each move quoted from where it is recorded, with its date. A `## History` entry counts here, unlike elsewhere in this file, because the question is what the wiki *said* over time, not what is true now — say so in the finding.
+
+**Propose:** a `watch:` line after two moves (`- watch: "<claim> drifting" — moved [date] and [date]; a third move is the pattern`). A third move reaches `## Observed` in `patterns.md` only when the moves span **different sources** — the bar the rest of this file sets, and what wiki-dream-ingest needs to file it ("with all three sources"). Three re-captures of one document are one source changing its mind, which stays a `watch:` line and, if it matters, a sentence on the page it concerns. Not a new page either way: drift is a pattern, and `patterns.md` is where a thing seen three times lives.
+
+**Not this:** a claim corrected once, which is simply a source being updated; and never a *reason* for the drift that no source states. What changed is in the record. Why usually is not, and inventing it is worse than leaving the question open — name it as a gap instead.
 
 ## 6. Productive tension
 

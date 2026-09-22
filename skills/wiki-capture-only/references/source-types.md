@@ -87,4 +87,4 @@ The fastest sustainable loop: capture one chapter's notes at a time (their highl
 
 ## Repeat captures of the same source
 
-A source that changes (a wiki page, a doc, a dashboard export, a README) gets a new dated file, not an overwrite. `raw/` is append-only. At ingest it updates the existing source page rather than getting its own: `raw:` moves to the new file, the old one goes on `raw_previous:`, and the page says what changed — that diff is often the most interesting thing in the vault.
+A source that changes (a wiki page, a doc, a dashboard export, a README) gets a new dated file, not an overwrite. `raw/` is append-only. At ingest it updates the existing source page rather than getting its own: `raw:` moves to the new file, the old one goes on `raw_previous:` (which keeps the last ten; every capture also gets its line under `## Version history`), and the page says what changed — that diff is often the most interesting thing in the vault.

@@ -2,7 +2,7 @@
 
 Two blocks to hand over, together. The first goes in the **project instructions** field of the Claude project that owns this vault: it is what makes every future session route correctly without being told — the difference between a wiki that compounds and a folder Claude occasionally writes to. The second is the prompt of the scheduled task that keeps the wiki up to date (*The scheduled task*, below).
 
-Replace `{{VAULT FOLDER}}` with the folder's actual name — the folder as it is named on disk, since a session resolves it literally and a renamed or moved vault silently routes work into the wrong place. Change nothing else: the routing rules are load-bearing, the first paragraph is what stops a session editing `raw/` or writing an uncited claim, and the scope rule is what stops it filing things that were never wiki material.
+Replace `{{VAULT FOLDER}}` with the folder's actual name — the folder as it is named on disk, since a session resolves it literally. **Renaming or moving the vault later costs three things, and nothing inside the vault:** this line in the project instructions, the name in each scheduled task's prompt, and the folder attachment in the desktop app. Every path inside the vault is relative, so the wiki itself survives a rename untouched; wiki-status reports the mismatch when it can read the instructions or the tasks. Change nothing else: the routing rules are load-bearing, the first paragraph is what stops a session editing `raw/` or writing an uncited claim, and the scope rule is what stops it filing things that were never wiki material.
 
 ---
 
@@ -30,6 +30,8 @@ Route every message before doing anything else, and load the llm-wiki skills rat
 - Before capturing anything, check it against the schema's out-of-scope list. If it is admin rather than knowledge — a ticket, a boarding pass, an invoice, a receipt, a statement, a calendar entry, a task list, a credential, key or account detail — or if it is another living person's personal data — a CV, an application, an ID or medical or financial record, a private message thread, a contact file, a photograph of someone other than me — do not capture it. Say which scope rule it fails and what you'd do instead, and wait. Capture it only if I tell you to anyway, and then record scope: "override — <the rule it fails>" in its provenance; ingest carries it onto the source page.
 
 If a message carries both — a link plus a question about it — capture and ingest first, then answer from the wiki that now includes it.
+
+Read and search the vault freely, but change it only inside the skill that owns the work, and follow that skill's steps rather than a quicker route to the same-looking result: the steps are what take the lock, check the citations and leave the line in _meta/log.md that makes the change auditable. Run the vault's own _meta/wiki-search.sh for the searches the skills name, instead of improvising a grep. If a step looks unnecessary, say so and ask me — don't work around it — and if you skipped one anyway, say which, before I act on the answer.
 ```
 
 ---
@@ -46,15 +48,15 @@ Setting it on the *project* rather than in a single chat is the point: a session
 In Cowork, a scheduled task on the project, weekly for an active vault or monthly for a quiet one, with this prompt — `{{VAULT FOLDER}}` replaced as above:
 
 ```
-Run the wiki-maintain skill on the LLM wiki in the folder {{VAULT FOLDER}}. This is an unattended scheduled run: don't wait for answers; put anything that needs a decision in the digest.
+Run the wiki-maintain skill on the LLM wiki in the folder connected to this task — the one holding _meta/schema.md. It was called "{{VAULT FOLDER}}" when this task was set up, but the folder, not that name, is what identifies it: if the name has changed and exactly one connected folder holds a _meta/schema.md, that is the vault — use it and say so in the digest. This is an unattended scheduled run: don't wait for answers; put anything that needs a decision in the digest.
 ```
 
-Set the task to approve automatically — otherwise a scheduled run stops at its first file write — and to run on the computer that holds the folder, with the vault and every imported folder connected. Update the Maintain line in schema §11 to the cadence chosen.
+Set the task to approve automatically — otherwise a scheduled run stops at its first file write — and to run on the computer that holds the folder, **with the vault folder attached to the task itself** and every imported folder connected. The attachment is what makes the run work; the name in the prompt is only a hint, so that renaming the vault costs a line in the prompt rather than a failed run. A scheduled session with no folder attached can do nothing at all: it cannot even ask, since granting access needs someone at the computer. Update the Maintain line in schema §11 to the cadence chosen.
 
 Later, once the vault has ten or so sources, a monthly dream pass can be scheduled the same way. It writes a report and applies nothing; the person works through it with wiki-dream-ingest:
 
 ```
-Run the wiki-dream-only skill on the LLM wiki in the folder {{VAULT FOLDER}}. This is an unattended scheduled run: write the report and apply nothing.
+Run the wiki-dream-only skill on the LLM wiki in the folder connected to this task — the one holding _meta/schema.md; it was called "{{VAULT FOLDER}}" when this task was set up. This is an unattended scheduled run: write the report and apply nothing.
 ```
 
 ## Why each rule is there
@@ -71,4 +73,5 @@ Run the wiki-dream-only skill on the LLM wiki in the folder {{VAULT FOLDER}}. Th
 - **Connections route to wiki-dream.** "What does it all add up to?" is phrased like a question, so without this rule it goes to wiki-query, which answers in chat. Dream applies the stricter test — both halves quoted from source-backed lines, nothing from outside the vault — and files nothing the person hasn't accepted in wiki-dream-ingest.
 - **The backlog.** A session in the cloud, with the computer closed, can't write to the vault; without this rule a link sent from a phone is answered and forgotten. Draining first means the backlog never grows old unnoticed.
 - **Capture and ingest before answering.** Otherwise the answer is built from a wiki that is one source out of date, and the person cannot tell.
+- **Changes go through the skills, steps included.** Routing gets the right skill loaded; it does not keep every step of it. The steps that get skipped are the ones that cost something and leave no mark — the backlink search, reading the overview whole, checking `raw/inbox/` before calling something a gap — and a session that skips them produces work that looks identical to work that was done properly. Asking about a step is welcome; quietly replacing it is what this line is for, and lint check 14 is what finds it afterwards.
 - **The scope test.** Without it the routing rule above is unconditional: every file becomes a source. Ingest is not parking — it writes a source page, propagates across the index and overview, and leaves the content in a dozen greppable files that lint reads and any deck or export draws on. That is the wrong home for a ticket and a bad one for an invoice or a contract. The test is cheap because the schema already lists what does not belong; the rule just makes a session actually look.

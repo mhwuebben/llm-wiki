@@ -56,7 +56,7 @@ Missing author, missing date, unknown origin: record that honestly on the source
 
 **3. Ingested state.** The reliable test is not a frontmatter flag, because externally captured files may not have one. In order:
 
-- A source page — any page with `type: source`, wherever it sits — whose `raw:` field — or `raw_previous:` list, for an earlier capture of a changed source — points at the file → **ingested**. This is the definition; everything else is a convenience.
+- A source page — any page with `type: source`, wherever it sits — whose `raw:` field — or, for an earlier capture of a changed source, its `raw_previous:` list or a `## Version history` line — points at the file → **ingested**. This is the definition; everything else is a convenience.
 - The file is still in `raw/inbox/` → treat it as pending, and confirm against the check above before ingesting (something may have been ingested without being moved).
 - `ingested:` in the file's own frontmatter → a hint, trusted only when it agrees with the source-page check.
 

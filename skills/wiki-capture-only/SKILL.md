@@ -60,7 +60,7 @@ ingested: false
 
 `published:` is the date of publication the source itself states, as ISO-8601 (`2017-06-12`; `2017` or `2017-06` when that is all it gives) — leave it out when it gives none. The capture date goes in `captured:` and is never a stand-in, except for the owner's own writing, whose date is the day it was written.
 
-`ingested: false` is a convenience for filtering, not the source of truth — plenty of files arrive without it. What actually settles whether a source has been processed is whether a source page — any page with `type: source`, wherever it sits — has a `raw:` field, or a `raw_previous:` entry, pointing at it. Ingest flips the flag where it exists and moves the item out of the inbox: text to `raw/`, binaries to `raw/assets/` with their sidecars to `raw/`.
+`ingested: false` is a convenience for filtering, not the source of truth — plenty of files arrive without it. What actually settles whether a source has been processed is whether a source page — any page with `type: source`, wherever it sits — has a `raw:` field, or a `raw_previous:` entry or a `## Version history` line, pointing at it. Ingest flips the flag where it exists and moves the item out of the inbox: text to `raw/`, binaries to `raw/assets/` with their sidecars to `raw/`.
 
 A source can be text **and** have attachments — a clip with three images, an email with a PDF, a paper with a data file. That is one source: the text is the source and goes to `raw/`, the attachments go to `raw/assets/` named after the source's raw stem, and the source page lists them all under `asset:`. They are attachments, so they get no sidecars of their own.
 

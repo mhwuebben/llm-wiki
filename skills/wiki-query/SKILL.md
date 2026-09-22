@@ -15,7 +15,7 @@ The point of having compiled the knowledge is that answers now come from the com
    - Search the page set — every `.md` in the vault outside `raw/`, `outputs/` and `_meta/`, so pages in subfolders and pages the owner moved are included — for the question's names and rarer terms, and their translations into the languages on schema §1's `Languages:` line. This finds what the index summaries don't mention: aliases, jargon, a name inside a page.
    - Read `overview.md` only when the question is broad ("where does my thinking stand?", "what do I know about X?").
 2. **Read the shortlist** in one batch.
-3. **Follow links deliberately.** Follow a link when the line it sits in bears on the question; the notes beside links under `## Related` and `## Relationships` count as lines. Resolve every link by name with `references/links.md` — never by guessing a folder: pages may sit in subfolders, and the vault must work without Obsidian. To see what links *to* a page — every source that mentions an entity, every note built on a concept — run the backlink search in `references/retrieval.md`; for a page that many others link to, narrow it as that file says rather than reading everything.
+3. **Follow links deliberately.** Follow a link when the line it sits in bears on the question; the notes beside links under `## Related` and `## Relationships` count as lines. Resolve every link by name with `references/links.md` — never by guessing a folder: pages may sit in subfolders, and the vault must work without Obsidian. To see what links *to* a page — every source that mentions an entity, every note built on a concept — run `sh _meta/wiki-search.sh backlinks <name> <alias...>` (`references/retrieval.md`, *The script*); for a page that many others link to, narrow it as that file says rather than reading everything. Improvising the grep instead is the common way this step gets skipped, and it is the one that catches a page that talks about the subject without the index ever saying so.
 4. **Open a source page** only when the answer needs its exact figure or wording, the claim is contested, the page carrying it is a stub, or the answer hinges on that one claim. Otherwise carry the citation (see *Answering*).
 5. **Go to `raw/`** for the exact figures, quotes and details that summaries dropped. Cite the source page and the raw file.
 6. **Stop** when the answer is supported. If you reach ~15 pages opened in full without that, stop anyway, answer with what you have, and name what you didn't read.
@@ -25,13 +25,23 @@ The point of having compiled the knowledge is that answers now come from the com
 
 `references/retrieval.md` has the exact commands, what to do when the wiki seems to have nothing, and strategies for large vaults, vague questions and multi-hop questions.
 
+**Before the answer goes out**, three steps get skipped more than any others, because improvising round them feels faster and leaves no mark. Each has a cheap proof — say it in the answer, in the words in brackets:
+
+| | Proof |
+|---|---|
+| The backlink search ran on the page the question is about | *"12 pages link it"* — a count only the command gives |
+| `overview.md` was read whole, for a broad question ("what do I know about X", "where does my thinking stand") | what it says, or that it is silent on the question |
+| `raw/inbox/` was checked before any gap was named | *"38 pending, none on pricing"* (*Name the gaps*) |
+
+A step you cannot show a number for is a step you did not run. Reporting it as done anyway is worse than skipping it, because the person then trusts an answer built on less than it claims.
+
 ## Answering
 
 - **Lead with the answer.** One or two sentences, then the support.
 - **Cite as you go.** `Adoption stalled at 12% in 2026 — [[globex-q3]]` when you opened the source page; `— [[pricing-pressure]], citing [[globex-q3]]` when you read the claim on a page that cites it. One "citing" per paragraph is enough when several lines come from the same page. The links are clickable in Obsidian and followable by name anywhere else, which is what makes an answer auditable.
 - **Separate three things, visibly**: what the sources say, what the wiki's own synthesis pages and notes conclude, and what you're inferring right now. Label the third.
 - **Surface disagreement** rather than averaging it. If two sources conflict, say so and say what would settle it.
-- **Name the gaps.** "The wiki has nothing on pricing after Q2" is a useful answer and the best prompt for the next source — but check first (`references/retrieval.md`, *When the wiki seems to have nothing*): it may be waiting in `raw/inbox/`, or sit in a raw file no page picked up.
+- **Name the gaps — but never on a hunch.** "The wiki has nothing on pricing after Q2" is a useful answer and the best prompt for the next source. It is also the claim most often made without looking: run `sh _meta/wiki-search.sh pending <term>` and the two `raw/` searches in `references/retrieval.md` (*When the wiki seems to have nothing*) **before** the word "gap" appears in an answer. The material is often sitting in `raw/inbox/`, captured and not yet ingested, and an answer that says "your notes don't cover this" while the file waits in the inbox is worse than no answer. Put what you ran in the answer and on the log entry (`- checked:`, *Logging a gap* below).
 - **Match the format to the question** — prose for "why", a table for "compare", a timeline for "when", a list for "which". `references/answer-formats.md` covers the heavier formats (comparison tables, timelines, briefings, decks, charts) and when each earns its complexity.
 - **At most one offer per answer** — the most valuable, in this order: ingest a pending item (in `raw/inbox/`) that answers the question; update an existing note; file this answer as a new note; capture a source or search outside.
 
@@ -55,9 +65,10 @@ Filing writes shared pages, so it takes the vault lock (`${CLAUDE_PLUGIN_ROOT}/s
    ## [2026-09-20] query | does the parallelism advantage hold at small scale?
    - answered from: [[attention-is-all-you-need]], [[small-model-study]], [[transformers]]
    - filed: [[parallelism-at-small-scale]]
+   - checked: raw/inbox (38 pending, 0 matching "small scale"), raw/ text — nothing
    - gap: nothing in the wiki below 100M params
    ```
-   Leave out the `gap:` line when schema §11's Query line says not to log unanswered questions. When a deck, document or chart was made from the note, add `- output:` with its path in `outputs/`, or its link if it was made as an artifact.
+   **A `gap:` line is only allowed under a `checked:` line**, and `checked:` carries the counts the searches returned — a number nobody can write without having run them. Leave out the `gap:` line when schema §11's Query line says not to log unanswered questions; then the check still runs, it just isn't logged. When a deck, document or chart was made from the note, add `- output:` with its path in `outputs/`, or its link if it was made as an artifact.
 
 When the answer is turned into a deck, a document or a chart, the note comes first and the file second, in `outputs/` (`references/answer-formats.md`) — so the thinking outlives the deliverable. Asking for the deliverable is the yes to filing the note: file it, say which note it is, then make the file from it.
 
@@ -72,10 +83,11 @@ When the core of a question went unanswered — the wiki has nothing on it, not 
 ```markdown
 ## [2026-09-20] query | pricing after Q2
 - filed: no
+- checked: raw/inbox (38 pending, 0 matching "pricing"), raw/ text — nothing
 - gap: no source on pricing after Q2
 ```
 
-Write the topic, not the question word for word. wiki-gaps and lint read these lines, and a gap that keeps coming back rises to the top of what to read next. Answered questions and lookups are not logged.
+The `checked:` line is the evidence that *When the wiki seems to have nothing* actually ran; without it the gap is a guess, and lint check 14 reports it as one. Write the topic, not the question word for word. wiki-gaps and lint read these lines, and a gap that keeps coming back rises to the top of what to read next. Answered questions and lookups are not logged.
 
 ## When the wiki is thin
 

@@ -4,6 +4,21 @@
 
 `index.md` is a catalog with one line per page. Read it, pick the five to ten pages that could bear on the question, read those, then follow their links. For a vault of a few hundred pages this beats any search you could run, because the one-line summaries were written by an agent that had read the sources. Run the text search in the same step, not after: it costs little and catches what no summary mentions.
 
+## The script
+
+Every search below is also a subcommand of `_meta/wiki-search.sh`, which setup copies into the vault from `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/assets/wiki-search.sh` (write it from there if it is missing — it is plain text, and the plugin's copy is the current one). **Run it rather than writing the grep yourself**, wherever a skill asks for one of these searches:
+
+```bash
+sh _meta/wiki-search.sh find <name>                 # where a name resolves to; AMBIGUOUS if two files share it
+sh _meta/wiki-search.sh names                       # every page name in the vault
+sh _meta/wiki-search.sh search <term> [term...]     # first-step search over the page set
+sh _meta/wiki-search.sh backlinks <name> [alias...] # every page that links that page
+sh _meta/wiki-search.sh cites [-a alias]... <name> <file>...   # cited: / NOT CITED: / MISSING: per file, body only
+sh _meta/wiki-search.sh pending [term...]           # what is waiting in raw/inbox, and how much
+```
+
+One command, from any directory, with the page set and the link forms already right — which matters because ingest's closing step, lint check 6 and this skill must all get the same answer. A hand-written grep that misses the `\|` form or searches `raw/` quietly disagrees with the check that runs later. The recipes below are what the script does, and what to run where there is no shell.
+
 ## The commands
 
 Run from the vault's root. Written for a POSIX shell (macOS, Linux, Git Bash on Windows); the Grep and Glob tools are fine equivalents where they can match without regard to case. `-F` makes every pattern literal, so names with dots, brackets or parentheses need no escaping.
@@ -92,7 +107,7 @@ grep -H '^published:' <the source page files>
 | Question uses words no page title would contain | The first-step search — domain jargon, synonyms, proper nouns, other languages |
 | Index summaries look stale | Trust the pages over the index, and offer a lint pass afterwards |
 | Answer is spread across many pages thinly | Read `overview.md` first — the synthesis may already hold it |
-| Question is about *when* or *what changed* | Read `_meta/log.md`; it's the only chronological view of the wiki |
+| Question is about *when* or *what changed* | Three records, in this order: the source pages' `## Version history` lines (what each source said and when it changed), the `## History` sections of the pages carrying the claims (what the wiki concluded and why it stopped), and `_meta/log.md` (when the vault did the work). A question about how a position drifted is answered from the first two; the log only dates it |
 | Question is about a specific number, date or wording | Go to the source page, then to the raw file. Summaries drop precision by design |
 
 ## Multi-hop questions

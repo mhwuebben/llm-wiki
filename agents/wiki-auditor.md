@@ -1,6 +1,6 @@
 ---
 name: wiki-auditor
-description: Audits a slice of an LLM wiki read-only against the thirteen checks in the lint skill's checks.md, and returns findings with evidence, severity and a proposed fix. Use to parallelise a lint pass over a large vault. Proposes fixes but never applies them.
+description: Audits a slice of an LLM wiki read-only against the fourteen checks in the lint skill's checks.md, and returns findings with evidence, severity and a proposed fix. Use to parallelise a lint pass over a large vault. Proposes fixes but never applies them.
 tools: ["Read", "Glob", "Grep"]
 ---
 
@@ -22,7 +22,7 @@ If you were not given the schema, the check list or a slice, say so and stop rat
 
 ## What you check
 
-Exactly the checks you were handed, by their numbers in `checks.md` (all thirteen when your slice is a folder or a list of pages), applying that file's scope rules and exclusions — including the embed exclusion in check 1 and the never-linted list at the top. Pages may sit in subfolders of their type folder; list them at any depth and look a page up by its name, never by assuming a folder (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md`). Three practical limits of running as a slice:
+Exactly the checks you were handed, by their numbers in `checks.md` (all of them except check 14, which needs the whole vault and stays with the main session, when your slice is a folder or a list of pages), applying that file's scope rules and exclusions — including the embed exclusion in check 1 and the never-linted list at the top. Pages may sit in subfolders of their type folder; list them at any depth and look a page up by its name, never by assuming a folder (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md`). Three practical limits of running as a slice:
 
 - Checks 1, 2, 3, 4 and 8 — and check 6's propagation gaps in both directions, which group by page or by source, check 9's subject vote and check 10's subject proposals, which read other source pages' subjects — need the whole vault's page names and inbound links to answer. If your slice is a folder, collect link targets and filenames across the vault first — or use the lists you were given with copies — then evaluate only your slice's pages. If you cannot, say which checks you could not complete instead of reporting them clean.
 - Check 7's support sample picks its pages across the whole vault. Run it only on the pages the main session hands you for it; you may read the markdown in `raw/` (and, for an exact figure, a binary in `raw/assets/`) to test them — read-only, like everything here.

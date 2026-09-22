@@ -1,6 +1,6 @@
 # Dream report — {{YYYY-MM-DD}}
 
-**Scope:** {{n pages changed since [date] dream, each paired against the index | whole vault, first pass}} · **Pages read:** {{n}} of {{total}} · **Findings:** {{n}} · **Not covered:** {{what the ~25-page limit left out, or "nothing"}}
+**Scope:** {{register n checked, n fired · demand n · n changed since [date] dream · n silent | whole vault, first pass}} · **Pages read:** {{n}} of {{total}} · **Findings:** {{n}} · **Not covered:** {{what the budget left out, or "nothing"}}
 
 {{One or two sentences: what this pass found, or plainly that it found nothing worth proposing and why — a young vault, no new sources, or nothing that passed the gate.}}
 
@@ -33,6 +33,10 @@
 
 - **For lint:** {{each item with its check number — a contradiction (5), a stale or answered-but-open question (6, 12), a frontmatter slip (9) — or "none"}}. Each also goes on the log entry's `for lint:` line; the next lint pass checks those pages.
 - **Gaps, for wiki-gaps:** {{the fact the vault would need — plus a source only if a vault page already names one — or "none"}} — approve one and it goes under "What to read next" in `overview.md`.
+
+## Still open — what the next pass should watch
+
+{{The register this pass leaves behind, the same lines as the log entry: each `watch:` (a loop seen twice, waiting for a third instance) and each `near:` (a connection one source-backed line short), by its quoted short name, with what would close it. Also what was closed, and why. "Nothing new" is a fine answer.}}
 
 ## Previously rejected, not re-proposed
 

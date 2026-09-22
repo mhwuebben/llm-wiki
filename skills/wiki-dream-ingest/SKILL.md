@@ -17,7 +17,14 @@ A dream report is a list of proposals: connections the vault's pages imply but n
 
 ## Step 1 — Re-check every finding
 
-A report can be days old. First skip what is already settled: a finding an earlier `review of` entry for this report accepted, rejected or dropped is done — only its undecided findings come back. For each remaining finding, read the pages it names as they are now and run it through the gate again (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-dream-only/SKILL.md`, *The gate every finding must pass*): an ingest since may have written the connection already, changed one of its halves, or retired a page. Drop what no longer passes, with the reason — that is a `dropped:` line, not a rejection. A finding a later report repeats is decided once, on the oldest report.
+A report can be days old. First skip what is already settled: a finding an earlier `review of` entry for this report accepted, rejected or dropped is done — only its undecided findings come back. For each remaining finding, read the pages it names as they are now and run it through the gate again (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-dream-only/SKILL.md`, *The gate every finding must pass*): an ingest since may have written the connection already, changed one of its halves, or retired a page. Drop what no longer passes, with the reason — that is a `dropped:` line, not a rejection.
+
+**With several reports in play, merge the survivors before putting anything to the person.** Passes are written weeks apart and never see each other's proposals, so two reports can reach the same page from different directions. After each report's re-check, set the surviving findings side by side and look for two things:
+
+- **Repeats** — the same connection twice, in different words. Decide it once, on the oldest report, and mark the later one `dropped: <n> <kind> | [[a]]↔[[b]] | reason: decided on <report>`.
+- **Conflicts** — two findings that cannot both be applied: opposite conclusions from the same two pages, two notes that would say different things about one claim, or a link one proposes and another argues against. These are the interesting ones, and putting them to the person separately is how a vault ends up holding both. Show the pair together as one decision, with the date of each pass and what changed in between — usually a source arrived, and the newer finding is the better one, but not always.
+
+A conflict that turns out to be two true things that can't both be followed is not a review problem: it is a productive tension, and belongs on the pages as one, from whichever report proposed it first.
 
 ## Step 2 — Put it to the person
 
@@ -51,10 +58,12 @@ Append one entry per report worked through (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-s
 - rejected: 4 tension | [[c]]↔[[d]] | "c's goal is d's anti-pattern" | reason: different populations, not a real tension
 - dropped: 2 answered "open question X" | reason: [[e]] already answers it since [2026-09-22] ingest
 - undecided: none
+- closed: near "job cadence" — settled by finding 1
 ```
 
 - **No `scope:` line** — a review is not a dream pass, and the next pass is still measured from the entry that wrote the report.
 - **Keep the `rejected:` shape** — `rejected: <n> <kind> | [[a]]↔[[b]] | "<the connection>" | reason: …`, with the finding's number in the report — with the person's reason when they gave one. It is what wiki-dream-only reads to avoid proposing the same thing again.
+- **Close the register entry a finding came from.** A `watch:` or `near:` line on an earlier dream entry that this decision settles — accepted, rejected or dropped — gets a `closed:` line here repeating that entry's quoted short name and naming the finding. Otherwise the next pass spends its first and cheapest reads re-testing a hypothesis that is already answered (wiki-dream-only, *Before you start*, steps 2 and 3, part 1). A finding left `undecided:` closes nothing. `closed:` is the register's line; `retired:` in the log means a retired source page, which is lint's.
 - **A report is closed** when every finding is accepted, rejected or dropped — gaps aside. With findings left `undecided:`, add `- unreviewed: <the report>` to this entry: the latest entry naming the report then still marks it as awaiting review.
 - Fill in the report's *Decisions* section with the same lines.
 
