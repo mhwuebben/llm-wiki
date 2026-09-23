@@ -196,12 +196,13 @@ Blue boxes are the skills you run, or that run each other; amber is where an ite
 flowchart LR
   %% ── where an item comes from ──────────────────────────────
   U(["You hand over a link, a file,<br/>a pasted text or a screenshot"]):::you
-  A(["It arrives on its own<br/>Web Clipper · drag-and-drop · sync"]):::you
+  A(["It arrives on its own<br/>Web Clipper · drag-and-drop<br/>· an imported folder, synced"]):::you
 
   U --> R{"Vault folder<br/>reachable?"}:::check
   R -- "no" --> BL[("BACKLOG<br/>wiki-backlog.md<br/>in the Claude project")]:::state
-  BL -. "drained first by the next session<br/>that reaches the folder, and by wiki-maintain" .-> CAP
-  R -- "yes" --> CAP[["wiki-capture-only"]]:::cmd
+  BL -. "drained first by the next session<br/>that reaches the folder, and by wiki-maintain" .-> W
+  R -- "yes" --> W{"Which wiki?<br/>only when several<br/>are connected"}:::check
+  W --> CAP[["wiki-capture-only"]]:::cmd
   CAP --> G1{"In scope?<br/>Complete?<br/>Not already in?"}:::check
   G1 -- "no" --> X["Not captured<br/>you are told why"]:::stop
   G1 -- "yes" --> P[("PENDING<br/>raw/inbox/")]:::state
@@ -212,11 +213,13 @@ flowchart LR
   ING --> C{"Already in?<br/>In scope?"}:::check
   C -- "out of scope" --> H["Stays pending<br/>until you decide"]:::stop
   C -- "unchanged copy" --> K["Skipped"]:::stop
-  C -- "new, or a newer version" --> INGEST
+  C -- "a newer version" --> RC["Re-capture<br/>diff against the previous copy<br/>+ a Version history line"]:::step
+  C -- "new" --> INGEST
+  RC --> INGEST
 
-  subgraph INGEST["ingest — steps 3 to 5 write under the vault lock"]
+  subgraph INGEST["ingest — steps 3 to 5b write under the vault lock"]
     direction TB
-    S1["1 · Read<br/>in full"]:::step --> S2["2 · Check in<br/>unless the schema says<br/>file first"]:::step --> S3["3 · Source page<br/>wiki/sources/"]:::step --> S4["4 · Propagate<br/>entities · concepts · overview<br/>contradictions flagged<br/>then close the list"]:::step --> S5["5 · Move out of the inbox<br/>text → raw/<br/>binary → raw/assets/<br/>index + log"]:::step
+    S1["1 · Read<br/>in full"]:::step --> S2["2 · Check in<br/>unless the schema says<br/>file first"]:::step --> S3["3 · Source page<br/>wiki/sources/"]:::step --> S4["4 · Propagate<br/>entities · concepts · overview<br/>contradictions flagged<br/>then close the list"]:::step --> S5["5 · Move out of the inbox<br/>text → raw/<br/>binary → raw/assets/<br/>index + log"]:::step --> S5b["5b · Verify<br/>no orphans · index in line<br/>frontmatter complete"]:::step
   end
 
   INGEST --> D[("INGESTED")]:::done
@@ -225,9 +228,9 @@ flowchart LR
   %% ── comments ──────────────────────────────────────────────
   N1["wiki-capture-and-ingest runs<br/>wiki-capture-only, then<br/>wiki-ingest-pending on just<br/>the items it captured"]:::note
   N1 -.- CAP
-  N2["Called by<br/>• wiki-capture-and-ingest — the new items<br/>• you — the items you name, or everything<br/>• wiki-maintain — everything, on schedule"]:::note
+  N2["Called by<br/>• wiki-capture-and-ingest:<br/>the new items<br/>• you: the items you name,<br/>or everything<br/>• wiki-maintain: everything,<br/>on schedule<br/><br/>Several at once:<br/>one closing check per pass,<br/>nothing leaves the inbox<br/>before it has passed"]:::note
   N2 -.- ING
-  N3["From then on it is linted and<br/>summed up in the digest,<br/>connected by dream passes,<br/>and cited in answers"]:::note
+  N3["From then on it is linted and<br/>summed up in the digest,<br/>connected by dream passes,<br/>and cited in answers<br/><br/>Several wikis connected:<br/>answers read across them,<br/>delphi on request"]:::note
   N3 -.- AFTER
 
   %% ── legend ────────────────────────────────────────────────

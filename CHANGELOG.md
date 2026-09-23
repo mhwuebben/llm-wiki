@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.8.3 — 2026-09-23
+
+- **The item lifecycle diagram in the README is current again**: which wiki an item goes to when several are connected, imported folders arriving by sync, the re-capture path with its diff and version-history line, ingest's step 5b that verifies what the pass promised, the one closing check per pass for several items, and answers across several wikis with delphi on request.
+
 ## 3.8.2 — 2026-09-23
 
 - **One wiki per project is the default, and the project instructions say only that.** The paragraph about several wikis had become part of every project's instructions, even those with one vault. It is now an extra paragraph a project gets only when it deliberately combines several wikis. Setup recommends a project of its own for each new wiki, and sets one up alongside an existing one only when you say you mean to combine them.
