@@ -96,7 +96,7 @@ Only then go on to bookkeeping. Say it in the report: how many named pages the l
 
 ## Splitting and merging
 
-**Split** when a page covers two things people would ask about separately, or when it's past schema §10's **Split past** line (~1,200 words if it has none) with distinct sections — counting neither `## History` nor `## Version history`, which are ledgers and grow by design. Split along the natural seam, leave a one-line summary and a link behind on the parent, and fix inbound links. **Each half takes its own `## History` entries** — the ones about the claims it now carries — so what a page used to say stays with the page that says it now.
+**Split** — never a source page read in sections (`sections:` in its frontmatter; `large-sources.md`), which is the record of one document — when a page covers two things people would ask about separately, or when it's past schema §10's **Split past** line (~1,200 words if it has none) with distinct sections — counting neither `## History` nor `## Version history`, which are ledgers and grow by design. Split along the natural seam, leave a one-line summary and a link behind on the parent, and fix inbound links. **Each half takes its own `## History` entries** — the ones about the claims it now carries — so what a page used to say stays with the page that says it now.
 
 **A `## History` that outgrows its page** — longer than the rest of the page, or past half the Split past length — is not a reason to split the page, and never moves into another subject's page: its record belongs to the claims it records. Name it in the report for lint, which proposes moving the older entries to a companion page (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-lint/references/checks.md`, check 10).
 

@@ -1,6 +1,6 @@
 ---
 name: wiki-setup
-description: Set up a new LLM wiki — an AI-maintained second brain built from plain markdown in a folder, with the three-layer structure (immutable raw sources, an LLM-owned wiki, and a schema file), ready to open in Obsidian. Use this whenever someone wants to start a second brain, a personal knowledge base, a research wiki, a book companion wiki, a team or competitive-intel wiki, says they have no vault yet, asks to turn a folder full of documents into a knowledge base that maintains itself, or mentions Karpathy's llm-wiki pattern — even if they only say something vague like "help me organise my notes with Claude". Always run this before wiki-ingest-pending or wiki-capture-and-ingest when the target folder has no _meta/schema.md. Also use it to upgrade an existing vault's schema after a plugin update.
+description: Set up a new LLM wiki — an AI-maintained second brain built from plain markdown in a folder, with the three-layer structure (immutable raw sources, an LLM-owned wiki, and a schema file), ready to open in Obsidian. Use this whenever someone wants to start a second brain, a personal knowledge base, a research wiki, a book companion wiki, a team or competitive-intel wiki, says they have no vault yet, asks to turn a folder full of documents into a knowledge base that maintains itself, or mentions Karpathy's llm-wiki pattern — even if they only say something vague like "help me organise my notes with Claude". Always run this before wiki-ingest-pending or wiki-capture-and-ingest when the target folder has no _meta/schema.md. Also use it to upgrade an existing vault's schema after a plugin update. Use wiki-help when someone only asks how to upgrade or how the plugin works.
 ---
 
 # Wiki Setup
@@ -133,6 +133,8 @@ In plain words, not skill names — the skill names belong in the prompts they p
 
 1. **How involved they are, in one line.** Sources are filed first and reported after — that is what lets the scheduled run keep the wiki current on its own. To review each source before it is filed instead, they change the Ingest line in schema §11 to `discuss takeaways with me before writing`, or ask Claude to; a scheduled wiki-maintain run then only lists what is pending, and ingesting waits for them.
 2. **Later, once there are ten or so sources:** a monthly dream pass that proposes connections for them to decide on. Mention it now, with the wiki-dream-only prompt from *The scheduled task*; don't schedule it on an empty vault. Its reports wait for them, and wiki-dream-ingest works through each one with them.
+
+Tell them they can ask *"how do I …?"* at any time — which skill does what, what to say, how to turn something on — and get an answer from the plugin itself, without anything in the vault changing.
 
 Close by telling them their job — curate sources, ask good questions, decide what matters — and yours: the reading, summarising, cross-referencing, filing and bookkeeping. Then show the **Closing** block of `assets/about.md`, word for word and rendered, as the last thing setup says.
 

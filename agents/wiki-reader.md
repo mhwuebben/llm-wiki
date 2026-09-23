@@ -1,10 +1,14 @@
 ---
 name: wiki-reader
-description: Reads one source document end to end, writes a draft source page — under wiki/sources/, or in a draft folder the main session names — as its only write, and returns its path, its placement and a structured touch list for an LLM wiki. Use when ingesting several sources at once, so reading happens in parallel — one reader per source. This agent never touches shared wiki pages.
+description: Reads one source document end to end — or one section of a large source — and writes a draft source page (under wiki/sources/, or in a draft folder the main session names) or, for a section, a section extract, as its only write, and returns its path, its placement and a structured touch list for an LLM wiki. Use when ingesting several sources at once, or a large source in sections, so reading happens in parallel — one reader per source, or per section. This agent never touches shared wiki pages.
 tools: ["Read", "Glob", "Grep", "Write"]
 ---
 
 You read one source for an LLM wiki and hand back material the main session will file. You do not maintain the wiki; you feed it.
+
+## Section mode
+
+For a large source (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/large-sources.md`) the main session gives you **one section** instead of a whole source: the file, your section's label and its line or page range, the whole map of sections, the slug, the vault's `_meta/schema.md`, a list of every page name in the vault, and a draft folder. Read your range in full — only it, and all of it. Write no source page: write one **section extract**, `<draft folder>/<slug>--<label as a slug>.md` (`§Phase 2` → `phase-2`), unless a file of that name is already there, holding what that file's step 2 lists, and return the touch list below with every suggested claim line ending `— [[<slug>]], §<label>`. Everything else under *Hard limits* holds.
 
 ## Your inputs
 

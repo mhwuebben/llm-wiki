@@ -43,7 +43,8 @@ Most files in `raw/inbox/` were put there by something other than Claude — the
 
 Read the whole thing before writing anything. Skimming produces pages that are confidently wrong in ways that are expensive to unpick later.
 
-- **Long PDFs and books**: work in sections; keep a running list of claims, entities and numbers as you go.
+- **Large sources** — past schema §10's **Read in sections past** line (~15,000 words if it has none): `references/large-sources.md`. They are mapped by their own headings, read section by section into extracts, and ingested in **one pass** — one source page, one round of updates, one log entry. Never skipped, never left for "a pass of its own".
+- **Long PDFs and books below that**: work in sections; keep a running list of claims, entities and numbers as you go.
 - **Markdown with images**: two passes — the text first, then open the referenced images. You can't get both in one read.
 - **Transcripts**: note the timestamp or speaker for anything you'll cite.
 - **Data files**: read the schema and a sample, not every row; compute what you need.
@@ -139,6 +140,7 @@ Read `references/batch-ingest.md` first. One threshold governs them all — alwa
 - `references/page-anatomy.md` — what good source, entity and concept pages look like, with a worked example and the common failure modes.
 - `references/propagation.md` — the decision rules for update/create/mention, promotion, contradictions, splitting and merging. Read this during Step 4.
 - `references/batch-ingest.md` — parallelism, ordering, and how to ingest several items without producing slop. Read before ingesting more than one.
+- `references/large-sources.md` — a source too long to read in one go: mapped, read in sections, ingested in one pass. Read when an item is past §10's Read in sections past line.
 
 ## Debug mode
 

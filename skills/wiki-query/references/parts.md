@@ -95,7 +95,7 @@ The reason is simple: a write needs one vault it plainly belongs to. A capture h
 | Skill | In a combined session |
 |---|---|
 | wiki-query, delphi | works — this is what a combined session is for. Filing an answer is a capture: *Where a cross-part answer is filed*, above |
-| wiki-status, wiki-gaps | work, read-only — status reports one line per part, never a sum |
+| wiki-status, wiki-gaps, wiki-help | work, read-only — status reports one line per part, never a sum |
 | wiki-doctor | works, and matters most here: it is what finds a part missing, two copies of one vault, or a scheduled task naming a wiki skill — wiki-maintain, wiki-dream-only — with several parts attached |
 | wiki-capture-only | works: each item into one part (*Which part*). A folder import is not a capture: it sets up an import record, so it runs from that part's own project |
 | wiki-capture-and-ingest | captures, and stops there: the items stay pending until that part's own project ingests them — its scheduled wiki-maintain run, or the person asking there. Say so once |

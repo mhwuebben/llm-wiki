@@ -23,7 +23,7 @@ Common failure modes and what to do:
 
 - **Paywall or login wall** — say so. Offer: they paste the text, they print to PDF and drop it in `raw/inbox/`, or they clip it with the Obsidian Web Clipper from their logged-in browser.
 - **JS-rendered page** returning near-empty text — same options; don't file the empty shell.
-- **Very long page** (documentation, a book chapter online) — file it whole. Splitting happens at ingest, not capture.
+- **Very long page** (documentation, a book chapter online) — file it whole. Ingest reads a large source in sections and ingests it in one pass (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/large-sources.md`); capture never splits it.
 - **Multi-page article** — fetch each part, concatenate in order with `---` separators and a note of each part's URL.
 - **Video or podcast page** — capture the description and any transcript link; if there's a transcript, capture that as the real source and note the media URL.
 

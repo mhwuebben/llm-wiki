@@ -114,6 +114,7 @@ url: https://arxiv.org/abs/1706.03762
 # non-source pages:
 sources: ["[[attention-is-all-you-need]]"]
 # raw: raw/2026-09-20-answer.md   # on a note only when it was filed from an answer captured in a project combining several wikis (answer-from: in its provenance)
+# sections: 11                    # only on a source page read in sections (§10): how many; it groups its key claims by section and is never split
 # history-of: "[[transformers]]"   # only on a history companion: the page whose older ## History entries it holds (§10)
 ---
 ```
@@ -130,11 +131,12 @@ sources: ["[[attention-is-all-you-need]]"]
 
 - Link the first mention of any entity or concept that has a page: `[[transformers]]`, or `[[transformers|the architecture]]` when the sentence needs different wording. Inside a table, escape the pipe — `[[transformers\|the architecture]]` — or the table breaks.
 - **A claim taken from another part of the brain** — another connected vault — is quoted with that part's name and vault id instead of a link, because links resolve only inside one folder: `— research brain (wiki-7f3a2c), transformer-scaling`. That is a complete citation here, not a missing one, and lint leaves it alone.
-- **Every factual claim carries a source link**, usually at the end of the sentence or bullet: `Training used 8 P100 GPUs — [[attention-is-all-you-need]]`. On a source page the page itself is the source, so its own claims carry no link to it; a link there points at a *different* source it confirms or contradicts.
+- **Every factual claim carries a source link**, usually at the end of the sentence or bullet: `Training used 8 P100 GPUs — [[attention-is-all-you-need]]`. A claim from a source read in sections (§10) names the section too — `— [[advisor-plan]], §Phase 2` — as a transcript's claim names its timestamp. On a source page the page itself is the source, so its own claims carry no link to it; a link there points at a *different* source it confirms or contradicts.
 - **In answers and notes**, a claim read on a page that cites a source may carry that citation: `— [[page]], citing [[source]]`. It reports what the opened page cites; the source page itself is opened when the exact figure or wording matters.
 - Claude's own synthesis across sources is allowed and valuable, but marked: `*(inference)*` or under an `## Interpretation` heading.
 - Quote sparingly — a line or two at most, in quotes, with the source link. The wiki is a compilation, not a copy.
 - A wikilink to a page that doesn't exist yet is fine and useful: it marks something worth writing. The lint pass lists them.
+- **Raw files are never linked with `[[ ]]`.** A source page names its files as plain paths — `raw:`, `raw_previous:`, `asset:` — and an image may be embedded (`![[…]]`), but a raw file is never the target of a link. Links resolve by name among the wiki's pages, a raw file's name can match a page's, and every check that follows links assumes they point at pages. In Obsidian's graph the raw files therefore float as a ring around the wiki; that is expected, and the graph view's search box (`-path:"raw/" -path:"_meta/" -path:"outputs/"`) hides them.
 
 ## 7. Contradictions
 
@@ -194,6 +196,7 @@ Operations logged: `setup`, `capture`, `ingest`, `query`, `lint`, `maintain`, `d
 - Write for a reader who knows the domain but not this source. No preamble, no "this page discusses".
 - Structure over prose: short sections, bullets, tables where things are comparable.
 - Keep pages focused — aim for {{~300–800}} words.
+- **Read in sections past:** {{~15,000}} words. A source longer than that is mapped by its own headings, read section by section and ingested in one pass; its page groups the key claims by section, cites them as `— [[source]], §<section>`, and is never split.
 - **Split past:** {{~1,200}} words, not counting `## History` or `## Version history` — both are ledgers and grow by design. A page past it with distinct sections is split along its natural seam and linked, not left to ramble. A `## History` that outgrows the rest of its page moves its older entries to a companion `<page>-history` page; it never moves into another subject's page.
 - A type folder past {{100}} pages is offered a grouping (§3) by the lint pass. A declined offer is not repeated until the folder has doubled.
 - Present tense for what is true; past tense with a date for what was observed.

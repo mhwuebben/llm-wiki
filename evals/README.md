@@ -1,6 +1,6 @@
 # Eval suite
 
-Fourteen cases for `claude plugin eval`. Ten check that a message routes to the right skill; four check that a skill behaves, against a fixture vault.
+Fifteen cases for `claude plugin eval`. Eleven check that a message routes to the right skill; four check that a skill behaves, against a fixture vault.
 
 ```bash
 claude plugin eval .                             # everything, 3 runs each
@@ -10,7 +10,7 @@ claude plugin eval . --case 'scope-refusal' --scaffold --allow-tools Write Edit
 
 ## What the cases assert
 
-**Routing** (`--tag routing`) — one prompt each, graded with `tool_used` on the `Skill` tool: the right skill fires, and the skill it is most often confused with does not. They need no vault and no write tools; ten cases at one run each cost about a dollar.
+**Routing** (`--tag routing`) — one prompt each, graded with `tool_used` on the `Skill` tool: the right skill fires, and the skill it is most often confused with does not. They need no vault and no write tools; eleven cases at one run each cost about a dollar.
 
 **Behaviour** (`--tag behaviour`) — each copies `fixtures/vault` into the run's workspace with its `scaffold.sh`, so they need `--scaffold`:
 

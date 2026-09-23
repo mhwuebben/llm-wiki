@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.10.0 — 2026-09-23
+
+- **Large sources are ingested in one pass.** A source past schema §10's new *Read in sections past* line (~15,000 words) is mapped by its own headings and cut into sections of 5,000–8,000 words. Each section is read in full into an extract, in parallel where sub-agents exist, and the whole document becomes one source page with its key claims grouped by section. Every page it touches is then updated once, with claims cited as `— [[source]], §<section>`. Until now a long document could be skipped as needing "a pass of its own" that nothing ever defined, so it sat in the inbox indefinitely. It now counts as one item: it takes its place in the order like any other, is checked against the cap when its turn comes, and once started is finished in the same run. If the cap stops a run before its turn, it goes first in the next. Scheduled runs ingest it like anything else.
+- **wiki-help, a fourteenth skill**, answers questions about the plugin itself: which skill does what, what to say to trigger it, how to turn on debug mode, upgrade, schedule or combine wikis, and what you're looking at. It reads the other skills' descriptions when it runs, so it doesn't go stale. It is read-only, and it never proposes changing the wiki to make a view look different. The project instructions route *"how do I …?"* questions to it.
+- **The ring around the Obsidian graph is explained, not "fixed".** Raw sources float around the wiki's cluster because source pages name them as a plain path. That is expected. Setup's Obsidian guide used to call floating dots "orphan pages the lint pass should fix"; it now says what the ring is and suggests the graph filter `-path:"raw/" -path:"_meta/" -path:"outputs/"`, without changing your Obsidian settings.
+- **Raw files are never linked with `[[ ]]`**, and schema §6 now says so and why.
+- **A fifteenth eval case**, `routing-help`.
+
+**Upgrading an existing vault.** The upgrade proposes §10's *Read in sections past* line and §6's rule on raw files. Re-paste the project instructions for the wiki-help route.
+
 ## 3.9.1 — 2026-09-23
 
 - **The README tells the story.** It covers why the project exists (second brains fail at the bookkeeping, not at capture), the idea it builds on, what a week with it looks like, why you can trust what it writes, and what the plugin adds to the proposal. The reference material (the vault layout, where things go and why, an end-to-end example, feeding the vault, installing, upgrading and forking) moved to `docs/how-it-works.md`.

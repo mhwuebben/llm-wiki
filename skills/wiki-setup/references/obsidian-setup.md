@@ -14,7 +14,7 @@ Obsidian is a free markdown editor that reads a folder of files. Nothing in this
 
    That last one lines up with the wiki's own convention: `raw/assets/` is where binaries live — PDFs and audio filed there by ingest, images pasted there by Obsidian — while `raw/` stays text. Sources still get dropped into `raw/inbox/`, not into `assets/`.
 3. Open `index.md`, then `overview.md`. Those are the two front doors.
-4. Open the **graph view** (left sidebar, or Ctrl/Cmd+G). Hubs are well-connected topics; floating dots are orphan pages the lint pass should fix.
+4. Open the **graph view** (left sidebar, or Ctrl/Cmd+G). The dense cluster is the wiki's pages; hubs are well-connected topics. **A ring of loose dots around it is expected**: those are the raw sources, which source pages name as a plain path rather than a link, plus reports and templates. Nothing is broken, and nothing should be linked to join them. To see only the wiki, suggest typing `-path:"raw/" -path:"_meta/" -path:"outputs/"` into the graph view's search box — suggest it, and say where it goes; don't change the person's Obsidian settings. With that filter on, a dot floating on its own is a real orphan, which the lint pass reports.
 
 Tell the person the loop out loud: Claude edits on one side, Obsidian shows the result on the other. They can keep it open while ingesting and watch pages appear. And say that they can reorganise inside `wiki/` in Obsidian however they like — Claude follows their folders rather than moving pages back.
 

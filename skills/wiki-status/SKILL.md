@@ -1,6 +1,6 @@
 ---
 name: wiki-status
-description: Show the state of the LLM wiki in this folder — size, what is pending in raw/inbox, what is waiting for the owner's decision, what changed recently, its open questions and when the routines last ran. Read-only; writes nothing but a debug file when debug mode is on. Use when someone asks how their wiki or vault is doing, what is in it, or what to do next with it. Use wiki-doctor when something is not working or the setup itself may be wrong — instructions, scheduled tasks, folders, plugin version — wiki-gaps for what is missing or what to read next, wiki-lint to check the pages for problems or repair them, and wiki-maintain to bring it up to date.
+description: Show the state of the LLM wiki in this folder — size, what is pending in raw/inbox, what is waiting for the owner's decision, what changed recently, its open questions and when the routines last ran. Read-only; writes nothing but a debug file when debug mode is on. Use when someone asks how their wiki or vault is doing, what is in it, or what to do next with it. Use wiki-doctor when something is not working or the setup itself may be wrong — instructions, scheduled tasks, folders, plugin version — wiki-gaps for what is missing or what to read next, wiki-lint to check the pages for problems or repair them, wiki-maintain to bring it up to date, and wiki-help for how to use the plugin.
 ---
 
 Report the current state of one wiki — the connected folder, or the part named where several are connected. Read, don't write.

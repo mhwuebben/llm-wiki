@@ -26,6 +26,7 @@ Two front doors: **[[index]]** (everything, cataloged) and **[[overview]]** (wha
 | "Import this folder" | Claude says how big it is and what it would leave out, copies it with a record of where each file came from, and ingests the part you choose first |
 | "What does it all add up to?" | connections your pages already imply get proposed, and you decide which ones get written down |
 | "Go through the dream report" — after a scheduled dream pass | the proposals waiting for you, one at a time; only what you accept is filed |
+| "How do I …?" — which skill does what, how to turn something on, why the graph looks like this | answered from the plugin itself; nothing in the vault changes |
 | A link sent while this folder is out of reach — the computer closed | it goes on the project's backlog and is captured the next time a session can reach the folder |
 
 ## One writer at a time

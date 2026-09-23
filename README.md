@@ -35,7 +35,7 @@ The work is split so each side does what it's good at:
 - **You** choose the sources, ask good questions and decide what matters.
 - **Claude** does the reading, summarising, cross-referencing, filing and bookkeeping. That is exactly the work that kills every second brain, and a model doesn't get bored of it.
 
-**LLM Wiki makes that proposal something you can install and leave running.** It is thirteen skills and a vault of plain markdown. Every claim links to the source it came from. The wiki is re-checked on a schedule, and nothing gets written that you can't open and read.
+**LLM Wiki makes that proposal something you can install and leave running.** It is fourteen skills and a vault of plain markdown. Every claim links to the source it came from. The wiki is re-checked on a schedule, and nothing gets written that you can't open and read.
 
 ## What it's like
 
@@ -79,6 +79,7 @@ Anything that needs a judgement call waits for you.
 The proposal is a page long, on purpose. Keeping a wiki healthy for months turned out to need a lot of rules. These are the main ones:
 
 - **Propagation that closes the loop.** An ingest ends by checking that every page the source names actually cites it. Nothing leaves the inbox before that check passes.
+- **Documents of any length.** A 60,000-word plan is mapped by its own headings, read section by section (in parallel where Claude can), and ingested in one pass: one source page, claims cited by section, every page it touches updated once.
 - **Sources that keep changing.** A document captured again is compared with the previous copy, and only what changed is propagated. The page keeps a version history, so you can see how a position drifted and why.
 - **Folders you already have.** A docs repository or an export is imported whole, with a record of where each file came from, and every scheduled run brings in what changed there.
 - **A laptop that's closed.** Links sent from a phone wait on a backlog in the Claude project, and are drained first by the next session that can reach the folder.
@@ -121,6 +122,7 @@ Using and looking after the wiki:
 | `wiki-status` | Where the wiki stands: size, what's pending, what's running, imported folders, what changed, what it still doesn't know — plus what is waiting for your decision. Read-only. | Any time. Manual. |
 | `wiki-doctor` | Whether the machinery is sound: the vault's structure and scripts, the schema against the plugin version that built it, the project instructions, the scheduled tasks and their prompts, whether the folder is attached to them, and whether the routines have actually run. Reports problems with the text to paste for each fix. Read-only. | After a plugin update, when a scheduled run stops happening, when something is off. Manual. |
 | `wiki-gaps` | What's missing and what to go and read. Read-only. | When deciding what to read next. Manual. |
+| `wiki-help` | How to use the plugin: which skill does what, what to say to trigger it, how to turn something on, and what you're looking at — the vault's folders, or the ring of dots around the Obsidian graph. Answers from the plugin itself, never by changing the wiki. Read-only. | Whenever you wonder *"how do I …?"*. Manual; the project instructions route such questions here. |
 | `wiki-setup` | Builds the vault: `raw/`, `wiki/`, `_meta/schema.md`, index, overview, log, templates. Interviews you first so the schema fits your domain, and hands you the project instructions to paste into your project, together with the scheduled-task prompt. Later, upgrades an existing vault after a plugin update. | Once per vault; again after an update. Manual. |
 
 **Two sub-agents:**
