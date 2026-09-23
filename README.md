@@ -1,22 +1,104 @@
-# LLM Wiki — a Claude plugin for an AI-maintained second brain
+# LLM Wiki
 
-Point Claude at a folder. It builds a knowledge base out of your sources — plain markdown, interlinked, cited, and kept current — and maintains it for you. You curate the sources, ask the questions, and decide what matters.
+**A second brain that Claude keeps for you.** You bring the sources and the questions. Claude reads, files, cross-references and keeps everything current, in plain markdown, in a folder you own.
 
-Built for **Claude Cowork** (and works in Claude Code). Obsidian is the nice front end; nothing depends on it — Claude follows the wiki's links itself, and any editor can open the vault.
+A plugin for **Claude Cowork** (it works in Claude Code too). By **Dr. Markus Wuebben** ([github.com/mhwuebben](https://github.com/mhwuebben) · markus.wuebben@gmail.com), inspired by Andrej Karpathy's [LLM Wiki proposal](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
 
-By **Dr. Markus Wuebben** ([github.com/mhwuebben](https://github.com/mhwuebben) · markus.wuebben@gmail.com), inspired by Andrej Karpathy's [LLM Wiki proposal](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
+---
 
-## What's in the plugin
+## Why this exists
 
-**Thirteen skills.** Claude picks them up automatically when the task fits; you can also invoke one by name, or with `/` in Cowork and Claude Code.
+You read something that matters: a paper, a strategy memo, a competitor's annual report, a long thread that finally settled a question. You highlight it, clip it, maybe write three lines about it. Six months later you need it. What you find is a folder of clippings, a notes app full of untitled notes, and a vague memory that someone once disagreed.
 
-An item you add is **pending** while it sits in `raw/inbox/`, and **ingested** once it has moved out of the inbox and a source page points at it.
+**Second brains rarely fail at capture. They fail at the bookkeeping.** Capturing is easy. The expensive part is everything after it:
 
-**Several vaults?** Each is a *part* of one brain. Questions read across all the parts a session can reach, routed by what each vault's schema says it is for, and scoped exactly when you name one ("ask the research vault"). A project that combines several wikis is a reading room: the only thing it writes is a capture into one part's inbox, which that part's own project then ingests. Ingest, lint, maintain, dream passes and upgrades refuse there and say which part's project to use, because each works on a vault as a whole and a combined project has no one vault it belongs to. wiki-doctor, wiki-status and wiki-gaps still run. A `[[link]]` only resolves inside one folder, so a claim borrowed from another part is quoted with that part's name and id instead of linked. With one vault connected, none of this is visible. For one question that matters and sits across parts, ask for a **delphi** pass: each part answers alone, then sees the others' quoted claims — not their conclusions — and says what it contradicts, confirms independently or can now add; the answer separates what they agree on, what they disagree on and why, what only one part knows, and what none of them does.
+- linking the new thing to the old things;
+- noticing that this report contradicts the one from March;
+- updating the summary page you wrote back then;
+- retiring the claim that quietly stopped being true.
 
-The plugin has an eval suite: `claude plugin eval .` runs fourteen cases — ten that a message reaches the right skill, four that a skill does the right thing to a fixture vault. `evals/README.md` says how to run them and what each asserts.
+That work is tedious and never ends, so it's the first thing anyone stops doing. From then on the collection grows while the knowledge doesn't.
 
-Every skill also has a **debug mode**, off unless the schema's §11 `Debug:` line says otherwise or you ask for it: a run then records, alongside its normal work, wherever the plugin's own instructions made it guess — versioned, quoted, and reproducible without your vault, in `outputs/debug-YYYY-MM-DD.md`. It is the fastest way to send back a bug in a plugin written in prose.
+**Chatting with your documents doesn't fix it.** Upload a pile of PDFs and ask a question, and the model reads fragments and works out an answer from scratch, every time. Nothing it worked out yesterday is kept. A contradiction stays hidden in a passage it happened not to read. You get an answer, but nothing builds up.
+
+## The idea
+
+Karpathy's proposal turns this around. Don't make the model search raw documents at question time. Have it **compile** them into a wiki, and keep that wiki current as new sources arrive:
+
+- **Raw sources are never touched.** They are the ground truth.
+- **The model owns the wiki pages.** It writes them, links them and revises them.
+- **A schema says how.** You and the model refine it together over time.
+- **Three operations keep it going:** ingest, query and lint.
+
+The work is split so each side does what it's good at:
+
+- **You** choose the sources, ask good questions and decide what matters.
+- **Claude** does the reading, summarising, cross-referencing, filing and bookkeeping. That is exactly the work that kills every second brain, and a model doesn't get bored of it.
+
+**LLM Wiki makes that proposal something you can install and leave running.** It is thirteen skills and a vault of plain markdown. Every claim links to the source it came from. The wiki is re-checked on a schedule, and nothing gets written that you can't open and read.
+
+## What it's like
+
+**Monday.** You clip an article in your browser, and it lands in the vault's inbox. On the train you send Claude a link from your phone. Your laptop is closed, so the link waits on a backlog. It is picked up the next time a session can reach the folder.
+
+**Tuesday.** You drop a competitor's annual report into the chat: *"add this."* Claude reads all of it and writes a page for it. Then comes the part that makes the whole thing work: it goes through **every page the report touches** and updates each one with the new claims, each linked to the report:
+
+- the competitor's page,
+- three concept pages,
+- the overview.
+
+Where the report contradicts an earlier source, both claims stay on the page with a flag. Nothing is quietly overwritten.
+
+**Thursday.** You ask how their pricing has moved this year. The answer comes from pages that are already compiled, with every claim cited. It also says plainly what the wiki doesn't cover yet, instead of filling the gap with general knowledge. The answer was worth keeping, so it's filed as a note, and next time it's already there.
+
+**Friday night.** A scheduled run does the routine:
+
+- ingests whatever arrived during the week;
+- fixes broken links and a drifting index;
+- writes you a digest of what the wiki learned.
+
+Anything that needs a judgement call waits for you.
+
+**Once a month.** A dream pass reads across what's already filed. It looks for connections no page states yet, such as two sources that agree independently, or a question the vault can now answer. It proposes them in a report, labelled as inference and cited. You accept or reject each one, and a rejected one is never proposed again.
+
+**One source should change many pages, not produce one summary.** That is the difference between a wiki that builds up and a folder that fills up.
+
+## Why you can trust what it writes
+
+- **Your sources are never edited.** Every page in `wiki/` can be rebuilt from `raw/` and the schema. Nothing can rebuild `raw/`, so nothing touches it.
+- **Every claim is cited.** Each factual line on a page links to the source page it came from, and lint samples the citations against the sources behind them. Claude's own synthesis is labelled as inference.
+- **Disagreements are shown.** Two sources that conflict both stay on the page, with what would settle it. The wiki never averages them.
+- **Nothing is thrown away.** A claim a newer source replaces moves to the page's `## History`, with the date and the reason. A source that changes over time keeps every version and the story of what changed.
+- **You decide the judgement calls.** Merging pages, deleting anything, moving files, accepting a connection: each waits for your yes. Unattended runs ingest what's waiting and apply only fixes that have one right answer.
+- **One writer at a time.** A lock you can open and read shows what's running. A second session waits, and a crashed one is taken over.
+- **Junk stays out.** Tickets, invoices, credentials and other people's personal data are stopped at the door, whatever way they arrive.
+- **No lock-in.** It is plain markdown in your folder. Obsidian makes it pleasant to browse, but nothing depends on it. There are no hooks and no MCP servers, only instructions you can read.
+
+## What the plugin adds to the proposal
+
+The proposal is a page long, on purpose. Keeping a wiki healthy for months turned out to need a lot of rules. These are the main ones:
+
+- **Propagation that closes the loop.** An ingest ends by checking that every page the source names actually cites it. Nothing leaves the inbox before that check passes.
+- **Sources that keep changing.** A document captured again is compared with the previous copy, and only what changed is propagated. The page keeps a version history, so you can see how a position drifted and why.
+- **Folders you already have.** A docs repository or an export is imported whole, with a record of where each file came from, and every scheduled run brings in what changed there.
+- **A laptop that's closed.** Links sent from a phone wait on a backlog in the Claude project, and are drained first by the next session that can reach the folder.
+- **Dreaming with a gate.** Dream passes propose only connections a careful reader could verify by putting two pages side by side. They never bring in outside knowledge, and they never apply anything themselves.
+- **Several brains.** A work wiki, a personal one, a project's: questions read across all of them. For a question that matters there is **delphi**. Each wiki answers alone, then sees the others' quoted claims (not their conclusions). You get back what they agree on, where they conflict, what only one of them knows, and what none does.
+- **Machinery you can check.** `wiki-doctor` checks the setup around the wiki: the schema version, the project instructions, the scheduled tasks and whether they're really running. **Debug mode** records wherever the plugin's own instructions made Claude guess, which is the fastest way to send back a bug in a plugin written in prose. An eval suite (`evals/`) checks that messages reach the right skill and that skills behave on a fixture vault.
+
+## Get started
+
+1. **Install.** In Claude Desktop, open **Cowork → Customize → Plugins → + → Add marketplace**, paste `mhwuebben/llm-wiki`, sync, and install **llm-wiki**. In Claude Code, run `/plugin marketplace add mhwuebben/llm-wiki`, then `/plugin install llm-wiki@mhwuebben-plugins`.
+2. **Pick a folder:** an empty one, or one that already holds documents. In Cowork, click **Work in a project or folder** and choose it.
+3. **Say** *"Set up an LLM wiki here — it's for [your topic]."* Setup asks two short sets of questions so the schema fits your domain, and one about the schedule near the end.
+4. **Make it a project.** Create a Cowork project with this folder. Paste in the project instructions setup hands you, and add the scheduled task it gives you (weekly suits an active vault).
+5. **Feed it.** Set up the Obsidian Web Clipper when setup offers it, clip one article, and say *"process what's waiting."* Then open the folder in Obsidian (**Open folder as vault**) and watch the graph fill in. Obsidian is optional; any editor works.
+
+Once there are ten or so sources, add a monthly dream pass the same way. [How it works](docs/how-it-works.md) covers the rest: installing from a file, upgrading, forking, and everything about the folder.
+
+## The skills
+
+Claude picks the right one up when the task fits. You can also call one by name, or with `/`. An item is **pending** while it waits in `raw/inbox/`, and **ingested** once a source page points at it.
 
 Getting sources in:
 
@@ -46,150 +128,16 @@ Using and looking after the wiki:
 - `wiki-reader` — reads one source in parallel when several are ingested at once, and drafts its page. Writes nothing else, so parallel readers can't clobber each other.
 - `wiki-auditor` — audits a slice of the vault read-only during a lint pass and returns findings.
 
-No hooks and no MCP servers: everything here is instructions and markdown, so there's nothing to trust beyond the files you can read.
+## Several brains
 
-### What makes it safe to leave running
+Most people start with one wiki per project, which is the default. Some keep several on purpose, because they have different scope rules, different owners, or different things that must never leave a folder. Each is then a *part* of one brain:
 
-- **One writer at a time.** Every skill that changes the wiki first takes the vault lock, `_meta/wiki-lock.md`: a lease with a holder, an expiry and a line per step, so you can open it and see what is running. A second session waits; a session that died is taken over a minute after its lease runs out — normally within six minutes — and the next ingest finishes whatever it left half done. Reading, capturing and writing reports never wait.
-- **You can see what it is doing.** A long run — an import, a batch, the routine — starts with a plan (how many items, how many passes, how long), says what it is about to do before each long step, and reports a tally after each pass. The lock file shows the same count at any moment.
-- **Nothing gets lost while the folder is out of reach.** If Claude can't reach the vault — a cloud session with your laptop closed, a chat from your phone — a link or note you send goes on a backlog in the Claude project (`wiki-backlog.md`). The next session that can reach the folder captures it before anything else, and so does the scheduled `wiki-maintain` run.
+- **Reading crosses.** Questions are routed by what each wiki's schema says it is for, and a scope you name ("ask the research wiki") is followed exactly. A claim taken from another part is quoted with that part's name and id, because links only work inside one folder.
+- **Writing doesn't.** A project that combines several wikis is a reading room. The only thing it writes is a capture into one wiki's inbox, which that wiki's own project then ingests. Ingest, lint, maintain, dream passes and upgrades run where their wiki is the only one connected, so nothing ever has to guess which vault it is in.
 
-## Install
+## How an item moves through the wiki
 
-### In Cowork, from the marketplace (best for sharing)
-
-1. In Claude Desktop, open the **Cowork** tab → **Customize** → **Plugins** → **+** → **Add marketplace**.
-2. Paste `mhwuebben/llm-wiki` (or the full URL) and sync.
-3. Find **llm-wiki** in the listing and install it.
-
-Updates arrive on the next sync, which is why this beats sending files around. See *Upgrading* below for what a sync does not change.
-
-### In Cowork, from the file
-
-**Customize → Plugins → +** and upload the plugin folder (zipped). Same components, no update channel.
-
-### In Claude Code
-
-```
-/plugin marketplace add mhwuebben/llm-wiki
-/plugin install llm-wiki@mhwuebben-plugins
-```
-
-### Forking it
-
-Push your copy to a git repo whose root contains `.claude-plugin/marketplace.json` — it already does — then add that repo as a marketplace.
-
-Change authorship where it appears: `author` and `repository` in `.claude-plugin/plugin.json`; `owner` and `name` in `.claude-plugin/marketplace.json` (and the install commands above, which use that name); `skills/wiki-setup/assets/about.md`, the introduction and sign-off `wiki-setup` shows; and this README's byline and contact lines. Keep the copyright line in `LICENSE`, as the MIT licence requires, and add your own beside it.
-
-### Upgrading
-
-A sync updates the skills. It does not touch anything in your vault:
-
-- **Your `_meta/schema.md` stays as it was.** It is yours, and the skills follow it over their own defaults — lint included, so a schema you have customised never floods a report. When a release changes a schema convention, ask Claude to *upgrade the vault*: `wiki-setup` compares your schema with the current template and proposes each change for you to approve, brings existing pages in line with what changed, and offers subfolders for any folder that has grown large.
-- **Your project instructions stay as they were.** When a release changes routing, re-paste them: ask Claude to *upgrade the vault*, which shows the current text, or copy the first fenced block from `skills/wiki-setup/assets/project-instructions.md`.
-- **Scheduled tasks name skills.** If a task's prompt names a skill this plugin doesn't have, ask Claude to *upgrade the vault*: it gives you the current prompt. The plugin can't edit a task for you.
-
-## First run
-
-1. Make a folder for the vault (or pick one that already has documents in it).
-2. In Cowork, click **Work in a project or folder** and choose it.
-3. Say: *"Set up an LLM wiki here — it's for [your topic]."*
-4. Answer setup's questions — two short cards, and one about the schedule near the end.
-5. Open the folder in Obsidian (**Open folder as vault**) and look at the graph. Optional — any editor works.
-6. Set up the Web Clipper when setup offers it — setup shows you the template to import — clip one article, then run `wiki-ingest-pending`. Watch the pages appear.
-
-Then make it a Cowork **project** — create one and add this folder to it. At the end, `wiki-setup` hands you two things together (both also live at `skills/wiki-setup/assets/project-instructions.md`):
-
-- **The project instructions**, to paste into the project. They make later sessions answer from the wiki instead of from general knowledge, ingest a dropped link instead of parking it, and keep a backlog when the folder is out of reach.
-- **The scheduled task prompt**, for a recurring task on the project that runs `wiki-maintain` — weekly suits an active vault. Set the task to approve automatically, or it stops at its first file write; attach the vault folder to the task itself, and run it on the computer that holds the folder:
-
-  ```
-  Run the wiki-maintain skill on the LLM wiki in the folder connected to this task: the one whose _meta/schema.md carries the vault id <ID> (the folder was called "<FOLDER>" when this task was set up; the id, not the name, identifies it). If no connected folder carries that id but exactly one holds a _meta/schema.md, use it and say so in the digest. This is an unattended scheduled run: don't wait for answers; put anything that needs a decision in the digest.
-  ```
-
-  Naming the folder is a hint, not the locator, so renaming the vault costs a line in the prompt rather than a failed run — but a task with no folder attached can do nothing at all.
-
-Once there are ten or so sources, add a monthly `wiki-dream-only` pass the same way; you work through its reports with `wiki-dream-ingest`.
-
-## Feeding the vault
-
-Most sources should arrive without asking Claude. The **Obsidian Web Clipper** is the main path: `wiki-setup` gives you a template to import (`skills/wiki-setup/assets/webclipper-template.json`, also saved to your vault as `_meta/webclipper-template.json`) that clips articles straight into `raw/inbox/` with the provenance fields the wiki expects — and because it runs in your logged-in browser, it gets paywalled and JavaScript-heavy pages a server-side fetch can't.
-
-Drag-and-drop, phone sync, and read-later exports work the same way. The wiki doesn't care how a file arrived:
-
-- `raw/` is immutable, including files other tools wrote — clips are never reformatted, and frontmatter is mapped onto the source page rather than rewritten in place.
-- Ingest splits a source by kind: text to `raw/`, binaries to `raw/assets/` with a provenance sidecar left in `raw/`. Attachments — images in a clip, figures from a paper — go to `raw/assets/` too, but belong to their parent and get no sidecar. So `raw/` is always greppable, `raw/assets/` holds the originals, and a source page carries `raw:` for the markdown and `asset:` as a list of everything it owns in `raw/assets/`.
-- A source counts as ingested when a source page points at its file, not because of a flag — so nothing gets filed twice and nothing gets silently skipped.
-- Every arrival passes the same scope test before it is ingested, however it got there. Admin (tickets, invoices, statements, credentials) and other people's personal data (CVs, private threads, contact files) stay in the inbox until you decide.
-- The lint pass checks `raw/` against the source pages and reports clips nobody ingested.
-
-Clip freely; ingest the same day with `wiki-ingest-pending`, and let the scheduled `wiki-maintain` run sweep up whatever is left.
-
-**Bringing in a folder you already have** — a docs repository, a Notion or Evernote export, course materials, a shared drive — is an import, not a copy. Claude first says how many files there are, what it would leave out (build output, generated reference material) and roughly how many passes the ingest will take, and suggests starting with one part. It copies each file under a unique name built from its path, so the `README.md` in every subfolder doesn't clash. An import record in `_meta/imports/` keeps where each copy came from, a fingerprint of its content and, in a git repository, the date of its last change. That lets source pages carry their `origin:` and date, lets the folder's own structure become subjects, and lets every scheduled `wiki-maintain` run bring in what changed in the folder since.
-
-## What lands in the folder
-
-```
-vault/
-├── README.md            how this vault works, for you
-├── index.md             catalog of every page — read first on every question
-├── overview.md          the evolving synthesis: what we know, open questions, contradictions
-├── patterns.md          personal vaults only: loops the sources keep showing
-├── _meta/
-│   ├── schema.md        the conventions Claude follows — yours to edit
-│   ├── log.md           one entry per operation, append-only
-│   ├── imports/         a record of every folder imported whole: where each copy came from
-│   ├── wiki-lock.md     the vault lock: free, or what is writing right now
-│   ├── wiki-lock.sh     the script that takes and releases it
-│   ├── wiki-search.sh   the searches the skills run — backlinks, citations, pending
-│   ├── moves/           a record of every reorganisation, if pages were ever moved
-│   ├── webclipper-template.json  the Web Clipper template, to import
-│   └── templates/       page templates for source, entity, concept, note
-├── raw/                 your sources, one markdown file each — immutable
-│   ├── inbox/           pending items, waiting to be ingested
-│   └── assets/          binary originals and attachments — immutable
-├── wiki/                Claude's pages, all regenerable from raw/ + the schema
-│   ├── sources/         one page per source — once large, optionally in year or subject subfolders
-│   ├── entities/        people, organisations, products, places, datasets
-│   ├── concepts/        ideas, methods, mechanisms, themes
-│   └── notes/           filed answers, the thinking behind decks and documents, approved dream findings
-└── outputs/             decks, exports, charts, lint reports, digests, dream and debug reports
-```
-
-`_meta/schema.md` is the file worth reading and editing. It's what makes Claude a disciplined wiki maintainer rather than a chatbot with file access, and it's meant to evolve as you learn what your domain needs.
-
-### Where things go, and when
-
-| Path | What lands there | When, and who puts it there |
-|---|---|---|
-| `raw/inbox/` | Every new source, whatever its type: a Web Clipper article, a dropped PDF, a synced file, a URL Claude fetched and converted to markdown, a pasted note. A binary Claude captures gets a markdown sidecar with the same name stem, holding its provenance; one that arrived on its own gets its sidecar at ingest. | The moment it arrives — from you, your tools, `wiki-capture-only` or `wiki-capture-and-ingest`. It is pending here until it is ingested. A file that fails the scope test (admin, or another person's personal data) stays here until you decide. |
-| `raw/` | One markdown file per capture of an ingested source. Text sources as they came; for a binary, its sidecar — what it is, where it came from, when it was captured, how complete the capture is. No extracted text. A changed source captured again gets a new file; its page points at the newest, keeps the last ten under `raw_previous:`, and lists every capture it ever had — with what changed and why — under `## Version history`. | At ingest, moved out of the inbox once the source's pages are written. Never edited, renamed or deleted afterwards; the one permitted touch is flipping an existing `ingested:` flag. |
-| `raw/assets/` | The binary originals — PDFs, Word files, slides, images, audio, video, spreadsheets — plus attachments: figures pulled from a paper, images inside a clip, files attached to an email. Attachments are named after their parent's file and get no sidecar. | At ingest, while its sidecar moves to `raw/`. Images you paste or download in Obsidian land here directly, once you point Obsidian's attachment folder here during setup; ingest lists them on their parent. |
-| `wiki/sources/` | One page per source: summary, key claims, the entities and concepts it touches, how it sits with the rest of the wiki, open questions. Its `raw:` field points at the file in `raw/`, `asset:` lists what it owns in `raw/assets/`. | At ingest — `wiki-ingest-pending`, run by you, by `wiki-capture-and-ingest` or by `wiki-maintain`. After a duplicate check, so nothing gets two pages. |
-| Subfolders of a type folder | `wiki/sources/2026/`, `wiki/concepts/pricing/` — only where the schema groups that type (§3), by year or by subject. One level deep. | A page lands in its subfolder when it is created. A grouping is set at setup only when it's known in advance (a journal by year, a course by module); otherwise lint proposes one once a folder passes ~100 pages. A subject can name its own page in the wiki (a project, a module, a book) in schema §3c; each new source gets its subject from §3c's line, or else from the subjects of the sources it shares pages with, and the ingest report says which. Pages are moved only with you present, recorded in `_meta/moves/`, and a page you move stays where you put it. |
-| `wiki/entities/`, `wiki/concepts/` | What the vault knows about each thing, gathered across every source that mentions it, each claim with its source link and disagreements shown on the page. | Created at ingest once a thing clears the schema's promotion bar — a second source, enough said that someone would search for it by name, or two pages already linking to it. Until then it's a line on the nearest page. Updated by every later source that touches it. |
-| `wiki/notes/` | Answers worth keeping, the argument behind a deck or briefing, and connections across pages you approved. | `wiki-query` files a good answer — and, when an answer becomes a deck or document, files the synthesis here *before* making it; `wiki-dream-ingest` adds a dream finding you accepted, marked as inference. |
-| `index.md`, `overview.md` | The catalog, and the current best picture — including open questions, contradictions in play and what to read next. | The index gains a row for every new page, at ingest or when a note is filed; lint rebuilds it from the pages whenever it has drifted. The overview is revised whenever an ingest, a filed answer or an approved finding moves the picture. |
-| `patterns.md` | Recurring loops in how you work, decide or get stuck — each with the sources that show it. Claude's reading of them is kept apart, marked as inference. | Personal vaults only. A loop earns a line at the third source that shows it — added at ingest or proposed by a dream pass. |
-| `_meta/imports/` | One record per imported folder: each file's path in that folder, a fingerprint, its git date, and the name of its copy. | Written when a folder is imported; extended by every sync, when `wiki-maintain` brings in what changed. |
-| `_meta/wiki-lock.md`, `_meta/wiki-lock.sh` | The vault lock: free, or which operation is writing right now, with a line per step — and the small script every writing skill takes and releases it with. | Created at setup. Taken and released by every skill that changes the wiki; open the `.md` any time to see what is running. |
-| `_meta/wiki-search.sh` | The searches the skills run — where a name resolves to, what links a page, whether a page's body cites a source, what is waiting in the inbox. One command each, so ingest, query and lint always get the same answer. | Created at setup. Run by the skills; run it yourself any time — `sh _meta/wiki-search.sh backlinks <page>`. |
-| `_meta/log.md` | One entry per operation: setup, capture, ingest, query, lint, maintain, dream, schema — including, by topic, questions the wiki couldn't answer. | Appended by every skill that changes something. It's how `wiki-maintain` knows what's new since last time, how a dream pass knows what you've already rejected, and how `wiki-gaps` knows what you keep asking about. |
-| `outputs/` | Decks, exports and charts, plus the routine reports: `lint-YYYY-MM-DD.md`, `digest-YYYY-MM-DD.md`, `dream-YYYY-MM-DD.md`, and `debug-YYYY-MM-DD.md` where debug mode is on. | `wiki-query` when an answer becomes a deck, document or chart; `wiki-lint`, `wiki-maintain` and `wiki-dream-only`, each time they run. |
-
-### Why it's split this way
-
-- **`raw/` is the ground truth.** Everything in `wiki/` can be rebuilt from `raw/` and the schema; nothing can rebuild `raw/`. That is why it is never edited, and why a claim on a wiki page always links back to a source.
-- **Text in `raw/`, binaries in `raw/assets/`.** `raw/` stays one greppable markdown file per capture, while the originals sit beside it and get reopened whenever a claim needs checking.
-- **One queue.** Every source enters through `raw/inbox/` (only images Obsidian downloads into `raw/assets/` skip it), so `wiki-ingest-pending`, `wiki-maintain` and lint all look in one place — nothing gets filed twice, nothing silently skipped.
-- **"Ingested" is derived, not flagged.** A source counts as ingested when a source page points at its file. Files from other tools often carry no flag, and a flag can be wrong; the pointer can be checked.
-- **`outputs/` is disposable.** A deck or report is a view of the wiki, never the only copy of a thought, so lint never reads it and clearing it loses nothing but renders. Three catches: a dream report still awaiting review is the only copy of its findings, a debug file nobody has read yet is the only copy of what a run found confusing in the plugin, and a chart embedded in a note shows as a broken embed until it is made again from the note.
-- **Names for links, folders for you.** Every page name is unique across the vault and links use names, not paths. So Claude finds any page wherever it sits, you can reorganise inside `wiki/` in any editor, and nothing depends on Obsidian: outside it, a `[[link]]` isn't clickable, but searching for the file by name finds exactly one.
-- **The schema is yours.** Plugin updates never change `_meta/schema.md`; the skills follow it over their own defaults.
-
-### How an item moves through the wiki
-
-Blue boxes are the skills you run, or that run each other; amber is where an item starts; green are the states it passes through; yellow diamonds are the checks; red is where it stops; dashed boxes with italic text are comments.
+Blue boxes are skills; amber is where an item starts; green are the states it passes through; yellow diamonds are checks; red is where it stops; dashed boxes are comments.
 
 ```mermaid
 %%{init: {"flowchart": {"nodeSpacing": 30, "rankSpacing": 45, "curve": "basis"}, "themeVariables": {"fontSize": "15px"}}}%%
@@ -253,19 +201,6 @@ flowchart LR
   style LEGEND fill:#ffffff,stroke:#cbd5e1,color:#475569
 ```
 
-### One source, end to end
-
-A PDF you hand Claude on 20 September:
-
-1. **Checked:** `wiki-capture-and-ingest` runs `wiki-capture-only`, which checks it is in scope and not already in the vault.
-2. **Arrives:** it lands as `raw/inbox/2026-09-20-attention.pdf`, with the provenance sidecar `raw/inbox/2026-09-20-attention.md` beside it — complete, page count recorded — and is logged as `capture | Attention Is All You Need`. It is pending; `wiki-capture-and-ingest` hands just this item to `wiki-ingest-pending`.
-3. **Read and filed:** `wiki/sources/attention-is-all-you-need.md`, with `raw: raw/2026-09-20-attention.md` and `asset: [raw/assets/2026-09-20-attention.pdf]`.
-4. **Propagated:** new pages for `transformers` and `self-attention`, updates to every page it confirms or refines, a contradiction callout wherever it disagrees with an earlier source, a revised `overview.md` — and a closing check that every page the source page lists cites it.
-5. **Moved and indexed:** the PDF to `raw/assets/`, the sidecar to `raw/`, new rows in `index.md`. It is no longer pending; anything else in the inbox still is.
-6. **Logged:** `## [2026-09-20] ingest | Attention Is All You Need` in `_meta/log.md`, after the capture entry.
-
-A web clip goes the same way, minus the sidecar: the clip itself moves to `raw/`, and any images Obsidian downloaded for it — already in `raw/assets/` — are listed on its source page's `asset:`. A PDF you drop into the inbox yourself also goes the same way; ingest writes its sidecar.
-
 ## Habits that make it work
 
 - **Ingest the same day you capture.** An inbox that grows without being processed is the failure mode this pattern exists to avoid.
@@ -275,12 +210,20 @@ A web clip goes the same way, minus the sidecar: the clip itself moves to `raw/`
 - **Let it dream, then judge.** A monthly dream pass finds connections nobody asked for. Everything it proposes is inference — go through the report with `wiki-dream-ingest`, accept the ones that hold up side by side, reject the rest, and the rejections stop it proposing them again.
 - **Let the schema change.** When you keep correcting the same thing, fix it in the schema instead.
 
-## Editing it
+## Learn more
 
-Every component is markdown. Change a `SKILL.md` and it takes effect in the current session; agents need a plugin reload or a new session. Bump `version` in both manifests when you publish a change, or marketplace installs won't pick it up.
+[How it works](docs/how-it-works.md) has the rest:
+
+- what lands in the vault, where, when and why;
+- one source followed end to end;
+- the Web Clipper and folder imports;
+- the lock and the backlog;
+- installing, upgrading, forking and editing the plugin.
+
+The [changelog](CHANGELOG.md) lists what each release changed, and what to do after it for an existing vault.
 
 ## Credit and contact
 
-The plugin is inspired by Andrej Karpathy's [LLM Wiki proposal](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (April 2026): immutable raw sources, an LLM-owned wiki, a schema you and the model co-evolve, and the ingest / query / lint loop. It builds on that proposal for Cowork, with the Obsidian conventions, page templates, propagation rules and maintenance checks filled in.
+The plugin is inspired by Andrej Karpathy's [LLM Wiki proposal](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (April 2026). The proposal supplies the core design: immutable raw sources, an LLM-owned wiki, a schema you and the model co-evolve, and the ingest / query / lint loop. This plugin builds it out for Cowork, adding the page conventions, propagation rules, maintenance checks and routines above.
 
-Written and maintained by **Dr. Markus Wuebben** — [github.com/mhwuebben](https://github.com/mhwuebben). Questions, ideas or something not working: markus.wuebben@gmail.com, or [open an issue](https://github.com/mhwuebben/llm-wiki/issues).
+Written and maintained by **Dr. Markus Wuebben** ([github.com/mhwuebben](https://github.com/mhwuebben)). Questions, ideas or something not working: markus.wuebben@gmail.com, or [open an issue](https://github.com/mhwuebben/llm-wiki/issues). MIT licence.

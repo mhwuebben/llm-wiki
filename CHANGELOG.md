@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.9.1 — 2026-09-23
+
+- **The README tells the story.** It covers why the project exists (second brains fail at the bookkeeping, not at capture), the idea it builds on, what a week with it looks like, why you can trust what it writes, and what the plugin adds to the proposal. The reference material (the vault layout, where things go and why, an end-to-end example, feeding the vault, installing, upgrading and forking) moved to `docs/how-it-works.md`.
+
 ## 3.9.0 — 2026-09-23
 
 - **A project that combines several wikis is a reading room.** Questions, delphi, status, gaps and doctor read across every part as before, but the only thing such a project writes into any wiki is a capture into one part's inbox. Ingest, lint, maintain, dream passes, folder imports and schema upgrades refuse there in one line and name the part's own project, where that wiki is the only one connected and nothing has to guess which vault it is in. A scheduled task with several wikis attached stops before its first write and says which parts it found; wiki-doctor reports such a task. capture-and-ingest captures and stops, and the items are ingested by that part's own routine.
