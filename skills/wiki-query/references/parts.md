@@ -6,7 +6,9 @@ A vault is a **part** of a brain, not the whole of it: a work wiki, a personal o
 
 ## Finding the parts
 
-The parts are the connected folders holding a `_meta/schema.md`. Nothing is configured and nothing has to be listed: read each one's §1 — what it is for, whose it is, the questions it exists to answer — and its vault id. That is what routing reads, and it is one short section per part.
+The parts are the connected folders holding a `_meta/schema.md`. Read each one's §1 — what it is for, whose it is, the questions it exists to answer — and its vault id. That is what routing reads, and it is one short section per part.
+
+**Where the project instructions list the parts** — the several-wikis paragraph a project gets only when it deliberately combines them — that list is the expected set, and it is what makes an absent part visible: a part on the list whose folder isn't connected is **named as missing** in every answer it would have been consulted for — *"the personal part isn't connected, so this is from two of three"* — never silently left out. A connected vault that isn't on the list is still a part: use it, and mention once that the instructions don't name it. Without a list, discovery is all there is, and a folder nobody connected simply isn't in the brain.
 
 Two folders whose schemas carry the same **vault id** are two copies of one vault, not two parts: say so, ask which is live, and use only that one. Writing to both is how a vault ends up silently forked (wiki-doctor, *Identity and parts*).
 
@@ -45,7 +47,7 @@ Everything else in this file serves these. They are the same whatever the parts 
 
 **3. Divergence over time.** The same subject in two parts, holding claims that disagree — sort them by the `published:` dates of the sources behind them. A source with no date is not guessed at and not sorted in: list those apart, as claims of unknown age, and say so. Where the claims stop agreeing is a date, and usually a document that one part holds and the other doesn't. That is the useful form of "what went wrong and where": not a verdict, but the point of divergence and the source that would have prevented it.
 
-For shape 2, `delphi.md` is the deeper version — each part answers alone, then sees the others' quoted claims — and it is opt-in on its own terms: run it when the person asks, or offer it when an answer visibly turned on which part was read first. Never start one because the question looks important.
+For shape 2, `delphi.md` is the deeper version — each part answers alone, then sees the others' quoted claims — with its own rule for which parts take part (a search in every part, not routing by declared domain), and it is opt-in on its own terms: run it when the person asks, or offer it when an answer visibly turned on which part was read first. Never start one because the question looks important.
 
 ## The same subject under different names
 

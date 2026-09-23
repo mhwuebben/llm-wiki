@@ -11,7 +11,7 @@ The output of this skill is a folder the person can open in Obsidian plus a `_me
 
 ## Working in Cowork
 
-- The vault is the connected folder. If no folder is connected, ask the person to click **Work in a project or folder** and pick (or create) one — everything below happens inside it. Several connected folders already holding a `_meta/schema.md` are existing parts of one brain (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`): ask which folder this new vault goes in, say what the existing parts are for, and make §1 say plainly what belongs in *this* one — that sentence is what later routes questions between them.
+- The vault is the connected folder. If no folder is connected, ask the person to click **Work in a project or folder** and pick (or create) one — everything below happens inside it. **One wiki per project is the default.** If a connected folder already holds a `_meta/schema.md`, this project already has a wiki: say so, and recommend giving the new one a project of its own. Only when the person says they mean to combine them, set it up alongside — ask which folder, say what the existing wiki is for, make §1 say plainly what belongs in *this* one (that sentence is what later routes questions between them), and hand over the combined instructions (*Several wikis in one project*, below).
 - Read and write vault files with the file tools. Code you run may execute in an isolated environment that does not see the connected folder, so don't script bulk edits against the vault; if you want a script, test it on one file first. Moving files (a grouping adopted, a subject changed) needs a shell that does run where the vault's files are — `references/grouping.md` says how, and what to do without one.
 - Importing an existing folder of documents needs the shell that runs on the person's computer, where both folders are — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/references/folder-import.md` has the command.
 - A Cowork **project** around this folder is what gives the vault persistent instructions (Step 8). If the folder isn't in one yet, the person creates a project in Cowork and adds this folder to it.
@@ -29,7 +29,7 @@ The person is new to all of this, so every question has to make sense to someone
 
 ## Step 0 — Say whose plugin this is
 
-On a new setup, before anything else — before asking for a folder — read `assets/about.md` and show its **Opening** block, word for word, rendered as markdown: who wrote the plugin, the idea it is built on, and where both live. One block, then on. Upgrade mode skips it.
+On a new setup, before anything else — before asking for a folder — read `assets/about.md` and show its **Opening** block, word for word, rendered as markdown: who wrote the plugin, the proposal that inspired it, and where both live. One block, then on. Upgrade mode skips it.
 
 ## Step 1 — Interview before creating anything
 
@@ -122,7 +122,7 @@ This step is not optional. Everything in this plugin depends on future sessions 
 **First, ask how often the scheduled run should go**, on a card, naming what it is: *"How often should the wiki maintain itself? A scheduled task files everything waiting in the inbox, fixes the small problems a clean-up finds, and writes you a summary of what changed."* Choices: **Weekly** *(Recommended)* — for a vault that gets new sources most weeks; **Monthly** — for a quiet one. Put the answer in the Maintain line of schema §11 and in what you tell them about the task.
 
 1. Read `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/assets/project-instructions.md`.
-2. **Show the person both blocks, in the same reply**, with `{{VAULT ID}}` and `{{VAULT FOLDER}}` already replaced — the id from schema §1, the folder as it is named now: the project instructions, then the wiki-maintain task prompt from *The scheduled task*. Do not summarise either and do not just point at the file — they need text they can copy in one go.
+2. **Show the person both blocks, in the same reply**, with `{{VAULT ID}}` and `{{VAULT FOLDER}}` already replaced — the id from schema §1, the folder as it is named now — the text for one wiki per project, which is the default. The several-wikis paragraph is added only when the person asks for it (*Several wikis in one project*, below): the project instructions, then the wiki-maintain task prompt from *The scheduled task*. Do not summarise either and do not just point at the file — they need text they can copy in one go.
 3. Tell them exactly where each goes. The instructions: the project instructions field of the Claude project that owns this vault (Claude desktop or claude.ai → the project → Settings), or a `CLAUDE.md` at the vault root in Claude Code. The prompt: a new scheduled task on that project, **with the vault folder attached to the task** — a scheduled session with no folder attached can do nothing and cannot ask for access, since granting it needs someone at the computer — set to approve automatically — otherwise a scheduled run stops at its first file write — and to run on the computer that holds the folder, with the vault and every imported folder connected.
 4. Say what they buy in one sentence each: questions get answered from the wiki instead of from general knowledge and dropped links get ingested instead of parked; and whatever arrives on its own — clips, drops, the offline backlog — gets ingested, linted and summed up in a digest without anyone asking.
 5. If this session is already running inside a project, say plainly that you cannot set the field or create the task yourself — they have to paste them.
@@ -135,6 +135,18 @@ In plain words, not skill names — the skill names belong in the prompts they p
 2. **Later, once there are ten or so sources:** a monthly dream pass that proposes connections for them to decide on. Mention it now, with the wiki-dream-only prompt from *The scheduled task*; don't schedule it on an empty vault. Its reports wait for them, and wiki-dream-ingest works through each one with them.
 
 Close by telling them their job — curate sources, ask good questions, decide what matters — and yours: the reading, summarising, cross-referencing, filing and bookkeeping. Then show the **Closing** block of `assets/about.md`, word for word and rendered, as the last thing setup says.
+
+## Several wikis in one project
+
+The exception, on request: *"this project combines several wikis — give me the project instructions"*, *"I've connected three brains to this project"*, or the person asks for the project instructions while more than one connected folder holds a `_meta/schema.md`. In that last case, don't assume: ask on a card whether this project is meant to combine them, or the extra folders are connected by accident.
+
+To combine them:
+
+1. List the parts — every connected folder holding a `_meta/schema.md`: its folder name, its vault id, and what its §1 says it is for. A part with no vault id gets one from upgrade mode first; a §1 too vague to route by is worth a sentence to the person, since routing reads nothing else.
+2. Ask which part is **home** — the one that receives writes when nobody says otherwise. Recommend the one the current project instructions already name, if any.
+3. Hand over `assets/project-instructions.md` with the home part's id and folder in the first line and the *Several wikis in one project* paragraph inserted after the first paragraph, its list filled in. Say that each part keeps its own scheduled tasks, each with its own folder attached.
+
+This writes nothing into any vault: it produces text to paste and changes no schema.
 
 ## Upgrading an existing vault
 

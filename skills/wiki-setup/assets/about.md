@@ -5,9 +5,9 @@ wiki-setup shows these two blocks to the person, word for word and rendered as m
 ## Opening
 
 ```
-**LLM Wiki** — a Claude plugin by Dr. Markus Wuebben, built on Andrej Karpathy's LLM Wiki idea.
+**LLM Wiki** — a Claude plugin by Dr. Markus Wuebben, inspired by Andrej Karpathy's LLM Wiki proposal.
 
-- The idea: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+- The proposal: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
 - The plugin: https://github.com/mhwuebben/llm-wiki
 - The author: Dr. Markus Wuebben · https://github.com/mhwuebben · markus.wuebben@gmail.com
 ```

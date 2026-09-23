@@ -23,7 +23,7 @@ Work through the eight groups. Skip a check whose input this session cannot read
 
 **5. The project instructions**, where this session can read them — in a Claude project the project's own instructions, in Claude Code the `CLAUDE.md` at the vault root — against `${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/assets/project-instructions.md`:
 
-1. Do they point at this vault — by id where they name one, by folder name otherwise?
+1. Do they point at this vault — by id where they name one, by folder name otherwise? Where they carry the several-wikis paragraph, is every listed id connected, and is every connected vault listed? A listed part that isn't connected is the one worth a line: questions routed to it get answers from the others. Where they don't carry it but more than one connected folder holds a schema, say so once: either the extra folder is connected by accident, or the project is meant to combine them and wiki-setup can hand over the combined instructions.
 2. Do they name a skill this plugin doesn't have? That is the sure sign of an old copy, and the routing rule that names it does nothing.
 3. Is every rule of the current text there in some wording? Match on what a rule does, not on its words: the person may have rewritten one.
 

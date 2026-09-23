@@ -4,7 +4,7 @@ Point Claude at a folder. It builds a knowledge base out of your sources — pla
 
 Built for **Claude Cowork** (and works in Claude Code). Obsidian is the nice front end; nothing depends on it — Claude follows the wiki's links itself, and any editor can open the vault.
 
-By **Dr. Markus Wuebben** ([github.com/mhwuebben](https://github.com/mhwuebben) · markus.wuebben@gmail.com), built on Andrej Karpathy's [LLM Wiki idea](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
+By **Dr. Markus Wuebben** ([github.com/mhwuebben](https://github.com/mhwuebben) · markus.wuebben@gmail.com), inspired by Andrej Karpathy's [LLM Wiki proposal](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
 
 ## What's in the plugin
 
@@ -276,6 +276,6 @@ Every component is markdown. Change a `SKILL.md` and it takes effect in the curr
 
 ## Credit and contact
 
-The pattern is Andrej Karpathy's [LLM Wiki idea file](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (April 2026): immutable raw sources, an LLM-owned wiki, a schema you and the model co-evolve, and the ingest / query / lint loop. This plugin is an implementation of it for Cowork, with the Obsidian conventions, page templates, propagation rules and maintenance checks filled in.
+The plugin is inspired by Andrej Karpathy's [LLM Wiki proposal](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (April 2026): immutable raw sources, an LLM-owned wiki, a schema you and the model co-evolve, and the ingest / query / lint loop. It builds on that proposal for Cowork, with the Obsidian conventions, page templates, propagation rules and maintenance checks filled in.
 
 Written and maintained by **Dr. Markus Wuebben** — [github.com/mhwuebben](https://github.com/mhwuebben). Questions, ideas or something not working: markus.wuebben@gmail.com, or [open an issue](https://github.com/mhwuebben/llm-wiki/issues).

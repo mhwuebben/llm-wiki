@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.8.2 — 2026-09-23
+
+- **One wiki per project is the default, and the project instructions say only that.** The paragraph about several wikis had become part of every project's instructions, even those with one vault. It is now an extra paragraph a project gets only when it deliberately combines several wikis. Setup recommends a project of its own for each new wiki, and sets one up alongside an existing one only when you say you mean to combine them.
+- **A way to get the combined instructions.** Say *"this project combines several wikis — give me the project instructions"* and wiki-setup lists the parts with their vault ids and what each is for, asks which is home (the one that receives writes by default), and hands over the text with the several-wikis paragraph filled in. That list is what makes a missing part visible: a listed wiki whose folder isn't connected is named as missing, instead of answers quietly coming from two of three.
+- **Delphi asks every part that holds anything on the question**, not only the parts whose schema says the subject is theirs. Routing by declared domain is right for an ordinary answer, but Delphi exists to surface what a part holds that nobody expected it to — and a mentorship wiki that discusses your company is exactly that. Each connected part now runs a cheap search first; every part with a hit takes part, and one with none is named as searched and silent. Found by the first real Delphi run, which asked two of three wikis.
+- **Setup credits the inspiration accurately**: the plugin is inspired by Andrej Karpathy's LLM Wiki proposal, rather than built on his idea.
+- **wiki-doctor notices the mismatch** — several wikis connected to a project whose instructions don't say it combines them, or a listed part that isn't connected.
+- **The core rules are back in the first paragraph of the instructions.** 3.7.1 had split it, leaving `raw/` is immutable and every claim cites its source trailing after the several-parts text.
+
+**Upgrading an existing vault.** A project with one wiki: re-paste the project instructions, which are shorter again. A project combining several: ask wiki-setup for the combined instructions and paste those instead.
+
 ## 3.8.1 — 2026-09-22
 
 - The eval suite ships without a CI workflow: it is run by hand before a release that touched a skill.

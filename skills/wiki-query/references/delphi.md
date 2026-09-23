@@ -4,6 +4,14 @@ For one kind of question: an important one, where several parts of the brain hol
 
 **Opt-in, never automatic.** It costs a pass per part. It runs when the person asks for it — "ask both brains properly", "delphi", "have them check each other" — or when a routine question turned out to sit across parts and the answer visibly depended on which one you read first; then offer it in one line rather than starting it. Everything in `parts.md` still holds: **reading crosses, writing does not**.
 
+## Which parts take part
+
+**Not the routing an ordinary question uses.** For a normal answer, a part is consulted when its §1 says the subject is its business (`parts.md`, *Routing a question*). Delphi exists to surface what a part holds that nobody expected it to — the *only one part knows* group is often the most valuable thing it returns — and a part's declared domain is exactly the thing that would hide that. So:
+
+- **A named scope is used exactly**, as always.
+- **Otherwise, every connected part runs a cheap search first** — the question's names and terms, and their aliases, with `sh _meta/wiki-search.sh search` in each part — and **every part where it finds anything takes part in round 1**, whatever its §1 says. A part where it finds nothing costs one search, not a round, and is named in the answer as searched and silent.
+- **Declared domain only breaks a tie**: when more than about four parts have hits, the ones whose §1 covers the subject go first, and the rest are named as not asked.
+
 Fewer than two parts with material on the question → there is nothing to cross-examine: answer normally and say so.
 
 ## Why the rounds are separated
