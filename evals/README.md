@@ -1,6 +1,6 @@
 # Eval suite
 
-Thirteen cases for `claude plugin eval`. Ten check that a message routes to the right skill; three check that a skill behaves, against a fixture vault.
+Fourteen cases for `claude plugin eval`. Ten check that a message routes to the right skill; four check that a skill behaves, against a fixture vault.
 
 ```bash
 claude plugin eval .                             # everything, 3 runs each
@@ -18,6 +18,7 @@ claude plugin eval . --case 'scope-refusal' --scaffold --allow-tools Write Edit
 |---|---|
 | `scope-refusal` | asked to ingest an invoice, the run refuses, names the scope rule it fails, and writes no page for it (`--allow-tools Write Edit`) |
 | `query-honesty` | asked about a subject the vault doesn't hold, the answer says so instead of answering from general knowledge as if the wiki held it |
+| `combined-refusal` | with two wikis connected — its `scaffold.sh` copies the fixture twice, as `research` and `personal`, the second under another vault id — asked to lint one, the run refuses, says to lint it from that wiki's own project, and writes no lint report (`--allow-tools Write Edit`) |
 | `ingest-propagates` | one pending item is ingested: a source page is written, an existing concept page gets the claim with a link, the file leaves `raw/inbox/`, the index and log are updated, and the second pending item is left alone (`--allow-tools Write Edit Bash`) |
 
 `ingest-propagates` grants a shell, so it only runs where the sandbox backend exists (`bubblewrap` and `socat` on Linux) — without it the harness refuses the run rather than running unconfined.

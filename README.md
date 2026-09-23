@@ -12,9 +12,9 @@ By **Dr. Markus Wuebben** ([github.com/mhwuebben](https://github.com/mhwuebben) 
 
 An item you add is **pending** while it sits in `raw/inbox/`, and **ingested** once it has moved out of the inbox and a source page points at it.
 
-**Several vaults?** Each is a *part* of one brain. Questions read across all the parts a session can reach, routed by what each vault's schema says it is for, and scoped exactly when you name one ("ask the research vault"). Everything that writes — capture, ingest, lint, maintain, a dream pass — works on one part and asks which when it isn't obvious, because a `[[link]]` only resolves inside one folder: a claim borrowed from another part is quoted with that part's name and id instead of linked. With one vault connected, none of this is visible. For one question that matters and sits across parts, ask for a **delphi** pass: each part answers alone, then sees the others' quoted claims — not their conclusions — and says what it contradicts, confirms independently or can now add; the answer separates what they agree on, what they disagree on and why, what only one part knows, and what none of them does.
+**Several vaults?** Each is a *part* of one brain. Questions read across all the parts a session can reach, routed by what each vault's schema says it is for, and scoped exactly when you name one ("ask the research vault"). A project that combines several wikis is a reading room: the only thing it writes is a capture into one part's inbox, which that part's own project then ingests. Ingest, lint, maintain, dream passes and upgrades refuse there and say which part's project to use, because each works on a vault as a whole and a combined project has no one vault it belongs to. wiki-doctor, wiki-status and wiki-gaps still run. A `[[link]]` only resolves inside one folder, so a claim borrowed from another part is quoted with that part's name and id instead of linked. With one vault connected, none of this is visible. For one question that matters and sits across parts, ask for a **delphi** pass: each part answers alone, then sees the others' quoted claims — not their conclusions — and says what it contradicts, confirms independently or can now add; the answer separates what they agree on, what they disagree on and why, what only one part knows, and what none of them does.
 
-The plugin has an eval suite: `claude plugin eval .` runs thirteen cases — ten that a message reaches the right skill, three that a skill does the right thing to a fixture vault. `evals/README.md` says how to run them and what each asserts.
+The plugin has an eval suite: `claude plugin eval .` runs fourteen cases — ten that a message reaches the right skill, four that a skill does the right thing to a fixture vault. `evals/README.md` says how to run them and what each asserts.
 
 Every skill also has a **debug mode**, off unless the schema's §11 `Debug:` line says otherwise or you ask for it: a run then records, alongside its normal work, wherever the plugin's own instructions made it guess — versioned, quoted, and reproducible without your vault, in `outputs/debug-YYYY-MM-DD.md`. It is the fastest way to send back a bug in a plugin written in prose.
 
@@ -203,6 +203,8 @@ flowchart LR
   BL -. "drained first by the next session<br/>that reaches the folder, and by wiki-maintain" .-> W
   R -- "yes" --> W{"Which wiki?<br/>only when several<br/>are connected"}:::check
   W --> CAP[["wiki-capture-only"]]:::cmd
+  N4["Several wikis connected:<br/>capture only — the item waits<br/>in that wiki's inbox for its<br/>own project to ingest it"]:::note
+  N4 -.- W
   CAP --> G1{"In scope?<br/>Complete?<br/>Not already in?"}:::check
   G1 -- "no" --> X["Not captured<br/>you are told why"]:::stop
   G1 -- "yes" --> P[("PENDING<br/>raw/inbox/")]:::state

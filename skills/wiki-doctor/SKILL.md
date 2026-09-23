@@ -35,6 +35,7 @@ Work through the eight groups. Skip a check whose input this session cannot read
 - **Is the vault folder attached to the task?** Where that is visible. This is the one that silently stops everything: a scheduled session with no folder attached can do nothing and cannot even ask, because granting access needs someone at the computer.
 - **Is the prompt current?** Compare with *The scheduled task* in the project-instructions asset. Give the corrected text.
 - **Does the cadence match** the Maintain and Dream lines in schema §11?
+- **Does it have exactly one wiki attached?** A task naming a wiki skill — wiki-maintain, wiki-dream-only, or any other that writes — with two or more folders holding a `_meta/schema.md` attached runs nothing — a combined session writes nothing but captures (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`, *A project that combines several wikis*). Name the parts it has, and say to detach all but one — or, where it should maintain each of them, to give each its own task with its own folder. The same goes for a combined project that carries such a task: it belongs on the part's own project.
 
 Then, from the log, **whether the runs actually happen**: the last `maintain | digest` entry against §11's Maintain cadence, the last `dream` entry with a `scope:` line against its Dream line. A task kept only on the person's own computer is in no list a session can read, so a missing task is never proof that nothing is scheduled — an overdue cadence in the log is.
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.9.0 — 2026-09-23
+
+- **A project that combines several wikis is a reading room.** Questions, delphi, status, gaps and doctor read across every part as before, but the only thing such a project writes into any wiki is a capture into one part's inbox. Ingest, lint, maintain, dream passes, folder imports and schema upgrades refuse there in one line and name the part's own project, where that wiki is the only one connected and nothing has to guess which vault it is in. A scheduled task with several wikis attached stops before its first write and says which parts it found; wiki-doctor reports such a task. capture-and-ingest captures and stops, and the items are ingested by that part's own routine.
+- **Filing an answer from a combined project is a capture too**, marked `answer-from:` with the parts it read. The part's ingest files it as a note, never as a source, so Claude's synthesis can't later be cited as evidence. A deck or document made from it is made in the conversation, and a gap is said in the answer rather than logged.
+- **Two copies of one vault** (the same vault id in two connected folders) are read from the live one only, and nothing, not even a capture, is written until the other is disconnected.
+- **`## History` no longer counts toward a page's length**, just as a source page's `## Version history` doesn't: both are ledgers that grow by design. A page flagged as bloated only because of its history isn't bloated.
+- **Schema §10 gets an explicit "Split past" line** (~1,200 words by default), which ingest and lint both read. Until now the page-length target (300–800 words) could be read as the split point by one and not the other. Lint's report says where every threshold came from, e.g. *1,800 (schema §10)* or *1,200 (plugin default)*, so a number nobody set shows up as one.
+- **A history that outgrows its page moves to a companion**, `<page>-history`, with `history-of:` in its frontmatter. The page keeps its newest five entries and links the rest. Lint proposes the move and it is approved per page. History is never moved into another subject's page, where a question about that page wouldn't look, and on a split each half takes its own History entries.
+- **A fourteenth eval case**, `combined-refusal`: with two wikis connected, asked to lint one, the run refuses, says where to run it, and writes nothing.
+
+**Upgrading an existing vault.** Upgrade each wiki from its own project, not from a combined one. The upgrade proposes §10's new Split past line: where your §10 already set a length of its own, put that number there. A project that combines several wikis should re-paste its combined instructions from wiki-setup, and move any scheduled maintain or dream task to the part's own project, with only that folder attached.
+
 ## 3.8.3 — 2026-09-23
 
 - **The item lifecycle diagram in the README is current again**: which wiki an item goes to when several are connected, imported folders arriving by sync, the re-capture path with its diff and version-history line, ingest's step 5b that verifies what the pass promised, the one closing check per pass for several items, and answers across several wikis with delphi on request.

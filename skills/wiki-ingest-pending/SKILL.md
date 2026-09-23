@@ -9,7 +9,9 @@ description: Ingest what is pending — the items waiting in an LLM wiki's raw/i
 
 An ingest that produces one summary page has failed. The value of this pattern is the propagation: the new source changes what a dozen existing pages should say, and the agent makes those edits now so nobody has to re-derive them later.
 
-**One vault at a time.** With several connected (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`), this skill ingests into exactly one part: the one the person named, or the one whose `raw/inbox/` holds the items. Items pending in two parts are two runs, reported separately — never one pass writing into both.
+**One vault, and only where it is the only one.** When this session can reach two or more folders holding a `_meta/schema.md`, it is a combined session and this skill does not run (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`, *A project that combines several wikis*): say in one line that nothing but captures is written here, and that the items are ingested from that part's own project — naming the part — or by its scheduled wiki-maintain run. Write nothing.
+
+**An answer captured from a combined project** — an item whose provenance carries `answer-from:` — is Claude's synthesis, not a source: file it as a **note**, by wiki-query's *File the answer back*, steps 1–6, with `raw:` naming the capture once Step 5 has moved it, and write no source page for it. Its claims keep the citations they came with: a page of this vault named in one becomes a `[[link]]`, a claim from another part stays quoted with that part's name and vault id, and the note says in a line that it draws on other parts. Run the scope test on it like any other item.
 
 ## Before you start
 

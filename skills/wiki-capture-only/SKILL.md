@@ -11,7 +11,7 @@ Sources are the ground truth of an LLM wiki. Everything in `wiki/` is regenerabl
 
 ## Which part
 
-This skill works on **one vault**. With several connected — each a part of one brain (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`) — settle which one takes the item before anything is written:
+This skill works on **one vault**. With several connected — each a part of one brain — a capture is the one write such a session makes (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`, *A project that combines several wikis*), so settle which part takes the item before anything is written. An **answer wiki-query files** from such a session lands here too, as pasted text with `answer-from: <the vault ids it read>` in its provenance, so that ingest files it as a note and never as a source (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`, *Where a cross-part answer is filed*). A **folder import** is the exception: it sets up an import record that the part's own maintain runs keep in step, so it runs from that part's own project — say so and import nothing.
 
 - **A part the person named** wins, always.
 - **A file from an imported folder** goes to the part that holds its import record, permanently: an imported folder belongs to one part, and a copy landing anywhere else would be a second, unconnected source.

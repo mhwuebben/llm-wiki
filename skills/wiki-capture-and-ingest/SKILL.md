@@ -7,7 +7,7 @@ description: Capture new items and ingest exactly those, in one pass — use whe
 
 New items, all the way in — and only those. What to capture is whatever the request hands over: one or more URLs, file paths, pasted texts or screenshots.
 
-**Several vaults connected?** Both steps happen in one part: wiki-capture-only settles which (*Which part*, there) and wiki-ingest-pending ingests into that one. Say which part the items landed in.
+**Several vaults connected?** Then this is capture only (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`, *A project that combines several wikis*): wiki-capture-only settles which part takes each item (*Which part*, there) and lands it, and step 2 does not run — the items are pending in that part until its own project ingests them, by its scheduled wiki-maintain run or on request there. Say so once, with the part each item landed in. A whole folder is not imported from here at all: that runs from the part's own project.
 
 Run both skills, in order, in full. Do not substitute a remembered version of either — load them:
 

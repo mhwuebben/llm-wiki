@@ -9,6 +9,8 @@ A dream report is a list of proposals: connections the vault's pages imply but n
 
 **It needs the person.** Every accepted finding is a new claim in the wiki, and only the owner can accept a claim. A scheduled or otherwise unattended run of this skill writes nothing: it says which reports are awaiting review and stops.
 
+**One vault, and only where it is the only one.** A session that can reach two or more folders holding a `_meta/schema.md` applies nothing (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`, *A project that combines several wikis*): say which reports await review in which part, and that they are worked through from that part's own project.
+
 ## Before you start
 
 1. Read `_meta/schema.md`, `index.md`, `overview.md`, `patterns.md` if the vault has one, and `_meta/log.md`.

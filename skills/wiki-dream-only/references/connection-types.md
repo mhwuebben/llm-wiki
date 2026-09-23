@@ -78,7 +78,7 @@ A report of two findings with external criteria is worth more of the owner's att
 
 A pattern in time, and the one kind of pattern a vault of documents produces on its own. It follows the rules above — third sighting, `patterns.md`, no interpretation — with these specifics.
 
-**Find:** a claim that has moved more than once. The `## Version history` lines of a source page say what that source changed and when; the `## History` sections of the pages carrying its claims say what the wiki concluded before. Two moves in the same direction — a scope narrowed twice, a date pushed back twice, a position reversed and half-reversed — is the shape worth looking at.
+**Find:** a claim that has moved more than once. The `## Version history` lines of a source page say what that source changed and when; the `## History` sections of the pages carrying its claims — and their history companions, where the older entries live — say what the wiki concluded before. Two moves in the same direction — a scope narrowed twice, a date pushed back twice, a position reversed and half-reversed — is the shape worth looking at.
 
 **Evidence required:** each move quoted from where it is recorded, with its date. A `## History` entry counts here, unlike elsewhere in this file, because the question is what the wiki *said* over time, not what is true now — say so in the finding.
 

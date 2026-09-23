@@ -10,6 +10,8 @@ A new dream pass and its review, back to back. Run both skills, in order, in ful
 1. **wiki-dream-only** — the pass: read across the vault, test each connection against the gate, write the report to `outputs/`.
 2. **wiki-dream-ingest** with **exactly the report step 1 just wrote** — re-check, put each finding to the person, apply what they accept, log the decisions.
 
+**Several wikis connected?** Then neither step runs (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`, *A project that combines several wikis*): say in one line to dream from that part's own project, and write nothing.
+
 **A report already awaiting review?** Offer to work through it first with wiki-dream-ingest — its findings are left out of a new pass while they are open. Either way, then run the pass.
 
 **Nothing found?** A pass with zero findings is a result, not a failure — on a young vault, the honest one. Say so; there is nothing to ingest.

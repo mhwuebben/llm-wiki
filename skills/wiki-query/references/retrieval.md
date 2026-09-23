@@ -107,7 +107,7 @@ grep -H '^published:' <the source page files>
 | Question uses words no page title would contain | The first-step search — domain jargon, synonyms, proper nouns, other languages |
 | Index summaries look stale | Trust the pages over the index, and offer a lint pass afterwards |
 | Answer is spread across many pages thinly | Read `overview.md` first — the synthesis may already hold it |
-| Question is about *when* or *what changed* | Three records, in this order: the source pages' `## Version history` lines (what each source said and when it changed), the `## History` sections of the pages carrying the claims (what the wiki concluded and why it stopped), and `_meta/log.md` (when the vault did the work). A question about how a position drifted is answered from the first two; the log only dates it |
+| Question is about *when* or *what changed* | Three records, in this order: the source pages' `## Version history` lines (what each source said and when it changed), the `## History` sections of the pages carrying the claims, and their history companions — a page with `history-of:` naming them — where the older entries live (what the wiki concluded and why it stopped), and `_meta/log.md` (when the vault did the work). A question about how a position drifted is answered from the first two; the log only dates it |
 | Question is about a specific number, date or wording | Go to the source page, then to the raw file. Summaries drop precision by design |
 
 ## Multi-hop questions

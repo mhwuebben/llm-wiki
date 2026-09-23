@@ -7,7 +7,7 @@ description: Health-check and repair an LLM wiki — find contradictions between
 
 Wikis rot in predictable ways: duplicate concepts under different names, claims quietly superseded by later sources, pages nobody links to, an index that stopped matching reality. All of it is findable, and fixing it is cheap for an agent and unbearable for a human — which is the entire reason this pattern works.
 
-**One vault.** Lint works inside a single part; with several connected, ask which and report on that one — or, inside an unattended wiki-maintain run, lint the vault that run holds and never ask (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`). A foreign citation — quoted text naming another part and its vault id — is deliberate, not a broken link: checks 1, 4, 5 and 7 leave it alone.
+**One vault, and only where it is the only one.** When this session can reach two or more folders holding a `_meta/schema.md`, it is a combined session and lint does not run (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`, *A project that combines several wikis*): say in one line to run it from that part's own project, naming the part, and write nothing — no report, no fix. A foreign citation — quoted text naming another part and its vault id — is deliberate, not a broken link: checks 1, 4, 5 and 7 leave it alone.
 
 ## Run order
 
@@ -35,7 +35,7 @@ Details and detection recipes in `references/checks.md`. Order matters — later
 | 7 | Uncited and unsupported claims | facts with no source link — rumours with good posture — and a sample of cited claims tested against their sources |
 | 8 | Index drift | rows missing, summaries wrong, counts stale, groups out of line |
 | 9 | Frontmatter hygiene and placement | missing `updated:`, `sources:`, `status:`; schema violations; a page's folder and frontmatter disagree; a subject the vote clearly contradicts |
-| 10 | Thin and bloated pages and folders | perpetual stubs; pages past ~1,200 words that should split; a type folder big enough to group, a new subject or a split |
+| 10 | Thin and bloated pages and folders | perpetual stubs; pages past schema §10's Split past (~1,200 words if it has none, `## History` not counted) that should split; a type folder big enough to group, a new subject or a split |
 | 11 | Unprocessed and orphaned sources | files in `raw/` that no source page covers — usually clips nobody ingested |
 | 12 | Gaps and next questions | what the wiki should know and doesn't |
 | 13 | Out-of-scope and expired sources | material the capture gate should have stopped, or that has passed its date |

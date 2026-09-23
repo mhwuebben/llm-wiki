@@ -5,7 +5,7 @@ description: Show the state of the LLM wiki in this folder — size, what is pen
 
 Report the current state of one wiki — the connected folder, or the part named where several are connected. Read, don't write.
 
-0. **One vault.** With several connected — each a part of one brain (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`) — report on the one the person named, or ask which; name the others in one clause so they know what wasn't counted. Never add their numbers together: two parts are two wikis with two schemas.
+0. **One vault at a time.** With several connected — each a part of one brain (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`, *A project that combines several wikis*) — report on the one the person named. None named → one line per part (pages, pending, awaiting a decision, last maintain run), then offer the full report for one of them. Never add their numbers together: two parts are two wikis with two schemas. Anything the report would suggest doing — ingest, lint, maintain, a dream pass — is done from that part's own project; say so rather than offering it here.
 1. Confirm this is a wiki: `_meta/schema.md` exists. If not, say so and offer wiki-setup.
 2. Gather:
    - page counts by type (sources, concepts, entities, notes, and any the schema adds) and total — counted at any depth, since pages may sit in subfolders — and, for a type the schema groups, how many pages sit in each group

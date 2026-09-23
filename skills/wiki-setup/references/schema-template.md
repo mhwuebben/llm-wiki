@@ -61,7 +61,7 @@ Sources reach `raw/inbox/` by any route: the Obsidian Web Clipper, drag-and-drop
 - **Every arrival passes the scope test in §1** before it is ingested, however it got here. A clip or a sync never met capture's check, so ingest applies it; a file that fails waits in `raw/inbox/` for the owner's decision.
 - **`raw/` is immutable, including files other tools wrote.** Never reformat a clip or add frontmatter to it. The only permitted edit is flipping an existing `ingested:` field to the ingest date.
 - **Foreign frontmatter is mapped, not rewritten.** Clipper `source` → `url`, `created` → `captured`, plus `published`, `author`, `site`, `description`, `tags`. The mapped values live on the source page.
-- **Ingested state is derived**: a source has been processed when a source page — any page with `type: source`, normally under `wiki/sources/` — carries a `raw:` field — or, for an earlier capture of a changed source, a `raw_previous:` entry or a `## Version history` line — pointing at its file. An `ingested:` flag, where present, is a convenience for filtering and is trusted only when it agrees.
+- **Ingested state is derived**: a source has been processed when a source page — any page with `type: source`, normally under `wiki/sources/` — carries a `raw:` field (an answer captured from a combined project: when a note does) — or, for an earlier capture of a changed source, a `raw_previous:` entry or a `## Version history` line — pointing at its file. An `ingested:` flag, where present, is a convenience for filtering and is trusted only when it agrees.
 - **On ingest the source splits by kind.** Text — a clip, a pasted article, their own note — moves from `raw/inbox/` to `raw/` as it is. A binary that is itself the source — PDF, doc, slides, image, audio, video, spreadsheet, data file — moves to `raw/assets/`, and a markdown sidecar with the same name stem goes to `raw/` in its place. **Attachments are the third case:** figures pulled from a parent, images inside a clip, files attached to an email. They go to `raw/assets/` named after their parent's raw stem (`2026-09-20-attention.md` → `2026-09-20-attention-fig3.png`), get no sidecar of their own, and are listed on the parent's `asset:`. Either way the item leaves `raw/inbox/`, and `raw/` holds exactly one markdown file per capture.
 - **When the vault can't be reached** — a cloud session with the computer off — a link or pasted note goes on an offline backlog outside the vault (in a Claude project, the doc `wiki-backlog.md`) and is captured the next time a session can reach the vault, before anything else.
 - **Folders are imported whole**, never file by file: each copy gets a unique name built from its path, and an import record in `_meta/imports/` keeps where it came from, a fingerprint and the date git records for it. The source page carries `origin:`; every maintain run brings in what changed in the folder since.
@@ -113,6 +113,8 @@ published: 2017-06-12   # as the source states it (YYYY or YYYY-MM when that is 
 url: https://arxiv.org/abs/1706.03762
 # non-source pages:
 sources: ["[[attention-is-all-you-need]]"]
+# raw: raw/2026-09-20-answer.md   # on a note only when it was filed from an answer captured in a project combining several wikis (answer-from: in its provenance)
+# history-of: "[[transformers]]"   # only on a history companion: the page whose older ## History entries it holds (§10)
 ---
 ```
 
@@ -136,7 +138,7 @@ sources: ["[[attention-is-all-you-need]]"]
 
 ## 7. Contradictions
 
-A contradiction between **two parts of the brain** — two connected vaults — is reported in the answer and, if it is worth keeping, recorded in one note in the part that asked, naming the other part: neither vault owns it, and writing a callout into both would leave each holding a claim it cannot check.
+A contradiction between **two parts of the brain** — two connected vaults — is reported in the answer and, if it is worth keeping, captured as an answer into one part's inbox and filed there as one note, naming the other part: neither vault owns it, and writing a callout into both would leave each holding a claim it cannot check.
 
 Never silently overwrite what an earlier source said. Record the disagreement on both pages involved — the two pages that carry the conflicting claims — and on both source pages as well when it is material:
 
@@ -191,7 +193,8 @@ Operations logged: `setup`, `capture`, `ingest`, `query`, `lint`, `maintain`, `d
 
 - Write for a reader who knows the domain but not this source. No preamble, no "this page discusses".
 - Structure over prose: short sections, bullets, tables where things are comparable.
-- Keep pages focused — {{~300–800}} words. When a page sprawls past that, split it and link, don't ramble.
+- Keep pages focused — aim for {{~300–800}} words.
+- **Split past:** {{~1,200}} words, not counting `## History` or `## Version history` — both are ledgers and grow by design. A page past it with distinct sections is split along its natural seam and linked, not left to ramble. A `## History` that outgrows the rest of its page moves its older entries to a companion `<page>-history` page; it never moves into another subject's page.
 - A type folder past {{100}} pages is offered a grouping (§3) by the lint pass. A declined offer is not repeated until the folder has doubled.
 - Present tense for what is true; past tense with a date for what was observed.
 - Never delete substantive content during an update. Revise, mark superseded, or move it to a `## History` section. The single exception is a lint check-13 redaction of a third party's personal data, which removes rather than moves — a `## History` section is still in `wiki/` and still exports.

@@ -46,7 +46,7 @@ One block per finding, appended to `outputs/debug-YYYY-MM-DD.md` — created if 
 
 ## Where it goes
 
-- The file: `outputs/debug-YYYY-MM-DD.md`, appended by every debug run that day, newest at the bottom. Where several parts are connected (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`), it goes in the part the run wrote to, or the one it was pointed at — one file, never one per part — and `Debug:` is read from that part's §11.
+- The file: `outputs/debug-YYYY-MM-DD.md`, appended by every debug run that day, newest at the bottom. Where several parts are connected (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`), it goes in the part a capture landed in, or the one a read-only run was pointed at — one file, never one per part; a run over several parts with none named puts its findings in its reply instead — and `Debug:` is read from that part's §11.
 - The run's own report or digest: one line — *"2 debug findings → outputs/debug-2026-09-22.md"* — never the findings themselves, which would bury what the person actually asked for.
 - Never into `wiki/`. A finding about the plugin is not knowledge about the owner's domain, and the one thing this vault must not learn is how it is itself built.
 - wiki-doctor lists every debug file in `outputs/` with its finding count, so they don't rot unread.
