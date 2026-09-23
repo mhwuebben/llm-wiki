@@ -11,7 +11,7 @@ Report the current state of one wiki — the connected folder, or the part named
    - page counts by type (sources, concepts, entities, notes, and any the schema adds) and total — counted at any depth, since pages may sit in subfolders — and, for a type the schema groups, how many pages sit in each group
    - what is pending in `raw/inbox/`, grouped into items as wiki-ingest-pending's *Before you start*, step 3, does (empty files aren't items). A file still in `raw/inbox/` that a page's `raw:` or `asset:` already names is an interrupted ingest — or, while an ingest or maintain lease is live, an ingest still running; say which
    - apart from that, any file in `raw/` or `raw/assets/` that no source page's `raw:`, `raw_previous:`, `asset:` or `## Version history` line covers (usually something filed by hand) — not pending, but not in the wiki either. Ignore dotfiles, a folder's own `README.md`, files a `retired:` line in the log names, and attachments — a binary in `raw/assets/` named after a source's raw stem or embedded by a page or raw file, as lint check 11 defines them
-   - imported folders: for each import record in `_meta/imports/`, the folder, how many of its files are still pending, and when it was last synced (its last `synced:` line)
+   - imported folders: for each import record in `_meta/imports/`, the folder, how many of its copies are still in `raw/inbox/` (distinct copies — a moved or respaced file's lines name the same copy), when it was last synced (its last `synced:` line), and how many of its sources are withdrawn — their document has left the folder without moving (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-lint/references/checks.md`, check 6)
    - the offline backlog, if this session can read it — in a Claude project, the doc `wiki-backlog.md`: how many lines, and how many need a file re-attached (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/references/offline-backlog.md`)
    - the vault lock: `sh _meta/wiki-lock.sh status`, or read `_meta/wiki-lock.md` — free, held (by what operation, until when, the last progress line), stale (more than a minute past `expires:` — the next writer takes it over) or missing (the next writer creates it)
    - the last five entries in `_meta/log.md`, leaving out `query` entries that only record a gap
@@ -25,7 +25,7 @@ Report the current state of one wiki — the connected folder, or the part named
 3. Report it in under fifteen lines, in this shape:
 
 **Wiki:** {{purpose in a few words}} · {{n}} pages{{ — per group, for a grouped type}} · last activity {{date}}{{ · other parts connected: {{names}}, not counted here}}
-**Pending:** {{n}} items in raw/inbox {{names}}{{ · interrupted ingest: names}}{{ · n files in raw/ that no source page covers}}{{ · n on the offline backlog}}{{ · imported: folder — n of m still pending, synced date}}
+**Pending:** {{n}} items in raw/inbox {{names}}{{ · interrupted ingest: names}}{{ · n files in raw/ that no source page covers}}{{ · n on the offline backlog}}{{ · imported: folder — n of m still pending, synced date, n withdrawn}}
 **Recently:** {{two or three lines from the log, in plain language}}{{ · running now: operation, last progress time — or stale since expires}}
 **Open questions:** {{the two or three live ones}}
 **Routines:** last lint {{date}} · last maintain run {{date}} · last dream {{date}}{{ · dream report awaiting review}}{{ · dream pass due}}

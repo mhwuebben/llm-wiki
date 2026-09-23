@@ -6,9 +6,9 @@ Measure every item at *Pick the items*: `wc -w` on the markdown, or the page cou
 
 ## 1 — Map it
 
-Read its structure, not its text: the headings with their line numbers (`grep -n '^#' <file>`), or a PDF's table of contents and page count. Cut it into **sections of about 5,000–8,000 words along its own headings** — a heading too big for one section is cut again at its next level down; a stretch with no headings is cut at paragraph breaks. Give each section a short label from its heading (`§Phase 2`, `§2025-03 rulings`), and keep the map: label, line or page range, word count.
+Read its structure, not its text: the headings with their line numbers (`grep -n '^#' <file>`), or a PDF's table of contents and page count. Cut it into **sections of about 5,000–8,000 words along its own headings** — a heading too big for one section is cut again at its next level down; a stretch with no headings is cut at paragraph breaks. Give each section a short label from its heading (`§Phase 2`, `§2025-03 entries`), and keep the map: label, line or page range, word count.
 
-Say the plan before reading: *"The advisor plan is 68,000 words — reading it in 11 sections, 3 waves, about 15 minutes, then one source page and one round of updates."* Reading writes nothing into the vault; where this run already holds the vault lock, renew it before each wave — or each section, reading serially — for at most 30 minutes at a time (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/locking.md`, *Holding it*).
+Say the plan before reading: *"The migration plan is 60,000 words — reading it in 9 sections, 2 waves, about 15 minutes, then one source page and one round of updates."* Reading writes nothing into the vault; where this run already holds the vault lock, renew it before each wave — or each section, reading serially — for at most 30 minutes at a time (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-setup/references/locking.md`, *Holding it*).
 
 ## 2 — Read every section, into extracts
 
@@ -29,19 +29,20 @@ A source page read in sections may run past §10's Split past length: it is the 
 
 ## 4 — Propagate once, page by page
 
-Propagate as for any source (`references/propagation.md`), with one difference: **each page is edited once**, with everything this source adds to it from every section, not once per section. A claim carries its section in its citation — `— [[advisor-skills-plan]], §Phase 2` — the way a transcript's claim carries its timestamp, so a reader can open the right part of a long document. Contradictions within the source itself — an early section superseded by a later one — are recorded on the source page as the document's own revision, not as two sources disagreeing.
+Propagate as for any source (`references/propagation.md`), with one difference: **each page is edited once**, with everything this source adds to it from every section, not once per section. A claim carries its section in its citation — `— [[migration-plan]], §Phase 2` — the way a transcript's claim carries its timestamp, so a reader can open the right part of a long document. Contradictions within the source itself — an early section superseded by a later one — are recorded on the source page as the document's own revision, not as two sources disagreeing.
 
 The promotion bar holds as for any source: a long document mentions many things once, and a single mention is still a line on the nearest page, not a page of its own.
 
 ## 5 — Close and finish
 
-The closing check runs over the merged list (`references/propagation.md`, *Close the list*); then Step 5 moves the file out of the inbox, rebuilds the index and logs one entry: `## [date] ingest | <title> (read in 11 sections)` — or, inside a batch, a line in the batch's entry: `- read in sections: [[advisor-skills-plan]] (11)`.
+The closing check runs over the merged list (`references/propagation.md`, *Close the list*); then Step 5 moves the file out of the inbox, rebuilds the index and logs one entry: `## [date] ingest | <title> (read in 9 sections)` — or, inside a batch, a line in the batch's entry: `- read in sections: [[migration-plan]] (9)`.
 
 **A re-capture of a large source** is diffed as any re-capture is (wiki-ingest-pending, *Before you start*, step 4). Where the diff is most of the file, read the changed sections by this file's map rather than the whole document, in the same one pass.
 
 ## In a batch, and unattended
 
-- **A large source is one item, in its place in the order** — oldest publication date first, like any other. The batch cap (`references/batch-ingest.md`, *Cap it*) is checked when its turn comes, never in the middle: once started, it is finished in the same run, even past the cap. If the cap is reached before its turn, it stays pending whole — and, being the oldest item left, it comes first in the next run. Say so: *"The advisor plan (68,000 words) goes first in the next run."*
+- **A large source is one item, in its place in the order** — oldest publication date first, like any other. The batch cap (`references/batch-ingest.md`, *Cap it*) is checked when its turn comes, never in the middle: once started, it is finished in the same run, even past the cap. If the cap is reached before its turn, it stays pending whole — and, being the oldest item left, it comes first in the next run. Say so: *"The migration plan (60,000 words) goes first in the next run."*
 - **wiki-maintain runs it like any other item**, unattended. It is never left out as needing a pass of its own.
-- **Without sub-agents**, a large source takes a run to itself: when its turn comes after other items in the same run, it waits for the next run, where it is first — never alongside the ~eight ordinary items a run would otherwise take.
+- **A large re-capture** is compared like any re-capture (`re-captures.md`) and doesn't take a run to itself; where its diff is most of the file, the changed sections are read by this file's map, in the same run.
+- **Without sub-agents**, a large source ingested for the first time takes a run to itself: when its turn comes after other items in the same run, it waits for the next run, where it is first — never alongside the ~eight ordinary items a run would otherwise take.
 - **Interrupted anyway** — the session ended mid-run. Before step 3 nothing is in the vault, so the next run starts it again from the map. After step 3 its source page exists while the file is still in the inbox: an interrupted ingest (wiki-ingest-pending, *Before you start*, step 4), and the next run finishes it from that page — its key claims by section and its `## Entities and concepts` list say what each page should get, the pages that already cite it are done, and a section is re-read only where the exact wording is needed. Extracts outside the vault don't survive a session; the source page does.

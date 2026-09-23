@@ -1,5 +1,24 @@
 # Changelog
 
+## 3.11.0 — 2026-09-23
+
+- **A regenerated folder goes through in one run.** Re-captures are compared with their previous copy rather than re-read. Each produces a short change extract (claims changed, added and removed, or "no claim changed"), in parallel where sub-agents exist, and every page is edited once with everything that changed on it. They no longer count against a run's cap, which now limits only the new pages a run creates.
+- **Sync understands more than new, changed and gone.**
+  - A file that only changed its whitespace gets no new copy.
+  - A file that moved with its content intact is recorded as `(moved)`, adds no copy, and keeps its source page; lint points the page's `origin:` at the new path. Paths containing any character, the record's separator included, are handled.
+  - A git date that turns up after a file was synced uncommitted is recorded, and lint fills in `published:`.
+  - Untracked files no longer inherit the date of an old commit.
+  - Files changed in the last two minutes are left for the next sync, so a file still being written is not copied halfway.
+  - Twenty or more files gone and twenty or more new in one sync print `RESTRUCTURE?`.
+- **Moved and changed files are matched before new pages are written.** A new file from an import is compared with the files that left the same folder, by name, first heading and shared text. A clear match updates that page; an unclear one becomes a new page, and lint proposes the merge. After a likely reorganisation, an unattended run leaves unmatched new files pending instead of writing a pile of duplicates.
+- **Echoes of the wiki are recorded.** When a new version settles a contradiction the wiki flagged, adopts one of its inferences, or restates another source's claim, the Version history line says so and the note it adopted is marked. The dream pass never counts such a source as independent confirmation.
+- **Settled contradictions close themselves.** A contradiction callout that a newer version of its source now resolves moves to `## History`.
+- **Withdrawn sources.** A source whose document has left its folder without moving is withdrawn. This is read from the import record, never written on the page. Lint lists the claims that rest on it alone, and wiki-status counts them.
+- **Old copies can't pass as current.** `wiki-search.sh raw` labels every hit in `raw/` as current, earlier (with the page that holds the current wording) or pending, and wiki-query never answers from a line found only in an earlier copy.
+- **Documentation a tool regenerates is a source.** The import step no longer suggests leaving it out as generated material.
+
+**Upgrading an existing vault.** The upgrade replaces `_meta/wiki-search.sh` and proposes §5's line on the Version history. Imports carry over as they are; the next sync starts using the new line notes.
+
 ## 3.10.0 — 2026-09-23
 
 - **Large sources are ingested in one pass.** A source past schema §10's new *Read in sections past* line (~15,000 words) is mapped by its own headings and cut into sections of 5,000–8,000 words. Each section is read in full into an extract, in parallel where sub-agents exist, and the whole document becomes one source page with its key claims grouped by section. Every page it touches is then updated once, with claims cited as `— [[source]], §<section>`. Until now a long document could be skipped as needing "a pass of its own" that nothing ever defined, so it sat in the inbox indefinitely. It now counts as one item: it takes its place in the order like any other, is checked against the cap when its turn comes, and once started is finished in the same run. If the cap stops a run before its turn, it goes first in the next. Scheduled runs ingest it like anything else.
@@ -20,7 +39,7 @@
 - **Filing an answer from a combined project is a capture too**, marked `answer-from:` with the parts it read. The part's ingest files it as a note, never as a source, so Claude's synthesis can't later be cited as evidence. A deck or document made from it is made in the conversation, and a gap is said in the answer rather than logged.
 - **Two copies of one vault** (the same vault id in two connected folders) are read from the live one only, and nothing, not even a capture, is written until the other is disconnected.
 - **`## History` no longer counts toward a page's length**, just as a source page's `## Version history` doesn't: both are ledgers that grow by design. A page flagged as bloated only because of its history isn't bloated.
-- **Schema §10 gets an explicit "Split past" line** (~1,200 words by default), which ingest and lint both read. Until now the page-length target (300–800 words) could be read as the split point by one and not the other. Lint's report says where every threshold came from, e.g. *1,800 (schema §10)* or *1,200 (plugin default)*, so a number nobody set shows up as one.
+- **Schema §10 gets an explicit "Split past" line** (~1,200 words by default), which ingest and lint both read. Until now the page-length target (300–800 words) could be read as the split point by one and not the other. Lint's report says where every threshold came from, e.g. *1,500 (schema §10)* or *1,200 (plugin default)*, so a number nobody set shows up as one.
 - **A history that outgrows its page moves to a companion**, `<page>-history`, with `history-of:` in its frontmatter. The page keeps its newest five entries and links the rest. Lint proposes the move and it is approved per page. History is never moved into another subject's page, where a question about that page wouldn't look, and on a split each half takes its own History entries.
 - **A fourteenth eval case**, `combined-refusal`: with two wikis connected, asked to lint one, the run refuses, says where to run it, and writes nothing.
 
@@ -34,7 +53,7 @@
 
 - **One wiki per project is the default, and the project instructions say only that.** The paragraph about several wikis had become part of every project's instructions, even those with one vault. It is now an extra paragraph a project gets only when it deliberately combines several wikis. Setup recommends a project of its own for each new wiki, and sets one up alongside an existing one only when you say you mean to combine them.
 - **A way to get the combined instructions.** Say *"this project combines several wikis — give me the project instructions"* and wiki-setup lists the parts with their vault ids and what each is for, asks which is home (the one that receives writes by default), and hands over the text with the several-wikis paragraph filled in. That list is what makes a missing part visible: a listed wiki whose folder isn't connected is named as missing, instead of answers quietly coming from two of three.
-- **Delphi asks every part that holds anything on the question**, not only the parts whose schema says the subject is theirs. Routing by declared domain is right for an ordinary answer, but Delphi exists to surface what a part holds that nobody expected it to — and a mentorship wiki that discusses your company is exactly that. Each connected part now runs a cheap search first; every part with a hit takes part, and one with none is named as searched and silent. Found by the first real Delphi run, which asked two of three wikis.
+- **Delphi asks every part that holds anything on the question**, not only the parts whose schema says the subject is theirs. Routing by declared domain is right for an ordinary answer, but Delphi exists to surface what a part holds that nobody expected it to — and a personal wiki that discusses your work is exactly that. Each connected part now runs a cheap search first; every part with a hit takes part, and one with none is named as searched and silent. Found by the first real Delphi run, which asked two of three wikis.
 - **Setup credits the inspiration accurately**: the plugin is inspired by Andrej Karpathy's LLM Wiki proposal, rather than built on his idea.
 - **wiki-doctor notices the mismatch** — several wikis connected to a project whose instructions don't say it combines them, or a listed part that isn't connected.
 - **The core rules are back in the first paragraph of the instructions.** 3.7.1 had split it, leaving `raw/` is immutable and every claim cites its source trailing after the several-parts text.

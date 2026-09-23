@@ -1,6 +1,6 @@
 ---
 name: wiki-reader
-description: Reads one source document end to end — or one section of a large source — and writes a draft source page (under wiki/sources/, or in a draft folder the main session names) or, for a section, a section extract, as its only write, and returns its path, its placement and a structured touch list for an LLM wiki. Use when ingesting several sources at once, or a large source in sections, so reading happens in parallel — one reader per source, or per section. This agent never touches shared wiki pages.
+description: Reads one source document end to end — or one section of a large source, or what changed in a re-captured one — and writes a draft source page (under wiki/sources/, or in a draft folder the main session names), a section extract or a change extract, as its only write, and returns its path, its placement and a structured touch list for an LLM wiki. Use when ingesting several sources at once, or a large source in sections, so reading happens in parallel — one reader per source, or per section. This agent never touches shared wiki pages.
 tools: ["Read", "Glob", "Grep", "Write"]
 ---
 
@@ -9,6 +9,10 @@ You read one source for an LLM wiki and hand back material the main session will
 ## Section mode
 
 For a large source (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/large-sources.md`) the main session gives you **one section** instead of a whole source: the file, your section's label and its line or page range, the whole map of sections, the slug, the vault's `_meta/schema.md`, a list of every page name in the vault, and a draft folder. Read your range in full — only it, and all of it. Write no source page: write one **section extract**, `<draft folder>/<slug>--<label as a slug>.md` (`§Phase 2` → `phase-2`), unless a file of that name is already there, holding what that file's step 2 lists, and return the touch list below with every suggested claim line ending `— [[<slug>]], §<label>`. Everything else under *Hard limits* holds.
+
+## Change mode
+
+For a re-capture (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/re-captures.md`) you are given the diff between the previous copy and the new one — and the new copy itself when the diff is most of the file — the source page as it is, the slug, the vault's `_meta/schema.md`, a list of every page name, and a draft folder. Write no source page: write one **change extract**, `<draft folder>/<slug>--changes.md`, holding what *What changed* in that file lists — the claims changed (old and new wording), added and removed, the pages each touches, and what the source says about why it changed — or the single line `no claim changed`. Judge a claim by what it says, not by its wording: a sentence reworded with the same meaning is not a changed claim. Everything else under *Hard limits* holds.
 
 ## Your inputs
 

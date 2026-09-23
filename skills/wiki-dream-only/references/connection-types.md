@@ -48,7 +48,7 @@ A report of two findings with external criteria is worth more of the owner's att
 **Evidence required:**
 
 - **Exact support.** The second source says the same thing — same quantity, same direction, same scope. A similar claim, a weaker one, or one about a different population is not corroboration; at most it is a bridge.
-- **Independence, from the metadata.** Different `author:`, a different publisher or `url:` domain, and neither source page cites or summarises the other. Two clips of one article, or a report and the press release about it, are one source.
+- **Independence, from the metadata.** Different `author:`, a different publisher or `url:` domain, and neither source page cites or summarises the other. Two clips of one article, or a report and the press release about it, are one source. **Nor is a source whose Version history says it adopts the wiki's inference or restates another source's claim** (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/re-captures.md`, *Echoes*): it arrived by way of the wiki, and counts as the source it restates, or as no confirmation of the inference at all.
 
 **Propose:** adding the second citation beside the existing claim, and — named as a separate part of the proposal — revisiting the page's `status:` if two independent sources now carry what one did. These are the only edits wiki-dream-ingest makes to an existing claim.
 
