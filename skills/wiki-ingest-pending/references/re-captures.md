@@ -63,7 +63,7 @@ A new item from an import, while the same record has paths that went `gone` with
 When a sync prints `RESTRUCTURE?`, or the unmatched new items and unmatched gone paths of one import both reach about twenty, match them all first, as above, and only then write new source pages. After matching:
 
 - **With the person present** — show the matches and the leftovers, and get one yes.
-- **Unattended** — ingest the matched ones as re-captures, capture nothing twice, and leave the unmatched new items pending, with the digest naming how many and why. Writing twenty or more new source pages for what may be moved documents would leave twenty duplicates for someone to merge by hand; this is the one case, besides the cap on new pages, where a run stops short of everything pending.
+- **Unattended** — ingest the matched ones as re-captures, capture nothing twice, and leave the unmatched new items pending, with the digest naming how many and why. Writing twenty or more new source pages for what may be moved documents would leave twenty duplicates for someone to merge by hand; so, like the cap on new pages and an out-of-scope item nobody is there to decide, it is a reason a run stops short of everything pending.
 
 ## Old copies in searches
 

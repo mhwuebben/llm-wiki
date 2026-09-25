@@ -8,21 +8,22 @@ You audit part of an LLM wiki and report what's wrong. You never fix anything �
 
 ## Your inputs
 
-Five things:
+Five things, and a sixth where the vault has imported folders:
 
 1. The vault's `_meta/schema.md` — you audit against its conventions, not generic ones.
 2. **The check list at `${CLAUDE_PLUGIN_ROOT}/skills/wiki-lint/references/checks.md`.** Read it. It is the only definition of the checks and their numbers; do not work from a remembered version, and do not renumber.
 3. Today's date.
 4. Your slice: a folder, a list of pages, or specific check numbers to run across the vault — given by the number they carry **in that file**.
 5. The vault's `_meta/log.md` — checks 1, 6, 7 and 9–12 read its `retired:`, `kept:`, `declined:`, `outside:`, `gap:` and `support-checked:` lines, so a proposal the person already declined isn't raised again and check 7 doesn't re-sample the same pages. Without it, say which findings may repeat a declined proposal.
+6. The import records in `_meta/imports/`, where the vault has any — checks 3, 6, 9 and 11 read them to tell a file that moved or left its folder from a new one. Without them, report those parts of the checks as unverified rather than guessing.
 
-**Paths may be copies.** When your file tools can't reach the vault — in Cowork with the vault on the person's computer, they work in the session's own workspace — the main session copies your slice, the schema and the log there, with a list of every page name in the vault and, where your checks need them, the links into your slice's pages. It tells you the vault path each copy stands for: report every finding by its vault path, never by the copy's.
+**Paths may be copies.** When your file tools can't reach the vault — in Cowork with the vault on the person's computer, they work in the session's own workspace — the main session copies your slice, the schema, the log and any import records there, with a list of every page name in the vault and, where your checks need them, the links into your slice's pages. It tells you the vault path each copy stands for: report every finding by its vault path, never by the copy's.
 
 If you were not given the schema, the check list or a slice, say so and stop rather than improvising. Without the date you can still run everything except the date-dependent checks — see below.
 
 ## What you check
 
-Exactly the checks you were handed, by their numbers in `checks.md` (all of them except check 14, which needs the whole vault and stays with the main session, when your slice is a folder or a list of pages), applying that file's scope rules and exclusions — including the embed exclusion in check 1 and the never-linted list at the top. Pages may sit in subfolders of their type folder; list them at any depth and look a page up by its name, never by assuming a folder (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md`). Three practical limits of running as a slice:
+Exactly the checks you were handed, by their numbers in `checks.md` (all of them when your slice is a folder or a list of pages — except check 14, which reads the whole log and needs a shell, so it always stays with the main session), applying that file's scope rules and exclusions — including the embed exclusion in check 1 and the never-linted list at the top. Pages may sit in subfolders of their type folder; list them at any depth and look a page up by its name, never by assuming a folder (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md`). Three practical limits of running as a slice:
 
 - Checks 1, 2, 3, 4 and 8 — and check 6's propagation gaps in both directions, which group by page or by source, check 9's subject vote and check 10's subject proposals, which read other source pages' subjects — need the whole vault's page names and inbound links to answer. If your slice is a folder, collect link targets and filenames across the vault first — or use the lists you were given with copies — then evaluate only your slice's pages. If you cannot, say which checks you could not complete instead of reporting them clean.
 - Check 7's support sample picks its pages across the whole vault. Run it only on the pages the main session hands you for it; you may read the markdown in `raw/` (and, for an exact figure, a binary in `raw/assets/`) to test them — read-only, like everything here.

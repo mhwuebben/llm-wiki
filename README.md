@@ -106,7 +106,7 @@ Getting sources in:
 | Skill | What it does | When, and how |
 |---|---|---|
 | `wiki-capture-only` | Gets a source into `raw/inbox/` cleanly — URLs, PDFs, transcripts, screenshots, pasted notes — with provenance, after checking it is in scope, complete and not already there. Stops there: the item is pending. Also imports whole existing folders, keeps a backlog while the vault is out of reach, and sets up the Obsidian Web Clipper. | When you want to keep something for later without processing it now. Manual. |
-| `wiki-capture-and-ingest` | Captures one or more new items, then ingests exactly those; anything else in the inbox stays pending. | Whenever you hand over a link or a file you want in the wiki now — the everyday route. Manual; the project instructions route a dropped link here. |
+| `wiki-capture-and-ingest` | Captures one or more new items — or imports a whole folder — then ingests exactly those; anything else in the inbox stays pending. | Whenever you hand over a link or a file you want in the wiki now — the everyday route. Manual; the project instructions route a dropped link here. |
 | `wiki-ingest-pending` | The core loop. Takes pending items — the ones you name, or everything in `raw/inbox/`, including clips and drops that arrived without Claude — and for each one reads it, writes its page, propagates the change across every affected page, checks that every page the source names really cites it, flags contradictions and moves the file out of the inbox. | When items are waiting: clips, drops, things you saved for later. Manual ("process what's waiting"), and inside `wiki-capture-and-ingest` and `wiki-maintain`. |
 | `wiki-maintain` | The routine: bring in what is on the offline backlog and what changed in imported folders, ingest everything pending, lint (only the mechanical fixes on its own), and write a digest of what the wiki learned since the last run. Built to run unattended. | Weekly for an active vault, monthly for a quiet one. **Scheduled**, or by hand after a busy stretch. |
 
@@ -115,7 +115,7 @@ Using and looking after the wiki:
 | Skill | What it does | When, and how |
 |---|---|---|
 | `wiki-query` | Answers from the compiled wiki with citations — following links in both directions, by name, in any folder — names the gaps, and files good answers back as notes. An answer turned into a deck, document or chart is filed as a note first, so the thinking outlives the file. | Whenever you ask. Manual; the project instructions route questions here. |
-| `wiki-lint` | Fourteen health checks — including clips nobody ingested, sources that should never have been filed, and a sample of citations tested against the sources they cite — fixes on approval, plus the gaps worth researching next. Repairs; it doesn't synthesise. | Scheduled, inside every `wiki-maintain` run; manual on its own after a big batch or when the wiki feels messy. |
+| `wiki-lint` | Fourteen health checks — including clips nobody ingested, sources that should never have been filed, and a sample of citations tested against the sources they cite. It applies the mechanical fixes, proposes the rest with a recommendation, and names the gaps worth researching next. Repairs; it doesn't synthesise. | Scheduled, inside every `wiki-maintain` run; manual on its own after a big batch or when the wiki feels messy. |
 | `wiki-dream` | Consolidation, in one sitting: runs `wiki-dream-only`, then `wiki-dream-ingest` on the report it just wrote. | When you want new connections and are there to decide. Manual. |
 | `wiki-dream-only` | Reads across what's already filed for connections no page states yet — bridges between subjects, questions the vault can now answer, sources that agree independently, pages that should link — and writes each as a cited, inference-marked proposal to a report. Applies nothing; adds nothing from outside the vault. Each pass leaves a short register of open hypotheses in the log — a loop seen twice, a connection one line short — which the next pass tests first. | After about ten new sources, which is what makes a pass worth running; the digest says when it's due. **Scheduled**, or manual. |
 | `wiki-dream-ingest` | Works through a dream report with you: re-checks each finding against the wiki as it is now, puts it to you, files what you accept as notes, links and citations, and remembers what you rejected. | After a dream pass — the digest, the task's notification and `wiki-status` say a report is waiting. Manual; it needs you. |
@@ -123,11 +123,11 @@ Using and looking after the wiki:
 | `wiki-doctor` | Whether the machinery is sound: the vault's structure and scripts, the schema against the plugin version that built it, the project instructions, the scheduled tasks and their prompts, whether the folder is attached to them, and whether the routines have actually run. Reports problems with the text to paste for each fix. Read-only. | After a plugin update, when a scheduled run stops happening, when something is off. Manual. |
 | `wiki-gaps` | What's missing and what to go and read. Read-only. | When deciding what to read next. Manual. |
 | `wiki-help` | How to use the plugin: which skill does what, what to say to trigger it, how to turn something on, and what you're looking at — the vault's folders, or the ring of dots around the Obsidian graph. Answers from the plugin itself, never by changing the wiki. Read-only. | Whenever you wonder *"how do I …?"*. Manual; the project instructions route such questions here. |
-| `wiki-setup` | Builds the vault: `raw/`, `wiki/`, `_meta/schema.md`, index, overview, log, templates. Interviews you first so the schema fits your domain, and hands you the project instructions to paste into your project, together with the scheduled-task prompt. Later, upgrades an existing vault after a plugin update. | Once per vault; again after an update. Manual. |
+| `wiki-setup` | Builds the vault: `raw/`, `wiki/`, `_meta/schema.md`, index, overview, log, templates. Interviews you first so the schema fits your domain, and hands you the project instructions to paste into your project, together with the scheduled-task prompt. Later, upgrades an existing vault after a plugin update, and changes what the vault blocks (*"stop blocking …"*, *"also block …"*). | Once per vault; again after an update. Manual. |
 
 **Two sub-agents:**
 
-- `wiki-reader` — reads one source in parallel when several are ingested at once, and drafts its page. Writes nothing else, so parallel readers can't clobber each other.
+- `wiki-reader` — reads one source in parallel when several are ingested at once, and drafts its page; or reads one section of a large source, or what changed in a re-captured one, into an extract. Writes nothing else, so parallel readers can't clobber each other.
 - `wiki-auditor` — audits a slice of the vault read-only during a lint pass and returns findings.
 
 ## Several brains
@@ -135,7 +135,7 @@ Using and looking after the wiki:
 Most people start with one wiki per project, which is the default. Some keep several on purpose, because they have different scope rules, different owners, or different things that must never leave a folder. Each is then a *part* of one brain:
 
 - **Reading crosses.** Questions are routed by what each wiki's schema says it is for, and a scope you name ("ask the research wiki") is followed exactly. A claim taken from another part is quoted with that part's name and id, because links only work inside one folder.
-- **Writing doesn't.** A project that combines several wikis is a reading room. The only thing it writes is a capture into one wiki's inbox, which that wiki's own project then ingests. Ingest, lint, maintain, dream passes and upgrades run where their wiki is the only one connected, so nothing ever has to guess which vault it is in.
+- **Writing doesn't.** A project that combines several wikis is a reading room. The only thing it writes is a capture into one wiki's inbox, which that wiki's own project then ingests. Ingest, lint, maintain, dream passes, folder imports and upgrades run where their wiki is the only one connected, so nothing ever has to guess which vault it is in.
 
 ## How an item moves through the wiki
 
@@ -155,23 +155,25 @@ flowchart LR
   W --> CAP[["wiki-capture-only"]]:::cmd
   N4["Several wikis connected:<br/>capture only — the item waits<br/>in that wiki's inbox for its<br/>own project to ingest it"]:::note
   N4 -.- W
-  CAP --> G1{"In scope?<br/>Complete?<br/>Not already in?"}:::check
-  G1 -- "no" --> X["Not captured<br/>you are told why"]:::stop
+  CAP --> Q1{"On your<br/>out-of-scope list?<br/>asked once"}:::check
+  Q1 -- "skip it" --> X["Not captured<br/>you are told why"]:::stop
+  Q1 -- "no, or<br/>file it anyway" --> G1{"Complete?<br/>Not already in?"}:::check
+  G1 -- "no" --> X
   G1 -- "yes" --> P[("PENDING<br/>raw/inbox/")]:::state
   A --> P
 
   %% ── ingest ────────────────────────────────────────────────
   P --> ING[["wiki-ingest-pending"]]:::cmd
-  ING --> C{"Already in?<br/>In scope?"}:::check
-  C -- "out of scope" --> H["Stays pending<br/>until you decide"]:::stop
+  ING --> C{"Already in?<br/>On your<br/>out-of-scope list?"}:::check
+  C -- "on the list: asked once<br/>skip it, or nobody there" --> H["Stays pending<br/>named with the line<br/>it matched"]:::stop
   C -- "unchanged copy" --> K["Skipped"]:::stop
   C -- "a newer version" --> RC["Re-capture<br/>diff against the previous copy<br/>+ a Version history line"]:::step
-  C -- "new" --> INGEST
+  C -- "new, or<br/>file it anyway" --> INGEST
   RC --> INGEST
 
   subgraph INGEST["ingest — steps 3 to 5b write under the vault lock"]
     direction TB
-    S1["1 · Read<br/>in full"]:::step --> S2["2 · Check in<br/>unless the schema says<br/>file first"]:::step --> S3["3 · Source page<br/>wiki/sources/"]:::step --> S4["4 · Propagate<br/>entities · concepts · overview<br/>contradictions flagged<br/>then close the list"]:::step --> S5["5 · Move out of the inbox<br/>text → raw/<br/>binary → raw/assets/<br/>index + log"]:::step --> S5b["5b · Verify<br/>no orphans · index in line<br/>frontmatter complete"]:::step
+    S1["1 · Read<br/>in full; a large source<br/>section by section"]:::step --> S2["2 · Check in<br/>unless the schema says<br/>file first"]:::step --> S3["3 · Source page<br/>wiki/sources/"]:::step --> S4["4 · Propagate<br/>entities · concepts · overview<br/>contradictions flagged<br/>then close the list"]:::step --> S5["5 · Move out of the inbox<br/>text → raw/<br/>binary → raw/assets/<br/>index + log"]:::step --> S5b["5b · Verify<br/>no orphans · index in line<br/>frontmatter complete"]:::step
   end
 
   INGEST --> D[("INGESTED")]:::done

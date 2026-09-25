@@ -38,7 +38,7 @@ pages: 15
 
 For scanned PDFs with no text layer, note it: `ocr_needed: true`. Ingest will read pages as images.
 
-For books: capture one file per chapter where possible, or note chapter ranges in the sidecar so ingest can work through it incrementally. A 400-page book ingested as one "source" produces a useless page.
+For books: file them whole, with the page count in the sidecar. Ingest reads a large source by its own chapters and makes one source page for it, with its claims grouped by chapter (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/large-sources.md`); capture never splits it.
 
 ## Transcripts (podcasts, meetings, interviews, videos)
 
@@ -71,7 +71,7 @@ The description matters: text search can't see inside a PNG, and the description
 
 ## Email and chat threads
 
-Oldest first, one block per message, sender and timestamp preserved. Strip signatures, legal footers and quoted reply chains that repeat earlier messages. Whether the thread belongs at all was settled by the scope check in wiki-capture-only's step 2 — a private thread with another person is out of scope unless the owner overrides. Inside an in-scope thread, credentials and account numbers stay in the original and out of the capture, per wiki-capture-only's fidelity rules.
+Oldest first, one block per message, sender and timestamp preserved. Strip signatures, legal footers and quoted reply chains that repeat earlier messages. Whether the thread belongs at all was settled by the scope check in wiki-capture-only's step 2, against schema §1's list — a private thread is out of scope only where that list names it (private messages, say), and even then the owner can have it filed anyway. Inside an in-scope thread, credentials and account numbers stay in the original and out of the capture, per wiki-capture-only's fidelity rules.
 
 ## Data files (CSV, XLSX, JSON)
 

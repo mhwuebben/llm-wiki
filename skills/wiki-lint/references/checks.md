@@ -4,7 +4,7 @@ Run in this order — later checks depend on the results of earlier ones. For ea
 
 **Scope:** a **history companion** — a page with `history-of:` — is part of the page it names, holding its superseded claims: checks 3, 4, 5, 6, 7 and 10 leave it out, and check 9 asks it for `type:`, `title:`, `history-of:`, `created:`, `updated:` and `sources:` only, never `status:`. Checks 1, 2 and 8 treat it like any page: its links must resolve, its page must link it, and it has an index row. A **foreign citation** — quoted text naming another part and its vault id (`— research brain (wiki-7f3a2c), transformer-scaling`) — is deliberate and correct in every check here: it is not a broken link (check 1), not an uncited claim and never a candidate for check 7's support sample (its source page is in another vault, so "not in the source" cannot be judged from here), not a missing page (check 4) and not a contradiction to file (check 5), because links do not resolve across vaults (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`). Check 14 reads `_meta/log.md`, page frontmatter and bodies, and `raw/inbox/`; checks 1–10 run over `wiki/` plus `index.md`, `overview.md` and — where the vault has one — `patterns.md`. Pages may sit in subfolders of their type folder (schema §3, **Grouped by**) or wherever the owner moved them: every check lists pages at any depth and looks a page up by its name, as `${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/links.md` resolves it — never by assuming a folder. Check 1 also tests that embedded files exist in `raw/assets/` or `outputs/`. Check 7's support sample reads the markdown in `raw/` — and, capped, a binary in `raw/assets/` — read-only, to test whether a cited source says what the page claims; its fixes act on wiki pages only. Check 11 reads `raw/`, `raw/inbox/` and `raw/assets/`, which is its whole point; check 12 also reads the markdown in `raw/`, for what the sources say that no page has picked up, and the `- gap:` lines of `query` entries in `_meta/log.md`. Check 13 reads the source pages against the schema's scope list and greps `wiki/`, `index.md`, `overview.md` and `patterns.md`; it never reads `raw/`, because a finding there would have no legal fix.
 
-**The vault's schema wins.** Where this file and the vault's `_meta/schema.md` disagree about a convention — a contradiction rule, a page-length limit, a field the owner renamed — lint against the schema, and report the difference once, as a suggested schema update, not as a finding on every page. Three things apply whatever the schema says: check 13's built-in scope list; the reserved `synthesis` tag in check 9; and the split of checks 1, 8 and 9 into mechanical fixes and proposals — an unattended run applies only the mechanical parts, and no check ever moves a file unattended.
+**The vault's schema wins.** Where this file and the vault's `_meta/schema.md` disagree about a convention — a contradiction rule, a page-length limit, a field the owner renamed — lint against the schema, and report the difference once, as a suggested schema update, not as a finding on every page. Two things apply whatever the schema says: the reserved `synthesis` tag in check 9; and the split of checks 1, 8 and 9 into mechanical fixes and proposals — an unattended run applies only the mechanical parts, and no check ever moves a file unattended.
 
 **Never linted, anywhere:**
 
@@ -97,7 +97,7 @@ Page creation always needs approval. It is never in the mechanical set.
 - **The test.** Open the cited source page and find the claim's substance there. For an exact figure or quotation, also search the source's `raw:` markdown — tolerantly: the digits with `[.,]` between them, the spacing and units varied, or a distinctive two- or three-word phrase — and read the passage before calling anything missing, since formatting and line wraps defeat an exact search. For a source in another language, compare meaning, not wording. A binary's sidecar holds no text: open the binary itself only for an exact figure or quotation, at most about three per pass; otherwise record "raw not checked (binary)".
 - **Outcomes, per claim:**
   - *supported* — the source page carries it. The exact figure may be only in `raw/`; say so, it is still supported.
-  - *only in raw* — the source page dropped it: propose adding the line to the source page, from the raw file. Never carry over what capture or check 13 keeps out of `wiki/` — credentials, a third party's contact details, anything a redaction line says was removed, a retired source's content; report those under check 13 instead.
+  - *only in raw* — the source page dropped it: propose adding the line to the source page, from the raw file. Never carry over what capture keeps out of `wiki/` — credentials and account numbers (wiki-capture-only's fidelity rules), what schema §1's out-of-scope list names unless the source page carries a `scope: "override — …"` line, anything a redaction line says was removed, a retired source's content; report those under check 13 instead.
   - *not in the source* — for a citation naming a section (`§Phase 2`), check that section's range first, then the whole file, before calling it this — propose re-citing the claim to the source that does say it (search for one), marking it as inference, or moving it to `## History` with a note in the gaps section.
   - *contradicted by its own source* — a correction to the claim, with the old wording moved to `## History`; not a check 5 pair.
   - *source page not backed by raw* — the source page states it, but the raw passage, once read, doesn't: propose correcting the source page.
@@ -112,7 +112,7 @@ Page creation always needs approval. It is never in the mechanical set.
 
 ## 9. Frontmatter hygiene and placement
 
-**Find — mechanical** (apply in bulk on one approval; the only part of this check wiki-maintain applies unattended):
+**Find — mechanical** (applied without asking, as lint step 5 says; the only part of this check wiki-maintain applies unattended):
 
 - `answered:` missing on a note — set it to the note's `created:` date
 - missing or malformed `type`, `title`, `created`, `updated`, `status` on any page — the frame pages (`index.md`, `overview.md`, `patterns.md`) need only `type`, `title` and `updated`
@@ -180,7 +180,7 @@ Turn each into something actionable: a source to capture, a question to ask the 
 
 ## 13. Out-of-scope and expired sources
 
-The capture gate stops the wrong material at the front door. Nothing audits what is already inside — a source filed on an override, or one the gate let through by mistake, stays forever and no check ever looks at it again.
+The capture gate stops the wrong material at the front door. Nothing else audits what is already inside — a source the gate let through by mistake, or one filed before its line was added to the list, stays forever and no other check ever looks at it again. A source filed on an override is the owner's decision, not a mistake, and this check leaves it alone.
 
 **Find:**
 
@@ -188,7 +188,7 @@ The capture gate stops the wrong material at the front door. Nothing audits what
 - **Expired.** Sources whose usefulness ends on a date the source itself states: an event page after the event, a quote or offer past its validity, a job posting after the role closes. The date is usually on the source page already.
 - **Personal data in the greppable layer** — only where §1's list blocks other people's personal data, and never on a page whose source was filed on an override. Grep **`wiki/`, `index.md`, `overview.md` and `patterns.md` only** for phone numbers, email addresses, postal addresses and government or account identifiers belonging to another living person — not an organisation's registered details — and for embeds of a photograph of someone other than the vault's owner — the person the schema's §1 names as whose vault this is. `wiki/` is the layer that propagates and the layer decks and documents are made from; `raw/` is immutable and is where this material is allowed to live. Do not grep `raw/`: a finding there has no legal fix.
 
-**Why it matters:** the front-door gate is one decision at one moment, usually under time pressure and often overridden. This check is the only thing that revisits it. It is also what stops a vault quietly becoming a place personal data accumulates.
+**Why it matters:** the front-door gate is one decision at one moment, usually under time pressure, and the list it checks against can grow after the fact. This check catches what got past it — never what the owner deliberately let in. It is also what stops a vault quietly becoming a place personal data accumulates.
 
 **Severity:** medium for out-of-scope and expired; **high** for third-party personal data in `wiki/`, `index.md`, `overview.md` or `patterns.md`, because that is what leaves the vault in an export.
 
@@ -196,7 +196,7 @@ The capture gate stops the wrong material at the front door. Nothing audits what
 
 - **Retire the page** — expired, and nothing links to it except `index.md` and `overview.md`; retiring removes those lines too. Log it on the lint entry as `- retired: [[slug]] ← <raw: path>, <raw_previous: paths>, <the paths on its ## Version history lines>, <asset: paths>`; that line is what tells check 11 the files left behind are retired, not orphaned. The source page goes; its raw files stay in `raw/` and `raw/assets/`, the record that it was ever here. Needs approval on that specific page, like every other removal.
 - **Redact the page** — delete the contact details and identifiers from every page that carries them and leave a line saying what was removed and that it is still readable in the binary. This is the **one exception to "never delete substantive content"** in §10 of the schema: redaction removes, it does not move the text to `## History`, because a `## History` section is in `wiki/` and exports exactly like the rest of the page.
-- **Keep as-is** — the owner decides to keep it: record that on the page, as a note in the body and `scope: "override — <the rule it fails>"` in its frontmatter — the line check 10 and later passes read — so the next pass does not re-litigate it.
+- **Keep as-is** — the owner decides to keep it: record that on the page, as a note in the body and `scope: "override — <the line it matched>"` in its frontmatter — the line this check reads — so no later pass raises it again.
 
 For anything expired, say what the expiry date was and how long it has been past.
 

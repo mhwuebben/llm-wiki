@@ -26,6 +26,7 @@ Work through the eight groups. Skip a check whose input this session cannot read
 1. Do they point at this vault — by id where they name one, by folder name otherwise? Where they carry the several-wikis paragraph, is every listed id connected, and is every connected vault listed? A listed part that isn't connected is the one worth a line: questions routed to it get answers from the others. Where they don't carry it but more than one connected folder holds a schema, say so once: either the extra folder is connected by accident, or the project is meant to combine them and wiki-setup can hand over the combined instructions.
 2. Do they name a skill this plugin doesn't have? That is the sure sign of an old copy, and the routing rule that names it does nothing.
 3. Is every rule of the current text there in some wording? Match on what a rule does, not on its words: the person may have rewritten one.
+4. Do they keep a rule the current text has dropped — a scope paragraph listing categories of its own, say, which the text carried before 3.12.0? That is an old copy, not an addition of theirs: hand over the current text.
 
 **Their own additions are theirs.** A rule the plugin never wrote is never reported as missing, wrong or unnecessary. The one exception is a rule that plainly countermands a plugin rule — sources sent somewhere other than the wiki, sessions told not to read the schema or to skip the scope check — and that is named once, as something to look at, not corrected.
 

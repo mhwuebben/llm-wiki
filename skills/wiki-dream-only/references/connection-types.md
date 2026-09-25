@@ -68,7 +68,7 @@ A report of two findings with external criteria is worth more of the owner's att
 
 **Find:** only when the vault has a `patterns.md`. A loop earns a place on it at the third source that shows it; before that it lives as a line on the page it came up on. So look for loops already mentioned on one or two pages, and check the sources ingested since for a third sighting.
 
-**Evidence required:** three source pages, each showing the loop in its own terms on a separate occasion. Two clips or copies of one item count once; three journal entries by the same person are three sightings. This is the same bar ingest applies. Two sightings stay where they are.
+**Evidence required:** three source pages, each showing the loop in its own terms on a separate occasion. Two clips or copies of one item count once, and so does a source whose Version history says it restates another; three journal entries by the same person are three sightings. This is the same bar ingest applies. Two sightings stay where they are.
 
 **Propose:** a line under `## Observed` in `patterns.md`, with all three sources linked. Keep the wording at the level the sources state it. A pattern about a person's habits is recorded as written, never interpreted.
 

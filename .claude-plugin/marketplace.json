@@ -10,7 +10,7 @@
     {
       "name": "llm-wiki",
       "source": "./",
-      "version": "3.12.0",
+      "version": "3.12.1",
       "description": "Notes and memory as an AI-maintained second brain in markdown: capture sources, ingest them into interlinked, cited notes, ask questions of them, lint and consolidate them. Fourteen skills, two sub-agents.",
       "category": "notes-and-memory",
       "keywords": [
@@ -21,5 +21,5 @@
       ]
     }
   ],
-  "version": "3.12.0"
+  "version": "3.12.1"
 }
