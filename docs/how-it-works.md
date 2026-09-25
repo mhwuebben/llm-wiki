@@ -135,4 +135,4 @@ A sync updates the skills. It does not touch anything in your vault:
 
 ## Editing it
 
-Every component is markdown. Change a `SKILL.md` and it takes effect in the current session; agents need a plugin reload or a new session. Bump `version` in `.claude-plugin/plugin.json` and in both places in `.claude-plugin/marketplace.json` when you publish a change, or marketplace installs won't pick it up.
+Every component is markdown. Change a `SKILL.md` and it takes effect in the current session; agents need a plugin reload or a new session. Bump `version` in `.claude-plugin/plugin.json` and in both places in `.claude-plugin/marketplace.json` when you release a change, or marketplace installs won't pick it up.
