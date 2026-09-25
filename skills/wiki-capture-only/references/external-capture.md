@@ -36,7 +36,7 @@ Two extras worth knowing:
 
 At ingest, an externally captured file needs four things established. None of them require editing the file.
 
-**0. Scope.** A clip, a sync or a drag-and-drop never went through capture's scope check, so ingest applies it: the schema's §1 out-of-scope list, the owner's own. A file that matches stays in `raw/inbox/`, untouched, until the person says *ingest it anyway* or *leave it*; one whose provenance already carries `scope: "override — …"` was decided at capture.
+**0. Scope.** A clip, a sync or a drag-and-drop never went through capture's scope check, so ingest applies it: the schema's §1 out-of-scope list, the owner's own. A file that matches stays in `raw/inbox/`, untouched, until the person says *file it anyway* or *skip it* — asked once, and a skipped file simply stays where it is; one whose provenance already carries `scope: "override — …"` was decided at capture.
 
 **1. Provenance.** Read whatever frontmatter is there and map it to the wiki's fields:
 

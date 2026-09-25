@@ -37,7 +37,7 @@ Each part returns, in this shape and nothing more:
 Give each part the claims the others returned — quoted, each labelled with its part and vault id, stripped of any conclusion — and exactly three questions:
 
 1. **Does this contradict something you hold?** Quote your line and theirs.
-2. **Does it confirm something independently?** Only if your source is a different document: same author, same url, the same `origin:` or content fingerprint, or one citing or summarising the other, means one source seen twice, not two agreeing (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-dream-only/references/connection-types.md`, *Convergence*).
+2. **Does it confirm something independently?** Only if your source is a different document: same author, same url, the same `origin:` or content fingerprint, one citing or summarising the other, or a Version history line saying it adopts the wiki's inference or restates another source's claim, means one source seen twice, not two agreeing (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-dream-only/references/connection-types.md`, *Convergence*).
 3. **Does it fill a gap you named?** Then say what your pages can now add on top of it, and what still isn't answered.
 
 A part may not revise a claim because another part disagrees. It may only add, contradict with a quote, or say the disagreement stands. Nothing is written to any vault during the rounds.

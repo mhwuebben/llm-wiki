@@ -25,7 +25,7 @@ Past about four parts, say which you consulted and stop there rather than readin
 - A claim taken from another part is quoted with its provenance, never linked: `— research brain (wiki-7f3a2c), transformer-scaling`. That format is what a later reader follows by hand, and it is what tells lint the citation is deliberately foreign rather than broken.
 - A contradiction between two parts is **reported**, never filed as a callout on both: neither part owns it, and writing it into both would mean each holds a claim it cannot check. Say it in the answer, and offer to file the resolution as a note in one part — *Where a cross-part answer is filed*, below.
 - **One log entry, in the part that was written to** — the capture's own line. A cross-part answer never leaves an entry in every part it read, and one that files nothing leaves none at all. A gap is said in the answer, naming which parts' inboxes were searched, since `sh _meta/wiki-search.sh pending` runs inside one vault at a time.
-- Anything filed into part A must pass **A's** scope test (§1), whatever part it came from. Parts are often separated precisely because their scope rules differ; that is the boundary this protects.
+- Anything filed into part A goes through **A's** scope test (§1) — A's list, and A's owner's answer where it matches a line — whatever part it came from. Parts are often separated precisely because their scope rules differ; that is the boundary this protects.
 
 ## Routing a question
 

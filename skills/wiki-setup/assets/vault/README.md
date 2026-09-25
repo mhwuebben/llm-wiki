@@ -21,8 +21,9 @@ Two front doors: **[[index]]** (everything, cataloged) and **[[overview]]** (wha
 | "Process what's waiting" | everything pending in `raw/inbox/` gets ingested |
 | "What does the wiki say about X?" | answered from the compiled pages, with citations — and the good answers get filed back |
 | "Make a deck on X" | the answer is filed as a note first, then the deck is made from it into `outputs/` |
-| "Lint the wiki" | contradictions, stale claims, orphans and gaps get found — and fixed once you approve |
+| "Lint the wiki" | contradictions, stale claims, orphans and gaps get found — the mechanical fixes are applied and reported, the rest proposed with a recommendation |
 | "Bring the wiki up to date" — or the scheduled run | what changed in imported folders is brought in, everything pending gets ingested, the vault gets linted, and you get a digest of what changed since last time |
+| "File this anyway" — or "stop blocking …", "also block …" | an item your out-of-scope list catches is asked about once, and filed if you say so; the list itself is yours to change |
 | "Import this folder" | Claude says how big it is and what it would leave out, copies it with a record of where each file came from, and ingests the part you choose first |
 | "What does it all add up to?" | connections your pages already imply get proposed, and you decide which ones get written down |
 | "Go through the dream report" — after a scheduled dream pass | the proposals waiting for you, one at a time; only what you accept is filed |

@@ -18,7 +18,7 @@ A type folder (`wiki/sources/`, `wiki/concepts/`, a preset's `people/`…) can g
 
 ## Placement
 
-A page with a value lives in `<type folder>/<value>/<name>.md`; without one, in `<type folder>/<name>.md`. The type folder is the one §3 names for the type (`source` → `wiki/sources/`). One level only: a subject that grows too big is split into two subjects, never nested.
+A page with a value lives in `<type folder>/<value>/<name>.md`; without one, in `<type folder>/<name>.md`. The type folder is the one §3 names for the type (`source` → `wiki/sources/`). One level only: a subject that grows too big is split into two subjects, never nested. A history companion (`history-of:`, `${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/page-anatomy.md`) goes wherever the page it names goes — never to a subject or year of its own — and moves with it.
 
 **Every skill that creates a page places it by this rule, at creation** — ingest (and the `wiki-reader` agent), query and dream filing a note, lint creating a missing page, setup. Nothing tidies up afterwards: wiki-maintain and every unattended run never move a page.
 

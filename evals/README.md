@@ -12,7 +12,7 @@ claude plugin eval . --case 'scope-refusal' --scaffold --allow-tools Write Edit
 
 **Routing** (`--tag routing`) — one prompt each, graded with `tool_used` on the `Skill` tool: the right skill fires, and the skill it is most often confused with does not. They need no vault and no write tools; eleven cases at one run each cost about a dollar.
 
-**Behaviour** (`--tag behaviour`) — each copies `fixtures/vault` into the run's workspace with its `scaffold.sh`, so they need `--scaffold`:
+**Behaviour** (`--tag behaviour`) — each copies its own synced copy of `fixtures/vault` into the run's workspace with its `scaffold.sh`, so they need `--scaffold`:
 
 | case | asserts |
 |---|---|

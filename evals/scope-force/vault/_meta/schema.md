@@ -19,6 +19,8 @@ A small test vault about distributed systems: how queues, retries and backpressu
 - credentials and keys
 - other people's personal data — CVs, IDs, medical or financial records, private messages, contact files, photos of others
 
+This list is the owner's, and it is the whole gate: nothing outside it is blocked. An item that matches it is not filed on Claude's judgement — the session asks once, *file it anyway* or *skip it*, and does what the owner says. Filed anyway, it is an ordinary source — ingested and propagated like any other — whose source page carries `scope: "override — <the line it matched>"`, so the decision is on record and never raised again. The owner changes this list whenever they like; a change is a schema change, logged.
+
 **Questions this wiki exists to answer:** why a queue collapses under load; what backpressure strategies exist and when each applies.
 
 ## 2. Layers
@@ -38,7 +40,7 @@ A small test vault about distributed systems: how queues, retries and backpressu
 
 ## 5. Frontmatter
 
-`type`, `title`, `created`, `updated`, `status`; `sources:` on entity, concept and note pages; `raw:` and `asset:` on source pages.
+`type`, `title`, `created`, `updated`, `status`; `sources:` on entity, concept and note pages; `raw:` and `asset:` on source pages, and `scope: "override — …"` on one the owner had filed anyway against §1's list.
 
 ## 6. Linking and citation
 
@@ -67,6 +69,7 @@ Short sections, bullets, no preamble. Pages stay under about 800 words.
 
 ## 12. Schema history
 
-**Built with:** llm-wiki 3.7.1, on 2026-09-01.
+**Built with:** llm-wiki 3.12.1, on 2026-09-25.
 
 - 2026-09-01 — created at setup.
+- 2026-09-25 — upgraded to llm-wiki 3.12.1: §1's out-of-scope gate paragraph, `scope:` in §5, current scripts and templates.

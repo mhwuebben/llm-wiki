@@ -17,24 +17,24 @@
 | Duplicate pages / sync conflict copies | {{n}} / {{n}} | |
 | Missing pages | {{n}} | |
 | Contradictions | {{n}} ({{m}} unflagged) | |
-| Stale claims / propagation gaps | {{n}} / {{n}} | |
+| Stale claims / claims resting only on a withdrawn source / propagation gaps | {{n}} / {{n}} ({{k}} sources) / {{n}} | |
 | Uncited claims / support sample | {{n}} / {{x}} of {{m}} sampled claims not supported ({{k}} pages) | |
 | Index drift | {{n}} rows | |
 | Frontmatter issues / placement and subject proposals | {{n}} / {{n}} | |
-| Thin / bloated pages; sources without Entities and concepts; grouping, subject and split proposals | {{n}} / {{n}}; {{n}}; {{n}} | |
+| Thin / bloated pages — split past {{n}} words ({{schema §10 / plugin default}}), folders grouped past {{n}} pages ({{schema §10 / plugin default}}); sources without Entities and concepts; grouping, subject, split and history-companion proposals | {{n}} / {{n}}; {{n}}; {{n}} | |
 | Unprocessed / orphaned sources | {{n}} pending / {{n}} orphaned / {{n}} ghost / {{n}} stray / {{n}} broken embed / {{n}} conflict copies in `raw/` | |
 | Out-of-scope / expired sources | {{n}} / {{n}} | |
 | Work that left no trace | {{n}} unlogged page changes / {{n}} gaps or notes with material pending / {{n}} sources that propagated nothing | |
 
 ## Findings
 
-### Fix on approval — mechanical
+### Applied — mechanical
 
 {{Broken links, index rows, check 9's mechanical fields — applied as soon as this report was written, before anything was put to you. One line each: page, what was wrong, what it now says. A fix that would have rewritten the text of many pages is listed under judgement instead, waiting for a yes.}}
 
 ### Needs your judgement
 
-{{Merges, retirements, splits, superseded claims, duplicate names, placement, subject and grouping proposals, propagation gaps, source pages without an Entities and concepts section, the support sample. One block each — except propagation gaps, source pages without the section, subject proposals and the support sample, which are grouped as below:}}
+{{Merges, retirements, splits, histories to move to a companion, superseded claims, claims resting only on a withdrawn source, duplicate names, placement, subject and grouping proposals, propagation gaps, source pages without an Entities and concepts section, the support sample. One block each — except propagation gaps, source pages without the section, subject proposals and the support sample, which are grouped as below:}}
 
 **{{[[page-a]]}} and {{[[page-b]]}} look like the same thing**
 - Evidence: {{shared sources, near-identical summaries}}

@@ -9,11 +9,13 @@
 #   sh _meta/wiki-search.sh backlinks <name> [alias...]    every page that links that page
 #   sh _meta/wiki-search.sh cites [-a alias]... <name> <file>...  does each page's BODY link it?
 #   sh _meta/wiki-search.sh pending [term...]              what is waiting in raw/inbox
+#   sh _meta/wiki-search.sh raw <term> [term...]           the text of raw/, each hit labelled current, earlier, uncovered or pending
 #
 # The page set is every .md in the vault except raw/, outputs/, _meta/ and dotfolders.
 # Matching ignores case and takes every pattern literally, so dots and brackets need no escaping.
 # Paths print from the vault root, and file arguments are read from there — not from your cwd.
 
+self=$(cd "$(dirname "$0")" && pwd)/$(basename "$0")
 cd "$(dirname "$0")/.." || exit 2
 cmd=${1:-help}
 [ $# -gt 0 ] && shift
@@ -140,5 +142,44 @@ EOF
   if [ $# -ge 1 ]; then printf 'pending: %s matching of %s\n' "$hits" "$total"
   else printf 'pending: %s\n' "$total"; fi
   ;;
-*) sed -n '6,11p' "$0"; exit 2 ;;
+raw)
+  [ $# -ge 1 ] || { echo "usage: raw <term> [term...]"; exit 2; }
+  [ -d raw ] || { echo "raw: 0 — no raw/"; exit 0; }
+  i=$#
+  while [ "$i" -gt 0 ]; do t=$1; shift; set -- "$@" -e "$t"; i=$((i - 1)); done
+  # By file name: each copy a source page names on raw: (current) or on raw_previous: or in ## Version history (earlier).
+  named=$(pages | tr '\n' '\0' | xargs -0 awk '
+    function add(l, kind,   t) { while (match(l, /[^] \t,"\047#()|[]+\.md/)) { t = substr(l, RSTART, RLENGTH); l = substr(l, RSTART + RLENGTH)
+        sub(/^.*\//, "", t); if (kind == "cur") cur[t] = 1; else prev[t] = pg } }
+    FNR == 1 { fm = 0; vh = 0; inprev = 0; pg = FILENAME; sub(/^.*\//, "", pg); sub(/\.md$/, "", pg); sub(/^\357\273\277/, "") }
+    { sub(/\r$/, "") }
+    FNR == 1 && /^---[[:space:]]*$/ { fm = 1; next }
+    fm && /^---[[:space:]]*$/ { fm = 0; next }
+    fm {
+      if ($0 ~ /^raw:/) { v = $0; sub(/^raw:/, "", v); sub(/[[:space:]]#.*$/, "", v); add(v, "cur") }
+      if ($0 ~ /^raw_previous:/) inprev = 1; else if ($0 ~ /^[A-Za-z_]+:/) inprev = 0
+      if (inprev) { v = $0; sub(/^raw_previous:/, "", v); sub(/[[:space:]]#.*$/, "", v); add(v, "prev") }
+      next }
+    /^## / { vh = ($0 ~ /^## Version history/) }
+    vh { add($0, "prev") }
+    END { for (f in cur) print "c\t" f; for (f in prev) if (!(f in cur)) print "e\t" f "\t" prev[f] }' /dev/null 2>/dev/null)
+  hits=0
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    f=${f#./}
+    case $f in raw/inbox/*) printf 'pending: %s\n' "$f"; hits=$((hits + 1)); continue ;; esac
+    b=${f##*/}
+    e=$(printf '%s\n' "$named" | awk -F'\t' -v b="$b" '$2 == b { print $1 "\t" $3; exit }')
+    case $e in
+      c*) printf 'current: %s\n' "$f" ;;
+      e*) printf 'earlier: %s — an earlier copy of [[%s]]; its current wording is on that page\n' "$f" "${e#*	}" ;;
+      *)  printf 'uncovered: %s — no source page names it; lint check 11 reports it\n' "$f" ;;
+    esac
+    hits=$((hits + 1))
+  done <<LIST
+$(find raw -name '*.md' -type f 2>/dev/null | sort | tr '\n' '\0' | xargs -0 grep -liF "$@" -- /dev/null 2>/dev/null)
+LIST
+  printf 'raw: %s files\n' "$hits"
+  ;;
+*) sed -n '6,12p' "$self"; exit 2 ;;
 esac

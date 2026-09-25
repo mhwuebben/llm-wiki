@@ -33,7 +33,7 @@ Each preset also says how its type folders start out in schema §3's **Grouped b
 
 - Page types: `sources/` (meeting transcripts, customer calls, docs, Slack threads), `entities/` (customers, people, teams, vendors), `concepts/` (processes, product areas), `decisions/` (one page per decision with date, context, outcome), `notes/`
 - Give `decisions/` an ADR-style template — a `decided:` date in its frontmatter, the context, the alternatives considered, the outcome. Write it into `_meta/templates/` at setup; none is shipped.
-- Stale-by-default: business facts rot fast. Put `updated:` in every page and make the lint pass flag anything older than a quarter.
+- Stale-by-default: business facts rot fast. Set §11b's freshness window to a quarter, so lint flags a claim whose source is older than that once a newer source touches the same subject.
 - Grouping: `sources/` by year of published, `decisions/` by year of decided. Entities and concepts flat.
 
 ## Competitive intelligence / market research

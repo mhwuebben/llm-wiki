@@ -107,7 +107,7 @@ status: stub            # stub | developing | solid
 raw: raw/2026-09-20-attention.md            # always the markdown in raw/, never raw/inbox/
 asset: [raw/assets/2026-09-20-attention.pdf]  # list: the binary original and any attachments; omit if none
 # expires: 2026-09-20                       # add only if the source states its own end date
-# scope: "override — admin"                # add only if the owner had it ingested against §1's scope, naming the rule it fails
+# scope: "override — admin paperwork"      # add only if the owner had it filed anyway, naming the §1 line it matched
 # raw_previous: [raw/2025-03-02-attention.md]    # the last ten earlier captures, newest first; older ones stay listed under ## Version history; omit if none
 # origin: "docs/backend/README.md"           # only for a file from an imported folder: its import record's name and the path inside the folder
 author: Vaswani et al.

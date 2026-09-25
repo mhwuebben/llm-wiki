@@ -15,7 +15,9 @@ This skill works on **one vault**. With several connected — each a part of one
 
 - **A part the person named** wins, always.
 - **A file from an imported folder** goes to the part that holds its import record, permanently: an imported folder belongs to one part, and a copy landing anywhere else would be a second, unconnected source.
-- **Otherwise ask, once, with a recommendation** — the parts' §1 lines are the choices, and the recommendation says why ("this looks like material for the one you imported that docs folder into"). Unattended, don't guess: leave the item where it came from and say which parts it could belong to.
+- **Otherwise the home part** the project instructions name — unless the item plainly belongs to another part, which you say in one line.
+- **With no home part named, ask, once, with a recommendation** — the parts' §1 lines are the choices, and the recommendation says why ("this looks like material for the one you imported that docs folder into"). Unattended, don't guess: leave the item where it came from and say which parts it could belong to.
+- **Two folders with the same vault id** are two copies of one vault, not two parts: write nothing — not even this capture — until one of them is disconnected (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-query/references/parts.md`).
 - **The same document in two parts** is allowed when the person asks for it, and only then. Both copies carry a provenance line `same-as: <the other part's vault id> · <the file's name there> · <fingerprint>` — the fingerprint being the first 16 characters of the file's SHA-256, the same one an import record uses (`references/folder-import.md`), computed with `shasum -a 256 <file> | cut -c1-16` or its equivalent, and omitted where no shell can compute it, so that nothing downstream mistakes one document for two independent sources — which would turn a single claim into false corroboration (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-dream-only/references/connection-types.md`, *Convergence*). Say plainly that it will be maintained twice.
 
 ## First, always
@@ -37,7 +39,7 @@ Full handling notes per type are in `references/source-types.md` — read it whe
 | **Pasted text** | Save verbatim as markdown. Never "improve" it. Ask where it came from if attribution isn't obvious. |
 | **Transcript** (podcast, meeting, video) | Save as-is with speakers preserved. Add episode/meeting metadata. Timestamps are worth keeping — they become citations. |
 | **Image / screenshot** | Copy into `raw/inbox/` with a sidecar `.md` of the same stem that embeds it and describes what it shows, so it's findable by text search. Ingest moves the image to `raw/assets/` and the sidecar to `raw/`. |
-| **Email or chat thread** | Save the thread in order, oldest first, with sender and date per message. Whether it belongs at all was settled in step 2 — a private thread with another person fails it; a work, newsletter or public thread doesn't. Credentials inside an in-scope thread follow the fidelity rules below. |
+| **Email or chat thread** | Save the thread in order, oldest first, with sender and date per message. Whether it belongs at all was settled in step 2, against §1's list — a private thread fails it only where the list names private messages. Credentials inside an in-scope thread follow the fidelity rules below. |
 | **Their own notes / voice memo** | Save verbatim in `raw/inbox/`. This is a primary source too, and often the most valuable one in the vault. |
 | **Spreadsheet / data file** | Copy the file into `raw/inbox/`. Add a stub describing columns, row count and what the data is for. |
 
