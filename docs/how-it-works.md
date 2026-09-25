@@ -85,6 +85,7 @@ Drag-and-drop, phone sync, and read-later exports work the same way. The wiki do
 - Ingest splits a source by kind: text to `raw/`, binaries to `raw/assets/` with a provenance sidecar left in `raw/`. Attachments — images in a clip, figures from a paper — go to `raw/assets/` too, but belong to their parent and get no sidecar. So `raw/` is always greppable, `raw/assets/` holds the originals, and a source page carries `raw:` for the markdown and `asset:` as a list of everything it owns in `raw/assets/`.
 - A source counts as ingested when a source page points at its file, not because of a flag — so nothing gets filed twice and nothing gets silently skipped.
 - Every arrival passes the same scope test before it is ingested, however it got there — against your own out-of-scope list in schema §1, chosen at setup and changeable any time. A match is asked about once; *"file it anyway"* files it like any other source, with the decision on record.
+- An export that packs many items into one file — Kindle highlights, a read-later export, a mailbox — is split into one source per item, so a question about one book reaches that book's page. The export itself is kept whole, with a short page of its own, and a later export only updates the items that changed and adds the new ones.
 - The lint pass checks `raw/` against the source pages and reports clips nobody ingested.
 
 Clip freely; ingest the same day with `wiki-ingest-pending`, and let the scheduled `wiki-maintain` run sweep up whatever is left.

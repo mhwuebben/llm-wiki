@@ -39,9 +39,10 @@ Full handling notes per type are in `references/source-types.md` — read it whe
 | **Pasted text** | Save verbatim as markdown. Never "improve" it. Ask where it came from if attribution isn't obvious. |
 | **Transcript** (podcast, meeting, video) | Save as-is with speakers preserved. Add episode/meeting metadata. Timestamps are worth keeping — they become citations. |
 | **Image / screenshot** | Copy into `raw/inbox/` with a sidecar `.md` of the same stem that embeds it and describes what it shows, so it's findable by text search. Ingest moves the image to `raw/assets/` and the sidecar to `raw/`. |
-| **Email or chat thread** | Save the thread in order, oldest first, with sender and date per message. Whether it belongs at all was settled in step 2, against §1's list — a private thread fails it only where the list names private messages. Credentials inside an in-scope thread follow the fidelity rules below. |
+| **Email or chat thread** | Save the thread in order, oldest first, with sender and date per message. Whether it belongs at all was settled in step 2, against §1's list — a private thread fails it only where the list names private messages. A password, key or account number inside it follows the fidelity rules below (*Secrets inside a document*). |
 | **Their own notes / voice memo** | Save verbatim in `raw/inbox/`. This is a primary source too, and often the most valuable one in the vault. |
 | **Spreadsheet / data file** | Copy the file into `raw/inbox/`. Add a stub describing columns, row count and what the data is for. |
+| **Export** — many independent items in one file (Kindle clippings, a read-later export, an `.mbox`, a chat export) | Split it: one capture per item, each with an `export:` line naming the export and the item, and the export kept whole beside them (`references/source-types.md`, *Exports*). |
 
 ## Naming and placement
 
@@ -87,7 +88,9 @@ The sidecar is provenance only — what it is, where it came from, how complete 
 - **Keep figures.** Download a web capture's images into `raw/inbox/` beside it, named after its stem (`2026-09-20-attention-fig1.png`), and embed them by filename; ingest moves them to `raw/assets/` as attachments. A URL that 404s in a year takes the evidence with it.
 - **Don't invent metadata.** Unknown author is `author: unknown`, not a guess.
 - **Scope was settled at step 2, not here.** If a source turns out, once you are reading it, to contain something §1's list names, go back to step 2 and ask, rather than deciding in the moment. What §1 doesn't name is filed.
-- **A document can be in scope while parts of it are not.** When a source worth keeping also carries a credential — an order number, a booking reference, a key, an account number — the binary is the right home for them. Leave those fields out of the sidecar and the source page, then say on the page that you did and where they can still be read. Transcribing them spreads a secret across the greppable layer for no gain.
+- **Secrets inside a document follow §1's list.** A source worth keeping may also carry a password, an API key or an account number.
+  - **§1's list names credentials** → the document is filed, the secret is not: leave those fields out of the sidecar and the source page, and say on the page that you did and where they can still be read. A document that is nothing *but* credentials — a password export, a key file — matches the line itself, and step 2 asks.
+  - **It doesn't** → warn once, then file everything as it is: *"This contains what looks like a password, API key or account number. It will be copied onto the wiki page and into anything made from it — say 'also block credentials' to keep secrets out from now on."* The warning is information, not a question: nothing waits for an answer. Unattended, it goes in the report or digest, with the file's name.
 
 ## Batch capture
 
@@ -108,7 +111,7 @@ When several items arrive at once (a reading list of URLs, a handful of PDFs). *
 - `references/external-capture.md` — the Obsidian Web Clipper setup (with the importable template), other routes into the vault, mapping foreign frontmatter, and how ingested state is determined. Read whenever files arrive in `raw/` that Claude didn't put there.
 - `references/folder-import.md` — importing a whole existing folder: the size estimate and first slice, names that can't clash, the import record, subjects from the folder's structure, and keeping in step with it later.
 - `references/offline-backlog.md` — what to do with an item when the vault can't be reached, and how the backlog is drained once it can.
-- `references/source-types.md` — detailed handling for web pages, PDFs, transcripts, images, email threads, data files, books and paywalled content. Read when the source isn't a straightforward article or PDF.
+- `references/source-types.md` — detailed handling for web pages, PDFs, transcripts, images, email threads, data files, books, exports and paywalled content. Read when the source isn't a straightforward article or PDF.
 
 ## Debug mode
 

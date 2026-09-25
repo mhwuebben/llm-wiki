@@ -110,6 +110,8 @@ asset: [raw/assets/2026-09-20-attention.pdf]  # list: the binary original and an
 # scope: "override — admin paperwork"      # add only if the owner had it filed anyway, naming the §1 line it matched
 # raw_previous: [raw/2025-03-02-attention.md]    # the last ten earlier captures, newest first; older ones stay listed under ## Version history; omit if none
 # origin: "docs/backend/README.md"           # only for a file from an imported folder: its import record's name and the path inside the folder
+# export: "[[kindle-highlights]] · The Pragmatic Programmer — Hunt, Thomas"   # only for an item split from an export: the export's page and the item's key
+# items: 14                                 # only on an export's own page: how many items it was split into; it carries no key claims of its own
 author: Vaswani et al.
 published: 2017-06-12   # as the source states it (YYYY or YYYY-MM when that is all it gives); the owner's own writing: the day it was written; a file from an imported folder that states none: its git date from the import record; omit if unknown
 url: https://arxiv.org/abs/1706.03762

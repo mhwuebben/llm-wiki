@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.13.0 — 2026-09-25
+
+- **An export becomes one source per item.** A file that packs many independent items together — a Kindle clippings file, a Readwise or Instapaper export, a mailbox, a chat export — is split into one capture per item before anything is ingested: a book's highlights, an email thread, a note. So a question about one book reaches that book's page, not a page about the export. Each item passes your out-of-scope list on its own, so one invoice in a mailbox is caught without holding up the rest. The export itself is kept whole, with a short page of its own that each item links back to. A later export of the same kind only brings in what changed: unchanged items add nothing, changed ones update their page, and new ones become new items. Until now the capture guide said big exports were split at ingest, but no step did it. A single long document is still one source, read in sections.
+- **Secrets follow your list too.** When your out-of-scope list names credentials, a password, API key or account number inside a document is kept off the wiki page, as before. When it doesn't, Claude now says once that the document contains one — and that *"also block credentials"* keeps them out from now on — and files the document as it is, secret included. Nothing is held back on Claude's own judgement any more.
+- **The lock script prints its help from any folder.** Run from outside the vault with a mistyped command, `_meta/wiki-lock.sh` printed an error instead of its usage; `wiki-search.sh` had the same fix in 3.11.0.
+- **Twenty eval cases.** Four new routing cases — `routing-maintain`, `routing-dream-only`, `routing-dream-ingest` and `routing-change-blocked` — check that "bring the wiki up to date", "just write the dream report", "go through the dream report" and "stop blocking invoices" reach the right skill. `scope-force` now runs with a shell, as a real ingest does, and checks that the invoice left `raw/inbox/` for `raw/`; like `ingest-propagates`, it needs the sandbox backend.
+
+**Upgrading an existing vault.** The upgrade replaces `_meta/wiki-lock.sh` and `_meta/templates/source.md`, and proposes §5's two new fields, `export:` and `items:`. wiki-doctor reports the old lock script until then. Nothing else changes for a vault that holds no exports.
+
 ## 3.12.1 — 2026-09-25
 
 - **The last of the fixed scope categories are gone.** Lint no longer claims a built-in scope list of its own, capture no longer treats a private thread as out of scope unless your list names private messages, and check 13 says plainly that an item you filed anyway is final. The override line reads `scope: "override — <the line it matched>"` everywhere, the source template and the schema example included, and every question offers the same two answers: *file it anyway* or *skip it*.

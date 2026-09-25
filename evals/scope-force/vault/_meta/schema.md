@@ -69,7 +69,8 @@ Short sections, bullets, no preamble. Pages stay under about 800 words.
 
 ## 12. Schema history
 
-**Built with:** llm-wiki 3.12.1, on 2026-09-25.
+**Built with:** llm-wiki 3.13.0, on 2026-09-25.
 
 - 2026-09-01 — created at setup.
 - 2026-09-25 — upgraded to llm-wiki 3.12.1: §1's out-of-scope gate paragraph, `scope:` in §5, current scripts and templates.
+- 2026-09-25 — upgraded to llm-wiki 3.13.0: the current lock script and source template.
