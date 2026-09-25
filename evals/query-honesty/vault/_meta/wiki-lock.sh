@@ -10,6 +10,7 @@
 # A lease lasts 5 minutes unless [minutes] says otherwise (at most 30). A held lease is stale,
 # and may be taken over, once it is more than 60 seconds past its expiry.
 
+self=$(cd "$(dirname "$0")" && pwd)/$(basename "$0")
 cd "$(dirname "$0")/.." || exit 2
 f=_meta/wiki-lock.md
 grace=60
@@ -69,5 +70,5 @@ status)
   elif [ "$now" -gt $((exp + grace)) ]; then printf '%s\n' "STALE — $holder — $op — expired $(iso "$exp") — last: $(lines | tail -n 1)"
   else printf '%s\n' "HELD — $holder — $op — until $(iso "$exp") — last: $(lines | tail -n 1)"; fi
   ;;
-*) sed -n '5,8p' "$0"; exit 2 ;;
+*) sed -n '5,8p' "$self"; exit 2 ;;
 esac

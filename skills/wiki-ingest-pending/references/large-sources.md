@@ -1,6 +1,6 @@
 # Large sources
 
-A source past schema §10's **Read in sections past** line (~15,000 words if it has none) — a long plan, a book-length report, a log of hundreds of entries — is too big to read in one go and still leave room to propagate what it says. It is **read in sections and ingested in one pass**: one run, one source page, one log entry, and the file leaves the inbox when the run ends. Nobody runs a second ingest for it, and no run skips it as "needing a pass of its own".
+A source past schema §10's **Read in sections past** line (~15,000 words if it has none) — a long plan, a book-length report, a log of hundreds of entries (one document, not an export of many — `${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/references/source-types.md`, *Exports*) — is too big to read in one go and still leave room to propagate what it says. It is **read in sections and ingested in one pass**: one run, one source page, one log entry, and the file leaves the inbox when the run ends. Nobody runs a second ingest for it, and no run skips it as "needing a pass of its own".
 
 Measure every item at *Pick the items*: `wc -w` on the markdown, or the page count on a binary's sidecar (about 400 words a page). Say which items are large in the list the person sees.
 

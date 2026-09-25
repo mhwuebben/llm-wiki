@@ -28,7 +28,7 @@ Two extras worth knowing:
 | **Drag and drop into `raw/inbox/`** | Works for anything. No frontmatter, so the ingest infers what it can and asks about the rest. |
 | **Obsidian mobile / share sheet** | Same as the clipper; check the note location setting points at `raw/inbox`. |
 | **Obsidian Sync, iCloud, Dropbox** | Fine, but a file can exist as a placeholder before it has downloaded. If a read comes back empty or truncated, that's usually why — wait for the sync rather than filing an empty source page. |
-| **Read-later exports** (Readwise, Instapaper, Kindle highlights) | Usually one file per item or one big export. Big exports are split at ingest, not at capture — one source page per item, not one page for the export. |
+| **Read-later exports** (Readwise, Instapaper, Kindle highlights) | Usually one file per item or one big export. A big export is split into one capture per item before anything is ingested — by ingest when it arrived on its own — so each item gets its own source page (`source-types.md`, *Exports*). |
 | **Email-to-vault, scanners, voice memo apps** | Anything that writes a file into the folder works. Whatever metadata the tool writes, keep it; the ingest maps it. |
 | **A folder of documents that predates the wiki** | Import it by `folder-import.md`: a size estimate and a first slice, unique names, and an import record that keeps where each file came from. Never move the originals. |
 

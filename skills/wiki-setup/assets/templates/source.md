@@ -13,6 +13,8 @@ asset: [raw/assets/{{YYYY-MM-DD}}-{{slug}}.{{ext}}]  # list: the original plus a
 # scope: "override — {{the §1 line it matched}}"    # only if the owner had it filed anyway against schema §1's out-of-scope list
 # origin: "{{record name}}/{{path inside it}}"      # only for a file from an imported folder (its import record in _meta/imports/)
 # sections: {{n}}                                  # only for a source read in sections (schema §10): how many; its key claims are grouped by section
+# export: "[[{{export page}}]] · {{item key}}"      # only for an item split from an export (a Kindle clippings file, an .mbox): the export's page and what names this item in it
+# items: {{n}}                                     # only on an export's own page: how many items it was split into; no key claims of its own
 author: {{Author}}
 published: {{YYYY-MM-DD}}   # the date the source states (YYYY or YYYY-MM if that is all); from an imported folder with none stated, its git date; omit if unknown — never the capture date
 url: {{url or omit}}

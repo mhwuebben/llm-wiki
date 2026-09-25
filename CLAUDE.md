@@ -65,7 +65,7 @@ These are promises made in the README and relied on across skills. A change that
 - **Cross-references:** within a skill, `references/<file>.md` or `assets/<file>`; across skills, always `${CLAUDE_PLUGIN_ROOT}/skills/<skill>/...` or `${CLAUDE_PLUGIN_ROOT}/agents/...`. Point at sections by their heading in italics — `locking.md` (*The log*).
 - **Every SKILL.md has a `## Debug mode` section** and says what it does when several vaults are connected. Keep both when adding a skill.
 - **Renumbering is expensive.** Adding, removing or reordering a schema section, a lint check or a numbered skill step means grepping the whole repo for `§N`, `check N` and `step N` references and fixing each one.
-- **Counts are written out in prose and must move together:** "fourteen skills" (`README.md`, `marketplace.json`), "fourteen checks" (`skills/wiki-lint/SKILL.md` twice, `agents/wiki-auditor.md`, `README.md`), "two sub-agents" (`README.md`, `marketplace.json`), "sixteen cases, eleven routing, five behaviour" (`evals/README.md`).
+- **Counts are written out in prose and must move together:** "fourteen skills" (`README.md`, `marketplace.json`), "fourteen checks" (`skills/wiki-lint/SKILL.md` twice, `agents/wiki-auditor.md`, `README.md`), "two sub-agents" (`README.md`, `marketplace.json`), "twenty cases, fifteen routing, five behaviour" (`evals/README.md`).
 - **Examples are generic.** Never put a real vault's name, a real person's data or anything from a user's wiki into shipped text.
 - **Voice.** User-facing docs (`README.md`, `docs/`, `CHANGELOG.md`, what skills tell the person) are plain, direct and in British spelling (*organisation*, *licence*, *summarise*), addressed to "you". Skills address Claude in the imperative. Short sentences, em dashes, no emoji, no marketing adjectives. Match the file you're in.
 
@@ -99,12 +99,12 @@ These are promises made in the README and relied on across skills. A change that
 There is no CI, on purpose: each eval run spends model credits, and releases are made by hand. Run the suite when the thing it tests has changed — before a release that touched a skill, and after any change to a `description:` line.
 
 ```bash
-claude plugin eval . --tag routing --runs 1      # routing only — about a dollar, a couple of minutes
+claude plugin eval . --tag routing --runs 1      # routing only — about a dollar and a half, a few minutes
 claude plugin eval .                             # everything, 3 runs each
 claude plugin eval . --case 'scope-refusal' --scaffold --allow-tools Write Edit
 ```
 
-Behaviour cases need `--scaffold`; `ingest-propagates` also needs `Bash` and a sandbox backend (`bubblewrap` and `socat` on Linux). `evals/README.md` has the grader gotchas — read it before writing a case.
+Behaviour cases need `--scaffold`; `ingest-propagates` and `scope-force` also need `Bash` and a sandbox backend (`bubblewrap` and `socat` on Linux). `evals/README.md` has the grader gotchas — read it before writing a case.
 
 For a prose change with no eval, re-read the edited skill end to end as the model would: does every step still name a real file, section, check and subcommand?
 

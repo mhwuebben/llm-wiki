@@ -1,6 +1,6 @@
 # Eval suite
 
-Sixteen cases for `claude plugin eval`. Eleven check that a message routes to the right skill; five check that a skill behaves, against a fixture vault.
+Twenty cases for `claude plugin eval`. Fifteen check that a message routes to the right skill; five check that a skill behaves, against a fixture vault.
 
 ```bash
 claude plugin eval .                             # everything, 3 runs each
@@ -10,23 +10,23 @@ claude plugin eval . --case 'scope-refusal' --scaffold --allow-tools Write Edit
 
 ## What the cases assert
 
-**Routing** (`--tag routing`) — one prompt each, graded with `tool_used` on the `Skill` tool: the right skill fires, and the skill it is most often confused with does not. They need no vault and no write tools; eleven cases at one run each cost about a dollar.
+**Routing** (`--tag routing`) — one prompt each, graded with `tool_used` on the `Skill` tool: the right skill fires, and the skill it is most often confused with does not. They need no vault and no write tools; fifteen cases at one run each cost about a dollar and a half.
 
 **Behaviour** (`--tag behaviour`) — each copies its own synced copy of `fixtures/vault` into the run's workspace with its `scaffold.sh`, so they need `--scaffold`:
 
 | case | asserts |
 |---|---|
 | `scope-refusal` | asked to ingest an invoice, the run names the out-of-scope line it matches and asks once whether to file it anyway, and writes no page for it (`--allow-tools Write Edit`) |
-| `scope-force` | told to ingest the invoice anyway, the run files it as an ordinary source with a `scope: "override — …"` line, and leaves the other pending item alone (`--allow-tools Write Edit`) |
+| `scope-force` | told to ingest the invoice anyway, the run files it as an ordinary source with a `scope: "override — …"` line, moves it out of `raw/inbox/` into `raw/`, and leaves the other pending item alone (`--allow-tools Write Edit Bash`) |
 | `query-honesty` | asked about a subject the vault doesn't hold, the answer says so instead of answering from general knowledge as if the wiki held it |
 | `combined-refusal` | with two wikis connected — its `scaffold.sh` copies the fixture twice, as `research` and `personal`, the second under another vault id — asked to lint one, the run refuses, says to lint it from that wiki's own project, and writes no lint report (`--allow-tools Write Edit`) |
 | `ingest-propagates` | one pending item is ingested: a source page is written, an existing concept page gets the claim with a link, the file leaves `raw/inbox/`, the index and log are updated, and the second pending item is left alone (`--allow-tools Write Edit Bash`) |
 
-`ingest-propagates` grants a shell, so it only runs where the sandbox backend exists (`bubblewrap` and `socat` on Linux) — without it the harness refuses the run rather than running unconfined.
+`ingest-propagates` and `scope-force` grant a shell — a real ingest moves files with one — so they only run where the sandbox backend exists (`bubblewrap` and `socat` on Linux) — without it the harness refuses the run rather than running unconfined.
 
 ## When to run them
 
-Before a release that touched a skill, and after any change to routing wording — a skill's `description` is what decides whether it fires at all, so the routing cases are the ones that catch a bad edit. The whole routing pass at one run each is about a dollar and a couple of minutes; the behaviour cases cost a few cents each but need `--scaffold`, and the ingest case needs a sandbox backend (`bubblewrap` and `socat` on Linux).
+Before a release that touched a skill, and after any change to routing wording — a skill's `description` is what decides whether it fires at all, so the routing cases are the ones that catch a bad edit. The whole routing pass at one run each is about a dollar and a half and a few minutes; the behaviour cases cost a few cents each but need `--scaffold`, and the two ingest cases need a sandbox backend (`bubblewrap` and `socat` on Linux).
 
 There is no CI workflow here on purpose: this plugin is released by hand, each eval run spends model credits, and a suite that runs on every push would cost more than it catches. Run it when the thing it tests changed.
 

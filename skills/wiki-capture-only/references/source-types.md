@@ -71,7 +71,7 @@ The description matters: text search can't see inside a PNG, and the description
 
 ## Email and chat threads
 
-Oldest first, one block per message, sender and timestamp preserved. Strip signatures, legal footers and quoted reply chains that repeat earlier messages. Whether the thread belongs at all was settled by the scope check in wiki-capture-only's step 2, against schema §1's list — a private thread is out of scope only where that list names it (private messages, say), and even then the owner can have it filed anyway. Inside an in-scope thread, credentials and account numbers stay in the original and out of the capture, per wiki-capture-only's fidelity rules.
+Oldest first, one block per message, sender and timestamp preserved. Strip signatures, legal footers and quoted reply chains that repeat earlier messages. Whether the thread belongs at all was settled by the scope check in wiki-capture-only's step 2, against schema §1's list — a private thread is out of scope only where that list names it (private messages, say), and even then the owner can have it filed anyway. A password, key or account number inside a thread follows wiki-capture-only's fidelity rules (*Secrets inside a document*): kept out where §1's list names credentials, otherwise filed as it is, after a one-line warning.
 
 ## Data files (CSV, XLSX, JSON)
 
@@ -84,6 +84,17 @@ File verbatim. Don't clean up grammar, don't reorder. In a personal wiki these a
 ## Books the person is reading
 
 The fastest sustainable loop: capture one chapter's notes at a time (their highlights, or a summary they dictate), ingest, repeat. The wiki then grows alongside the reading, and spoilers stay bounded — note the chapter on every claim so the wiki can be browsed mid-book.
+
+## Exports — many items in one file
+
+A file that holds many independent items — a Kindle `My Clippings.txt`, a Readwise or Instapaper export, an `.mbox`, a chat or notes app's export, one markdown file of unrelated notes — is **split into one capture per item**, never filed as one source: a question about one book's highlights should reach that book's page, not a page about the export. A single document with chapters is not an export, however long — that is a large source, read in sections (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-ingest-pending/references/large-sources.md`). A folder of files is an import (`folder-import.md`).
+
+1. **Say what it holds.** The item is what someone would cite: a book's highlights (not each highlight), an email thread (not each message), a note. Count them — *"212 highlights from 14 books: 14 items"* — and past about twenty, say how big the job is and ask on a card, as `folder-import.md` does in its section 2 (split everything, or chosen parts; ingest now or later). Unattended, split everything: splitting decides nothing.
+2. **One file per item in `raw/inbox/`**, named `<date>-<item slug>.md` under a stem no file in `raw/` has, holding the item's content verbatim — messages oldest first, highlights in the order the export gives them — with what the export's format wraps around it (JSON keys, separators, repeated headers) dropped. Its provenance block: `title:`, `author:`, `published:` — the item's own date where it has one, never the export's — and `export: <the export's file name> · <item key>`, where the key is what names the same item in a later export: book title and author, thread subject and first message id, note id or title. Each item then goes through step 2's scope test on its own: an `.mbox` can hold one invoice among forty threads.
+3. **A later export of the same kind** repeats most of what the last one held. Compare each item with the source page whose `export:` carries its key, by the text of that page's current `raw:` copy: the same → no new file; changed → a new file, which ingest takes as a re-capture of that page; no page → a new item.
+4. **The export itself is kept whole**, as the record of what the items were cut from: splitting writes new files and never edits, trims or renames the original. It waits in `raw/inbox/` with its items, and ingest moves it out like any other source — a text export to `raw/`, a binary one (a `.zip`) to `raw/assets/` with its sidecar in `raw/`. Ingest gives it one short source page — `items: <n>` in its frontmatter, what the export is and when it was made, no key claims, `## Entities and concepts` → `none` — and each item's page names it (`export:` in frontmatter, and *"cut from [[<export page>]]"* under *How it sits with the rest of the wiki*). A later export of the same kind is a re-capture of that page: its Version history line says how many items were new, changed and the same. An export whose items already name it is never split again.
+
+Log one entry for the split — `capture | <export> — split into <n> items` — never one per item.
 
 ## Repeat captures of the same source
 

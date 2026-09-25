@@ -45,6 +45,8 @@ Sentences that reach each skill. Any wording with the same meaning works; these 
 - **File something your out-of-scope list blocks** — say *"add this anyway"* (or *"ingest it anyway"* for something already waiting in the inbox). It is filed like any other source, with the decision on record, and never raised again.
 - **Change what is blocked** — schema §1's *Out of scope* list is yours: ask *"stop blocking <category>"* or *"also block <category>"*, and wiki-setup makes the change to the schema and logs it.
 - **A very long document** — just add it. Past about 15,000 words (schema §10's *Read in sections past* line) it is read in sections and ingested in one pass: one source page, with its claims grouped and cited by section. Nothing to run twice.
+- **Bring in a Kindle, Readwise or mailbox export** — hand it over, or drop it into `raw/inbox/`. It is split into one source per item — each book's highlights, each thread — and the export keeps a short page of its own. Next time, drop in the new export: only what changed comes in.
+- **Keep passwords and keys out of the wiki** — say *"also block credentials"*. Without that line in your list, a document containing one is filed as it is, after a one-line warning.
 - **Send something while away from the computer** — just send it. With the folder out of reach it waits on the backlog (`wiki-backlog.md` in the Claude project) and is captured by the next session that reaches the folder.
 - **See what is running or waiting** — ask *"how's my wiki doing?"*: wiki-status shows the run in progress, what is pending and what waits for a decision.
 
