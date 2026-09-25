@@ -14,7 +14,10 @@ Operating manual for this wiki. Claude reads this file before any capture, inges
 
 A small test vault about distributed systems: how queues, retries and backpressure behave under load.
 
-**Out of scope:** admin (tickets, boarding passes, invoices, receipts, statements, calendar entries, task lists, credentials, keys and account details) and another living person's personal data (CVs, applications, ID documents, medical or financial records, private message threads, contact files, photographs of anyone but the owner).
+**Out of scope:**
+- admin paperwork — tickets, bookings, invoices, receipts, statements
+- credentials and keys
+- other people's personal data — CVs, IDs, medical or financial records, private messages, contact files, photos of others
 
 **Questions this wiki exists to answer:** why a queue collapses under load; what backpressure strategies exist and when each applies.
 

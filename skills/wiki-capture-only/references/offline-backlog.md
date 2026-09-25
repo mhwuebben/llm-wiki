@@ -22,7 +22,7 @@ One line per item, oldest at the top:
 - **Links only.** Nothing is fetched now; the text is captured when the backlog is drained. A page that changes or disappears in the meantime is captured as it is then, or fails — say so when you add it.
 - **Pasted text or a note of the person's own** is the source itself, and nothing else holds it: keep it verbatim, indented under its line.
 - **An attached file** can't be kept there. List its name with `re-attach`, and ask the person to hand it over again once the vault can be reached.
-- **Obviously out of scope** — a boarding pass, an invoice, another person's CV — is refused now, with the rule named, as capture would (wiki-capture-only, step 2). The schema's own list is checked when the backlog is drained.
+- **Nothing is refused on the backlog.** The schema's out-of-scope list is checked when the backlog is drained, and a match is asked about then (wiki-capture-only, step 2).
 
 Then tell the person in one line: the vault can't be reached right now, the item is on the backlog, and it will be captured the next time a session can reach the vault.
 

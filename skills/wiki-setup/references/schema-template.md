@@ -25,7 +25,9 @@ It exists to answer questions like:
 - {{the first question they said they will ask it}}
 - {{the second, if they gave one}}
 
-Out of scope: {{what does NOT get filed here}} — and always, whatever else this vault decides: admin rather than knowledge. Tickets, boarding passes, invoices, receipts, statements, calendar entries, task lists, credentials, keys and account details. And another living person's personal data: CVs and applications, ID, medical or financial records, private message threads, contact files, photographs of people other than the vault's owner. These have a better home in the app that issued them; filed here they gain nothing, get propagated across pages, and end up in exports. A session that is handed one says which rule it fails and waits rather than capturing it. If the owner overrides that, the source page says it was ingested against scope and which rule it fails — in a `scope: "override — <rule>"` line in its frontmatter and a note in its body — and it propagates only if the owner asks for that too.
+Out of scope: {{the owner's list, one line each, in their words — what they chose at setup, e.g. admin paperwork (tickets, bookings, invoices, receipts, statements); credentials and keys; other people's personal data (CVs, IDs, medical or financial records, private messages, contact files, photographs of others) — or "nothing: file whatever I hand over"}}
+
+This list is the owner's, and it is the whole gate: nothing outside it is blocked. An item that matches it is not filed on Claude's judgement — the session asks once, *file it anyway* or *skip it*, and does what the owner says. Filed anyway, it is an ordinary source — ingested and propagated like any other — whose source page carries `scope: "override — <the line it matched>"`, so the decision is on record and never raised again. The owner changes this list whenever they like; a change is a schema change, logged.
 
 A source that is in scope but states its own expiry — an event page, a time-limited offer, a job posting — carries that date as `expires:` on its source page, so lint check 13 can find it once it has passed.
 

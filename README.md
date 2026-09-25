@@ -71,7 +71,7 @@ Anything that needs a judgement call waits for you.
 - **Nothing is thrown away.** A claim a newer source replaces moves to the page's `## History`, with the date and the reason. A source that changes over time keeps every version and the story of what changed.
 - **You decide the judgement calls.** Merging pages, deleting anything, moving files, accepting a connection: each waits for your yes. Unattended runs ingest what's waiting and apply only fixes that have one right answer.
 - **One writer at a time.** A lock you can open and read shows what's running. A second session waits, and a crashed one is taken over.
-- **Junk stays out.** Tickets, invoices, credentials and other people's personal data are stopped at the door, whatever way they arrive.
+- **You decide what stays out.** Setup asks what should never be filed — credentials, admin paperwork, other people's personal data, anything of your own — and that list is the whole gate, however an item arrives. Anything that matches is asked about once, and *"file it anyway"* files it; nothing is refused on Claude's judgement.
 - **No lock-in.** It is plain markdown in your folder. Obsidian makes it pleasant to browse, but nothing depends on it. There are no hooks and no MCP servers, only instructions you can read.
 
 ## What the plugin adds to the proposal

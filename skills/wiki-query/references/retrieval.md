@@ -131,7 +131,7 @@ Before saying the wiki has nothing on X, look in the three places it could still
 
 Nothing in any of the three → a real gap. Say so, say what you searched (terms and languages), and say how many binary sources could not be searched: their text is not in `raw/` — only their provenance sidecars are — so a PDF or a recording can hold what no search finds.
 
-Two guards. Never write into `wiki/` anything schema §1 or lint check 13's built-in categories keep out — admin, another living person's personal data — however you found it; and never restore in an answer what a page's redaction line says was removed. Files of retired sources (named on a `retired:` line in the log) are not left-out content either.
+Two guards. Never write into `wiki/` anything schema §1's out-of-scope list keeps out, however you found it, unless the owner files it anyway (`${CLAUDE_PLUGIN_ROOT}/skills/wiki-capture-only/SKILL.md`, step 2); and never restore in an answer what a page's redaction line says was removed. Files of retired sources (named on a `retired:` line in the log) are not left-out content either.
 
 ## Questions the wiki can't answer
 

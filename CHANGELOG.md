@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.12.0 — 2026-09-25
+
+- **You decide what is blocked.** Setup asks *What should never be filed here?*, with credentials and keys, admin paperwork and other people's personal data as choices, and your own in the free-text field; nothing is pre-chosen. The answer becomes schema §1's out-of-scope list, in your words, and it is the whole gate: the fixed "always blocked" categories are gone from the schema, the skills, lint and the project instructions. *"Stop blocking …"* or *"also block …"* changes the list at any time (wiki-setup, logged as a schema change).
+- **Filing anyway is one answer.** An item that matches the list is asked about once, *file it anyway* or *skip it*, on a card where there is one. Say it up front, *"add this anyway"* or *"ingest it anyway"*, and nobody asks. A forced item is captured and ingested in the same pass, and propagated like any other source. The `scope: "override — …"` line keeps the decision on record, and lint never raises it again. Unattended runs still never override on their own; the digest names what waits, with the line it matched.
+- **A sixteenth eval case,** `scope-force`, and a changed one: `scope-refusal` now expects the question rather than a refusal; `scope-force` checks that *"ingest it anyway"* files the item as an ordinary source.
+
+**Upgrading an existing vault.** The upgrade asks what should never be filed, and rewrites §1's out-of-scope list to your answer. Re-paste the project instructions: the scope paragraph no longer lists categories of its own.
+
 ## 3.11.0 — 2026-09-23
 
 - **A regenerated folder goes through in one run.** Re-captures are compared with their previous copy rather than re-read. Each produces a short change extract (claims changed, added and removed, or "no claim changed"), in parallel where sub-agents exist, and every page is edited once with everything that changed on it. They no longer count against a run's cap, which now limits only the new pages a run creates.

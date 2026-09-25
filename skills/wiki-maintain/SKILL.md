@@ -11,7 +11,7 @@ Run the whole routine in one pass: process what has arrived, repair what is brok
 
 **What it does not authorise:**
 
-- **Filing out-of-scope material.** Every pending item still passes the schema's out-of-scope test (wiki-capture-only, step 2) before it is ingested. An item whose provenance carries a `scope: "override — …"` line was already decided by the person at capture, and goes ahead. Any other item that fails stays pending, untouched, and goes in the digest under what needs a human decision, with the rule it fails. Only the person can override scope.
+- **Filing out-of-scope material.** Every pending item still passes the schema's out-of-scope test (wiki-capture-only, step 2) before it is ingested. An item whose provenance carries a `scope: "override — …"` line was already decided by the person at capture, and goes ahead. Any other item that matches the list stays pending, untouched, and goes in the digest under what needs a human decision, with the line it matched — one sentence from the person, *"ingest it anyway"*, files it. Only the person can override scope.
 - **Overriding the owner's review preference.** If §11 of the schema asks to review each source before it is filed, that wins: an unattended run skips step 1 and lists what is pending in the digest; a run with the person present checks in per source, as wiki-ingest-pending does.
 
 **A run is unattended** when a scheduled task started it or its prompt says so. Being asked to set up a schedule for this skill is not a run.
